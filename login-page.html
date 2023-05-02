@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="keywords" content="ilha, apartamento, alugar, imóveis">
+    <meta name="author" content="Fellip Silva Alves, Gabriel Natal Coutinho, João Vitor Tigre Almeida">
+    
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/root.css">
+    <link rel="stylesheet" href="css/header.css">
+    <link rel="stylesheet" href="css/footer.css">
+    <link rel="stylesheet" href="css/login-page.css">
+    <title>Início</title>
+</head>
+
+<body>
+    <div class="login-page screen">
+        <header class="flex-row">
+            <img src="img/logo/logo.png" alt="logo" class="logo">
+            <div class="search-bar">
+                <input type="text" class="search-text"/>
+                <div class="search-loupe-div">
+                    <img src="img/header/search-loupe.png" alt="search loupe" class="search-loupe">
+                </div>
+            </div>
+
+            <div class="navbar">
+                <div class="navbar-links">
+                    <img src="img/header/home.png" alt="home" class="icon">
+                </div>
+                <div class="navbar-links">
+                    <img src="img/header/shopping-cart.png" alt="shopping cart" class="icon">
+                </div>
+                <div class="navbar-links">
+                    <img src="img/header/user.png" alt="user" class="icon">
+                </div>
+            </div>
+        </header>
+
+        <div class="login-frame content">
+            <div class="error-message error-message-hide">
+                <p class="error-message-text">
+                    Possível mensagem de erro, errou a senha, usuário existente, apenas exemplos.
+                </p>
+            </div>
+
+            <div class="form">
+                <div class="flex-col">
+                    <h1 class="font-title-black title-login">Login</h1>
+
+                    <div class="input">
+                        <label for="input-email" class="email font-inter-black">Email:</label>
+                        <input id="input-email" type="text" class="input-text"/>
+                    </div>
+                    <div class="input">
+                        <label for="input-senha" class="senha font-inter-black">Senha:</label>
+                        <input id="input-senha" type="password" class="input-text"/>
+                    </div>
+                    <input type="button" name="button" class="botao" value="Confirmar"/>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <a href="about-us-page.html">Sobre nós</a>
+            <div class="contacts">
+                <h3>Contacts:</h3>
+                <p>Tel: -55 31 3665-8484</p>
+                <p>Email: contato@ovproperties.br</p>
+            </div>
+            <div class="font-inter-white made-with-love">
+                feito com &lt;3
+                <div>
+                    <div class="flex-row">
+                        <a href="https://github.com/natalzera"><img src="img/github.png" alt="github" class="img-footer"></a>
+                        <p class="font-inter-white github-text">Gabriel</p>
+                    </div>
+                    <div class="flex-row">
+                        <a href="https://github.com/Fellip15"><img src="img/github.png" alt="github" class="img-footer"></a>
+                        <p class="font-inter-white github-text">Fellip</p>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>    
+</body>
+</html>

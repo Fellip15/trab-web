@@ -1,0 +1,46 @@
+footer {
+    display: flex;
+    justify-content: space-between;
+    background-color: var(--onyx);
+    height: fit-content;
+    max-height: var(--height-footer);
+    position: absolute;
+    bottom: 0;
+    padding: var(--padding-footer);
+    width: calc(100vw - var(--padding-footer) - 20px);
+}
+
+footer a {
+    color: white;
+    margin: auto 0;
+}
+
+.img-footer {
+    width: 15px;
+    margin-right: 5px;
+    transition: 0.25s;
+    border-radius: 50%;
+}
+.img-footer:hover {
+    background-image: radial-gradient(circle, var(--text) 0%, var(--onyx) 80%);
+}
+
+footer p, footer li, footer h3 {
+    font-family: var(--font-family-inter);
+    font-size: var(--font-size-footer);
+    color: white;
+}
+
+.made-with-love {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.github-text {
+    font-size: 10px;
+}
+
+.contacts {
+    margin: auto;
+}
