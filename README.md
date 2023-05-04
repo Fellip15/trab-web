@@ -14,4 +14,4 @@ Neste trabalho da disciplina, o grupo desenvolve completamente um site de vendas
 Ao criar o HTML e CSS de todas as páginas de nosso site, definimos um grafo que mostra quais páginas poderão ser acessadas diretamente através de outras ou quais páginas possuem locais de acessos a outras. Para isso, as páginas de nossa aplicação Web seguirá a seguinte lógica de acesso: 
 </p>
 
-// É pra colocar a imagem do diagrama aqui //
+<img src="https://github.com/Fellip15/trab-web/diagr paginas.jpg" width="200" />
