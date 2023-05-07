@@ -76,4 +76,5 @@ body {
 
 .content {
     padding-bottom: calc(var(--height-footer) + var(--padding-footer) + 2rem);
+    min-height: calc(100vh - var(--height-footer) - var(--height-header) - var(--padding-footer) - 2em);
 }
