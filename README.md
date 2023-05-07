@@ -44,11 +44,21 @@ Para a implementação do requisitos descritos, o projeto terá:
 <ul>
     <li>Uma página de cadastro e login para usuários, para preencher as informações necessárias e entrar;
     <li>Uma barra de pesquisa presente no header;
-    <li>Uma página para cada produto da loja contendo suas informações (Apenas um esqueleto de página com as informações modificadas com JS);
+    <li>Uma página para cada produto da loja contendo suas informações (Apenas um esqueleto de página com as informações modificadas com JS). Além disso, cada página possui um <b>mapa personalizado</b> mostrando a localização exata do imóvel (funcionalidade extra do projeto);
     <li>Uma página para acessar o carrinho de compras do usuário (cliente) na aplicação, deixando visível todos os produtos selecionados;
     <li>Uma página para a finalização de compra, sendo necessário preencher os dados (principalmente sobre a forma de pagamento);
     <li>Uma página para a visualização de todos os produtos do sistema, com a opção de removê-los (disponível apenas apra usuários administradores);
     <li>Uma página de adição/edição de produtos no sistema (disponível apenas para usuários administradores);
+</ul>
+
+<p>
+Para o funcionamento do servidor, o banco de dados vai precisar armazenar os dados sobre:
+</p>
+<ul>
+    <li>Clientes: nome completo, email, senha, foto, endereço, telefone;
+    <li>Endereço: CEP, cidade, estado, país, rua, número, complemento;
+    <li>Administrador: usuário, email, senha;
+    <li>Ítem: nome, descrição, preço, quant estoque, quant vendida, fotos, coordenadas.
 </ul>
 
 ### Diagrama de acesso às páginas
