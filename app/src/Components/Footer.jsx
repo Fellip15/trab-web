@@ -11,7 +11,7 @@ const Footer = () => {
 
     return (
         <footer>
-            <button class="about-us-button" onClick={aboutUsClick}>Sobre nós</button>
+            <button className="about-us-button" onClick={aboutUsClick}>Sobre nós</button>
             <div className="contacts">
                 <h3>Contacts:</h3>
                 <p>Tel: +55 31 3665-8484</p>
@@ -22,6 +22,6 @@ const Footer = () => {
             </div>
         </footer>
     );
-}
+};
 
 export default Footer;
