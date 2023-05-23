@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 
-function Login() {
-  return (
-    <>
-        <div>
+const Login = () => {
+    return (
+        <>
+            <div>
             Login
-        </div>
-    </>
-  );
-}
+            </div>
+        </>
+    );
+};
 
 export default Login;

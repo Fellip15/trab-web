@@ -4,14 +4,17 @@ footer {
     background-color: var(--onyx);
     height: fit-content;
     max-height: var(--height-footer);
-    position: absolute;
+    position: relative;
     bottom: 0;
     padding: var(--padding-footer);
-    width: calc(100vw - var(--padding-footer) - 20px);
+    width: 100vw;
 }
 
-footer a {
+footer button {
+    background-color: var(--onyx);
+    border: none;
     color: white;
+    padding: 0;
     margin: auto 0;
 }
 

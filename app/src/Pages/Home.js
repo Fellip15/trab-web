@@ -5,12 +5,16 @@ import Header from "../Components/Header";
 import Footer from "../Components/Footer";
 import Item from "../Components/Item";
 
-function Home() {
-  return (
-    <>
-      <Header />
-      <div class="main-page content">
-          <div class="propaganda">
+import 'bootstrap/dist/css/bootstrap.css';
+import Carousel from 'react-bootstrap/Carousel';
+
+const Home = () => {
+    
+    return (
+        <>
+        <Header />
+        <div class="main-page content">
+            <div class="propaganda">
                 <div class="frame-3">
                     <img src="img/pexels-andrea-piacquadio.png" alt="Imagem propaganda" id="img-propaganda"/>
                 </div>
@@ -22,9 +26,9 @@ function Home() {
                 </div>
 
                 <img src="img/logo/logo-completa.png" alt="Logo" id="img-logo-propaganda"/>
-          </div>
+            </div>
 
-          <div class="table-itens">
+            <div class="table-itens">
                 <h1 class="font-title-black">Ilhas recomendadas para você:</h1>
                 <div class="itens">
                     <Item />
@@ -38,10 +42,10 @@ function Home() {
                 </div>
             </div>
 
-      </div>
-      <Footer />
-    </>
-  );
-}
+        </div>
+        <Footer />
+        </>
+    );
+};
 
 export default Home;
