@@ -1,12 +1,21 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import '../root.css';
+import './css/Itens.css';
 
-const Item = () => {
+const Item = ({ dataItem }) => {
+    // direciona o usuário para a página do ítem selecionado
+    const navigate = useNavigate();
+    const handleItemClick = () => {
+        navigate(`/item:${dataItem.id}`);
+    }
+
     return (
-        <div class="item">
-            <img src="img/produtos/ilha1.png" alt="Ilha" class="item-img"/>
-            <div class="frame-7">
-                <p class="item-name font-inter-white">Nome da ilha aqui!</p>
-                <p class="item-price font-inter-white">R$ 9999999,99</p>
+        <div className="item" onClick={handleItemClick}>
+            <img src={dataItem.srcImage} alt="item de venda" className="item-img"/>
+            <div className="frame-7">
+                <p className="item-name font-inter-white">{dataItem.name}</p>
+                <p className="item-price font-inter-white">R${dataItem.price.toFixed(2)}</p>
             </div>
         </div>
     );
