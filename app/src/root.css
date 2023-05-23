@@ -1,0 +1,80 @@
+/* setup */
+@import url("https://fonts.googleapis.com/css?family=Inter:400");
+
+body {
+    overflow-x: hidden;
+}
+
+:root {
+    --background: rgb(43, 43, 43);
+    --background-sec: rgb(59, 59, 59);
+    --light-gray: rgb(168, 189, 198);
+    --dark-gray: rgb(103, 115, 121);
+    --onyx: #32383b;
+    --text: white;
+    
+    --font-size-pp: 13px;
+    --font-size-p:  16px;
+    --font-size-m:  20px;
+    --font-size-l:  36px;
+
+    --font-size-footer: 10px;
+    
+    --font-family-inter: "Inter";
+    --font-family-mono: "Space Mono";
+    --font-family-mono-bold: "Space Mono-Bold";
+
+    --height-header: 4rem;
+    --height-footer: 3.5rem;
+    --padding-footer: 20px;
+}
+
+.font-inter-black {
+    color: black;
+    font-family: var(--font-family-inter);
+    font-size: var(--font-size-pp);
+    font-weight: 400;
+    font-style: normal;
+}
+
+.font-inter-white {
+    color: white;
+    font-family: var(--font-family-inter);
+    font-size: var(--font-size-pp);
+    font-weight: 400;
+    font-style: normal;
+}
+
+.font-title-white {
+    color: white;
+    font-family: var(--font-family-mono-bold);
+    font-size: var(--font-size-l);
+}
+
+.font-title-black {
+    color: black;
+    font-family: var(--font-family-mono-bold);
+    font-size: var(--font-size-l);
+}
+
+.flex-col {
+    display: flex;
+    flex-direction: column;
+}
+
+.flex-row {
+    display: flex;
+    flex-direction: row;
+}
+
+.screen {
+    position: relative;
+    min-height: 100vh;
+    min-width: 100vw;
+    background-color: rgba(128, 128, 128, 0.404);
+}
+
+.content {
+    padding-bottom: calc(var(--height-footer) + var(--padding-footer) + 2rem);
+    min-height: calc(100vh - var(--height-footer) - var(--height-header) - var(--padding-footer) - 2em);
+}
