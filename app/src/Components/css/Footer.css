@@ -16,6 +16,7 @@ footer button {
     color: white;
     padding: 0;
     margin: auto 0;
+    cursor: pointer;
 }
 
 .img-footer {

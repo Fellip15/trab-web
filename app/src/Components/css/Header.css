@@ -46,6 +46,7 @@ header {
     display: flex;
     justify-content: center;
     align-items: center;
+    cursor: pointer;
 }
 .search-loupe-div:hover {
     background-color: #32383ba9;
@@ -71,6 +72,7 @@ header {
     align-items: center;
     padding: 5px;
     border-radius: 50%;
+    cursor: pointer;
 }
 .navbar-links:active {
     transition: 0.1s;
