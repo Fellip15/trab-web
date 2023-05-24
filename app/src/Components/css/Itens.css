@@ -27,6 +27,7 @@
     border-radius: 0px 0px 10px 10px;
     height: 225px;
     width: 150px;
+    cursor: pointer;
 }
 
 .item-img {
@@ -41,7 +42,7 @@
     align-items: flex-start;
     justify-content: center;
     flex-direction: column;
-    padding: 0 10px;
+    padding: 10px;
 }
 
 .item-price {
@@ -52,7 +53,7 @@
 }
 
 .item-name {
-    height: 5px;
+    height: 25px;
     letter-spacing: 0;
     line-height: normal;
     position: relative;
