@@ -4,6 +4,7 @@ import "./App.css";
 
 import Home from './Pages/Home';
 import Login from './Pages/Login';
+import Register from './Pages/Register';
 
 // define as rotas da aplicação para cada componente
 const App = () => {
@@ -12,7 +13,8 @@ const App = () => {
             <Routes>
                 <Route path="/" exact element={<Home />}/>
                 <Route path="/home" element={<Home />}/>
-                <Route path="/Login" element={<Login />}/>
+                <Route path="/login" element={<Login />}/>
+                <Route path="/register" element={<Register />}/>
             </Routes>
         </Router>
     );
