@@ -71,6 +71,7 @@ header {
     align-items: center;
     padding: 5px;
     border-radius: 50%;
+    cursor: pointer;
 }
 .navbar-links:active {
     transition: 0.1s;

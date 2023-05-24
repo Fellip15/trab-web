@@ -25,7 +25,7 @@ body {
     --font-family-mono-bold: "Space Mono-Bold";
 
     --height-header: 4rem;
-    --height-footer: 6.4rem;
+    --height-footer: 6rem;
     --padding-footer: 20px;
 }
 
@@ -76,5 +76,5 @@ body {
 
 .content {
     padding-bottom: 2rem;
-    min-height: calc(100vh - var(--height-footer) - var(--height-header) - var(--padding-footer) - 2em);
+    min-height: calc(100vh - var(--height-footer) - var(--height-header) - var(--padding-footer));
 }
