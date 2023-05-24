@@ -8,6 +8,7 @@ footer {
     bottom: 0;
     padding: var(--padding-footer);
     width: 100vw;
+    margin: 0;
 }
 
 footer button {
