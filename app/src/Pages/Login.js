@@ -5,15 +5,22 @@ import "./css/Login.css"
 
 import Header from "../Components/Header";
 import Footer from "../Components/Footer";
+import ErrorMess from '../Components/ErrorMess';
 
 const Login = ({ dataUsers }) => {
 
     const navigate = useNavigate();
     const handleRegister = () => {
-        navigate(`/register`);
+        navigate('/register');
     }
 
-    // atribui os valores do input a cada variável referente
+    // ainda é preciso tratar o que fazer com o id de usuário
+    const handleLoginFinished = (userId) => {
+        alert(`Usuário ${userId} logado (!!!!!ainda tratar isso)`);
+        navigate('/');
+    }
+
+    // atribui os valores do input lido a cada variável referente
     const [inputEmail, setInputEmail] = useState('');
     const handleInputEmailChange = (event) => {
         setInputEmail(event.target.value);
@@ -25,6 +32,7 @@ const Login = ({ dataUsers }) => {
     };
 
     // verifica o login nos dados e direciona à página do usuário
+    const [hasError, setHasError] = useState(false);
     const handleClickLogin = () => {
         // filtra os usuários no banco com email e senha lidos
         const targetUser = dataUsers.filter(user => 
@@ -33,11 +41,12 @@ const Login = ({ dataUsers }) => {
         );
         
         // verifica se algum usuário possui email e senha definidos
-        if (targetUser.lenght !== 1) {
-            alert('Email ou senha inválidos');
+        if (targetUser.length !== 1) {
+            setHasError(true);
         }
         else {
-            
+            handleLoginFinished(targetUser[0].id);
+            setHasError(false);          
         }
 
         // reseta os valores de input
@@ -50,11 +59,7 @@ const Login = ({ dataUsers }) => {
             <Header />
             
             <div className="login-frame content">
-                <div className="error-message error-message-hide">
-                    <p className="error-message-text">
-                        Possível mensagem de erro, errou a senha, usuário existente, apenas exemplos.
-                    </p>
-                </div>
+                <ErrorMess hidden={!hasError} message={'Email ou senha inválidos.'}/>
 
                 <div className="form flex-col">
                     <h1 className="font-title-black title-login">Login</h1>

@@ -27,6 +27,11 @@ const App = () => {
         getData();
     }, []);
 
+    // função de adicionar um usuário no banco (!!!!!!!!!!!!ainda terminar ela)
+    const addUser = (newUser) => {
+        console.log(newUser);
+    };
+
     // tratar em toda página que utilizar os dados .json para renderizar apenas se for !== undefined, pois o fetch é assíncrono
     return (
         <Router>
@@ -34,7 +39,7 @@ const App = () => {
                 <Route path="/" exact element={<Home dataItens={itensInfo}/>}/>
                 <Route path="/home" element={<Home dataItens={itensInfo}/>}/>
                 <Route path="/login" element={<Login dataUsers={usersInfo}/>}/>
-                <Route path="/register" element={<Register dataUsers={usersInfo}/>}/>
+                <Route path="/register" element={<Register dataUsers={usersInfo} addUser={addUser}/>}/>
                 <Route path="/about-us" exact element={<AboutUs />}/>
             </Routes>
         </Router>
