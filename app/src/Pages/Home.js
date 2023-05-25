@@ -27,7 +27,7 @@ const Home = ({ dataItens }) => {
                 <img src="img/logo/logo-completa.png" alt="Logo" id="img-logo-propaganda"/>
             </div>
 
-            <Itens dataItens={dataItens} title={'Ilhas recomendadas para você:'}/>
+            {dataItens !== undefined && <Itens dataItens={dataItens} title={'Ilhas recomendadas para você:'}/>}
         </div>
         <Footer />
         </>

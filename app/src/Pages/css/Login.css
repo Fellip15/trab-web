@@ -86,10 +86,6 @@
     font-size: var(--font-size-p);
 }
 
-.error-message-hide {
-    display: none;
-}
-
 #without-register {
     margin: 20px 0 0 0;
     text-align: right;
