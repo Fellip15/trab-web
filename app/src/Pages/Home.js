@@ -3,7 +3,7 @@ import "./css/Home.css";
 
 import Header from "../Components/Header";
 import Footer from "../Components/Footer";
-import Itens from "../Components/Itens";
+import Itens from "../Components/Home/Itens";
 
 // import 'bootstrap/dist/css/bootstrap.css';
 // import Carousel from 'react-bootstrap/Carousel';
