@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import '../root.css';
-import './css/Itens.css';
+import '../../root.css';
+import '../css/HomeItens.css';
 
 const Item = ({ dataItem }) => {
     // direciona o usuário para a página do ítem selecionado

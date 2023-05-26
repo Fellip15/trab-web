@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Item from './Item';
-import '../root.css';
-import './css/Itens.css';
+import '../../root.css';
+import '../css/HomeItens.css';
 
 const Itens = ({ dataItens, title }) => {
     return (

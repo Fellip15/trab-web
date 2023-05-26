@@ -5,6 +5,7 @@ import "./App.css";
 import Home from './Pages/Home';
 import Login from './Pages/Login';
 import Register from './Pages/Register';
+import Search from './Pages/Search';
 import AboutUs from './Pages/AboutUs';
 
 // define as rotas da aplicação para cada componente
@@ -27,9 +28,34 @@ const App = () => {
         getData();
     }, []);
 
-    // função de adicionar um usuário no banco (!!!!!!!!!!!!ainda terminar ela)
+    // adiciona um novo usuário no banco (!!!!!o post ta dando status 404)
     const addUser = (newUser) => {
-        console.log(newUser);
+        // atualiza a lista de usuários
+        let newUsersInfo = usersInfo
+        newUsersInfo.push({
+            id: newUser.id,
+            name: newUser.name,
+            email: newUser.email,
+            password: newUser.password
+        });
+
+        // manda os novos dados no banco
+        setUsersInfo(newUsersInfo);
+        fetch('./data/users.json', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(
+                {array: newUsersInfo}
+            )
+        })
+        .then(response => {
+            console.log({array: newUsersInfo}); // os dados estão corretos
+            console.log(response);
+        })
+        .catch(error => console.log(error));
     };
 
     // tratar em toda página que utilizar os dados .json para renderizar apenas se for !== undefined, pois o fetch é assíncrono
@@ -37,9 +63,10 @@ const App = () => {
         <Router>
             <Routes>
                 <Route path="/" exact element={<Home dataItens={itensInfo}/>}/>
-                <Route path="/home" element={<Home dataItens={itensInfo}/>}/>
-                <Route path="/login" element={<Login dataUsers={usersInfo}/>}/>
-                <Route path="/register" element={<Register dataUsers={usersInfo} addUser={addUser}/>}/>
+                <Route path="/home" exact element={<Home dataItens={itensInfo}/>}/>
+                <Route path="/login" exact element={<Login dataUsers={usersInfo}/>}/>
+                <Route path="/register" exact element={<Register dataUsers={usersInfo} addUser={addUser}/>}/>
+                <Route path="/search/:itemName" exact element={<Search dataItens={itensInfo}/>}/>
                 <Route path="/about-us" exact element={<AboutUs />}/>
             </Routes>
         </Router>
