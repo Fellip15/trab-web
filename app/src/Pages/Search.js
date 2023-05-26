@@ -4,7 +4,7 @@ import "./css/Search.css";
 
 import Header from '../Components/Header';
 import Footer from '../Components/Footer';
-import Itens from '../Components/Search/Itens';
+import SearchItens from '../Components/Search/Itens';
 
 const Search = ({ dataItens }) => {
     // pega e trata os parâmetros da url (título da task)
@@ -15,9 +15,9 @@ const Search = ({ dataItens }) => {
         <>
         <Header adjustPath={'../'}/>
 
-        <div className="container">
+        <div className="container-search">
             <h1>Buscando por: {nameFind}</h1>
-            {dataItens !== undefined && <Itens dataItens={dataItens} nameSearch={nameFind}/>}
+            {dataItens !== undefined && <SearchItens dataItens={dataItens} nameSearch={nameFind}/>}
         </div>
         
         <Footer />

@@ -3,7 +3,7 @@ import Item from './Item';
 import '../../root.css';
 import '../css/SearchItens.css';
 
-const Itens = ({ dataItens, nameSearch }) => {
+const SearchItens = ({ dataItens, nameSearch }) => {
     // retorna os ítens que satisfaçam a busca
     const getItensSearch = () => {
         return dataItens.filter(item => 
@@ -13,7 +13,7 @@ const Itens = ({ dataItens, nameSearch }) => {
     console.log(getItensSearch());
 
     return (
-        <div className="table-itens">
+        <div className="list-itens-search">
             {getItensSearch().map(item => 
                 <Item dataItem={item} />
             )}
@@ -21,4 +21,4 @@ const Itens = ({ dataItens, nameSearch }) => {
     );
 };
 
-export default Itens;
+export default SearchItens;

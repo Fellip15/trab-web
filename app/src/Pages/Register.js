@@ -7,6 +7,7 @@ import Header from "../Components/Header";
 import Footer from "../Components/Footer";
 import ErrorMess from '../Components/ErrorMess';
 
+// !!!!!!!!!!!!!!!!! tratar leitura nula
 const Register = ({ dataUsers, addUser }) => {
 
     const navigate = useNavigate();

@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import '../../root.css';
 import '../css/SearchItens.css';
 
-const Item = ({ dataItem }) => {
+const SearchItem = ({ dataItem }) => {
     // direciona o usuário para a página do ítem selecionado
     const navigate = useNavigate();
     const handleItemClick = () => {
@@ -11,27 +11,29 @@ const Item = ({ dataItem }) => {
     }
 
     return (
-        <div className="item" onClick={handleItemClick}>
-            <div className="column">
-                <img src={dataItem.srcImage} alt="item de venda" className="item-img"/>
-            </div>
-            <div className="column">
-                <p className="item-name font-inter-white">{dataItem.name}</p>
-                <div className="row">
-                    <p className="item-price font-inter-white">R${dataItem.price.toFixed(2)}</p>
-                    <p className="font-inter-white">
-                        ou
-                        <img src="./img/icons/credit-card.png" alt="cartão de crédito"/>
-                        {dataItem.numParc}x de R${dataItem.priceParc.toFixed(2)}
-                    </p>
+        <div className="search-item" onClick={handleItemClick}>
+            <div className="content-info-search">
+                <div className="img-item-search">
+                    <img src={'../' + dataItem.srcImage} alt="item de venda" className="item-img"/>
                 </div>
-                <p className="item-quant font-inter-white">qtde: {dataItem.stock}</p>
+                <div className="info-item-search">
+                    <p className="item-search-name">{dataItem.name}</p>
+                    <div className="row-item-price">
+                        <p className="item-search-price font-inter-strong">R${dataItem.price.toFixed(2)}</p>
+                        <div className="item-search-price">
+                            <p className="font-inter-black">ou</p>
+                            <img src="../img/icons/credit-card.png" alt="cartão de crédito"/>    
+                            <p className="font-inter-black">{dataItem.numParc}x de R${dataItem.priceParc.toFixed(2)}</p>
+                        </div>
+                    </div>
+                    <p className="font-inter-black">qtde: {dataItem.stock}</p>
+                </div>
             </div>
-            <div className="column">
+            <div className="descr-item-search">
                 {dataItem.description}
             </div>
         </div>
     );
 };
 
-export default Item;
+export default SearchItem;

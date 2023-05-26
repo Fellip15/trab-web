@@ -50,6 +50,12 @@ body {
     font-style: normal;
 }
 
+.font-inter-strong {
+    font-family: var(--font-family-inter);
+    font-size: var(--font-size-p);
+    font-weight: bold;
+}
+
 .font-title-white {
     color: white;
     font-family: var(--font-family-mono-bold);
