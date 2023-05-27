@@ -7,7 +7,7 @@ const SearchItem = ({ dataItem }) => {
     // direciona o usuário para a página do ítem selecionado
     const navigate = useNavigate();
     const handleItemClick = () => {
-        navigate(`/item:${dataItem.id}`);
+        navigate(`/item/${dataItem.id}`);
     }
 
     return (

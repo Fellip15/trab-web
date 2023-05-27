@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import {useParams, useNavigate} from 'react-router-dom';
+import React from 'react';
+import {useParams} from 'react-router-dom';
 import "./css/Search.css";
 
 import Header from '../Components/Header';
@@ -7,7 +7,7 @@ import Footer from '../Components/Footer';
 import SearchItens from '../Components/Search/Itens';
 
 const Search = ({ dataItens }) => {
-    // pega e trata os parâmetros da url (título da task)
+    // pega e trata os parâmetros da url (nome de busca)
     const params = useParams();
     const nameFind = params.itemName;
 

@@ -6,6 +6,7 @@ import Home from './Pages/Home';
 import Login from './Pages/Login';
 import Register from './Pages/Register';
 import Search from './Pages/Search';
+import ItemDescr from './Pages/ItemDescr';
 import AboutUs from './Pages/AboutUs';
 
 // define as rotas da aplicação para cada componente
@@ -67,6 +68,7 @@ const App = () => {
                 <Route path="/login" exact element={<Login dataUsers={usersInfo}/>}/>
                 <Route path="/register" exact element={<Register dataUsers={usersInfo} addUser={addUser}/>}/>
                 <Route path="/search/:itemName" exact element={<Search dataItens={itensInfo}/>}/>
+                <Route path="/item/:itemId" exact element={<ItemDescr dataItens={itensInfo}/>}/>
                 <Route path="/about-us" exact element={<AboutUs />}/>
             </Routes>
         </Router>
