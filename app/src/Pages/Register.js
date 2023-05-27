@@ -7,7 +7,6 @@ import Header from "../Components/Header";
 import Footer from "../Components/Footer";
 import ErrorMess from '../Components/ErrorMess';
 
-// !!!!!!!!!!!!!!!!! tratar leitura nula
 const Register = ({ dataUsers, addUser }) => {
 
     const navigate = useNavigate();
@@ -44,18 +43,28 @@ const Register = ({ dataUsers, addUser }) => {
         const sameEmailUsers = dataUsers.filter(user =>
             user.email.toLowerCase() === inputEmail.toLowerCase()
         );
+        
+        if (
+            inputName === '' || inputEmail === '' || 
+            inputPassword === '' || inputConfirmPassword === ''
+        ) {
+            setHasError(true);
+            setErrorMessage('Preencha todos os campos.');
+        }
 
-        if (sameEmailUsers.length > 0) {
+        else if (sameEmailUsers.length > 0) {
             setHasError(true);
             setErrorMessage('Email de usuário já cadastrado.');
             setInputEmail('');
         }
+
         else if (inputPassword !== inputConfirmPassword) {
             setHasError(true);
             setErrorMessage('As senhas escritas devem ser iguais.');
             setInputPassword('');
             setInputConfirmPassword('');
         }
+
         // se não possui erro, envia os dados do novo registro
         else {
             const newUser = {id: Math.random(), name: inputName, email: inputEmail, password: inputPassword};
