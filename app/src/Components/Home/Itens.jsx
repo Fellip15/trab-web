@@ -9,7 +9,7 @@ const Itens = ({ dataItens, title }) => {
             <h1 className="font-title-black">{title}</h1>
             <div className="itens">
                 {dataItens.map(item => 
-                    <Item dataItem={item} />
+                    <Item key={item.id} dataItem={item} />
                 )}
             </div>
         </div>

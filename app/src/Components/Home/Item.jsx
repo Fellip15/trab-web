@@ -12,7 +12,7 @@ const Item = ({ dataItem }) => {
 
     return (
         <div className="item" onClick={handleItemClick}>
-            <img src={dataItem.srcImage} alt="item de venda" className="item-img"/>
+            <img src={dataItem.srcImage[0]} alt="item de venda" className="item-img"/>
             <div className="frame-7">
                 <p className="item-name font-inter-white">{dataItem.name}</p>
                 <p className="item-price font-inter-white">R${dataItem.price.toFixed(2)}</p>
