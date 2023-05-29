@@ -15,7 +15,7 @@ const SearchItens = ({ dataItens, nameSearch }) => {
     return (
         <div className="list-itens-search">
             {getItensSearch().map(item => 
-                <Item dataItem={item} />
+                <Item key={item.id} dataItem={item} />
             )}
         </div>
     );

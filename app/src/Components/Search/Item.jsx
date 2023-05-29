@@ -14,7 +14,7 @@ const SearchItem = ({ dataItem }) => {
         <div className="search-item" onClick={handleItemClick}>
             <div className="content-info-search">
                 <div className="img-item-search">
-                    <img src={'../' + dataItem.srcImage} alt="item de venda" className="item-img"/>
+                    <img src={'../' + dataItem.srcImage[0]} alt="item de venda" className="item-img"/>
                 </div>
                 <div className="info-item-search">
                     <p className="item-search-name">{dataItem.name}</p>
