@@ -1,10 +1,8 @@
 import React from "react";
 
-const ErrorMess = ({ hidden, message }) => {
-    
-    const styleHidden = hidden === true ? {display: 'none'} : {};
+const ErrorMess = ({ message }) => {
     return (
-        <div className="error-message" style={styleHidden}>
+        <div className="error-message">
             <p className="error-message-text">
                 {message}
             </p>

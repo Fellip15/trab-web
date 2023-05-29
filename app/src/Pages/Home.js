@@ -4,23 +4,27 @@ import "./css/Home.css";
 import Header from "../Components/Header";
 import Footer from "../Components/Footer";
 import Itens from "../Components/Home/Itens";
+import { useLocation } from 'react-router-dom';
+import { useCookies } from 'react-cookie';
 
 // import 'bootstrap/dist/css/bootstrap.css';
 // import Carousel from 'react-bootstrap/Carousel';
 
 const Home = ({ dataItens }) => {
+    const [cookies, setCookies, removeCookies] = useCookies(["user"]);
+
     return (
         <>
-        <Header />
-        <div class="main-page content">
-            <div class="propaganda">
-                <div class="frame-3">
+        <Header user={cookies.user} />
+        <div className="main-page content">
+            <div className="propaganda">
+                <div className="frame-3">
                     <img src="img/pexels-andrea-piacquadio.png" alt="Imagem propaganda" id="img-propaganda"/>
                 </div>
 
-                <div class="frame-4">
-                    <p class="font-inter-black">Porque utilizar nosso site?</p>
-                    <p class="font-inter-black">O nosso site tem a proposta de facilitar a venda e compra de itens que não são encontrados em todos os lugares.
+                <div className="frame-4">
+                    <p className="font-inter-black">Porque utilizar nosso site?</p>
+                    <p className="font-inter-black">O nosso site tem a proposta de facilitar a venda e compra de itens que não são encontrados em todos os lugares.
                     </p>
                 </div>
 

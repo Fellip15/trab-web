@@ -70,7 +70,7 @@ const App = () => {
                 <Route path="/login" exact element={<Login dataUsers={usersInfo}/>}/>
                 <Route path="/register" exact element={<Register dataUsers={usersInfo} addUser={addUser}/>}/>
                 <Route path="/search/:itemName" exact element={<Search dataItens={itensInfo}/>}/>
-                <Route path="/item/:itemId" exact element={<ItemDescr dataItens={itensInfo}/>}/>
+                {/*<Route path="/item/:itemId" exact element={<ItemDescr dataItens={itensInfo}/>}/>*/}
                 <Route path="/about-us" exact element={<AboutUs />}/>
             </Routes>
         </Router>
