@@ -1,0 +1,146 @@
+.screen-item {
+    margin: 25px auto;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    justify-content: center;
+    align-items: center;
+}
+
+.data-item {
+    width: 85%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 30px;
+}
+
+.imgs-item {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+}
+
+.sub-imgs-item {
+    padding: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.sub-image {
+    width: 80px;
+    cursor: pointer;
+}
+
+.sub-image-selected {
+    width: 74px;
+    border: 3px solid var(--onyx);
+    cursor: pointer;
+}
+
+.current-image-item img {
+    width: 400px;
+}
+
+.info-item {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    padding: 15px;
+    background-color: rgba(59, 59, 59, 0.2);
+    border-radius: 1rem;
+}
+
+.item-info-name {
+    font-size: calc(var(--font-size-m) + 3px);
+}
+
+.row-item-info {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.item-info-price {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    width: 50%;
+}
+
+.item-info-price img {
+    height: 1.6rem;
+}
+
+.buttons-item-info {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    margin: 5px 0;
+}
+
+.button-buy, .button-add-cart {
+    align-items: center;
+    justify-content: center;
+    background-color: #20333b;
+    border-radius: 12px;
+    border-style: none;
+    display: flex;
+    width: 35%;
+    height: 30px;
+    align-self: center;
+
+    color: white;
+    font-size: var(--font-size-p);
+
+    transition: 0.25s;
+    cursor: pointer;
+}
+.button-buy:hover, .button-add-cart:hover {
+    color: #20333b;
+    background-color: white;
+}
+
+.button-add-cart {
+    background-color: #4a7987;
+}
+
+.descr-item-info {
+    margin-top: 10px;
+    background-color: rgba(59, 59, 59, 0.6);
+    color: white;
+    border-radius: 1em;
+    padding: 10px;
+    min-height: 130px;
+    max-height: 173px;
+    overflow: auto;
+}
+
+/* tela pequena */
+@media only screen and (max-width: 950px) {
+    .data-item {
+        flex-direction: column;
+        gap: 20px;
+    }
+}
+
+@media only screen and (max-width: 600px) {
+    .imgs-item {
+        flex-direction: column;
+        gap: 2px;
+    }
+
+    .sub-imgs-item {
+        flex-direction: row;
+    }
+}
+
+.location-item {
+    padding: 0;
+    width: 75%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+}
