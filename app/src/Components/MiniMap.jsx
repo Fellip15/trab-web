@@ -1,6 +1,6 @@
 import React from 'react';
-import { GoogleMap, useJsApiLoader } from '@react-google-maps/api';
-const containerStyle = {   width: '400px',   height: '400px' };
+import { GoogleMap, useJsApiLoader, Marker } from '@react-google-maps/api';
+const containerStyle = {width: '400px', height: '400px' };
 
 const MiniMap = ({ coordnates }) => {
     // define a key para utilizar a api
@@ -29,6 +29,7 @@ const MiniMap = ({ coordnates }) => {
             onLoad={onLoad}
             onUnmount={onUnmount}
         >
+            <Marker position={center}/>
         </GoogleMap>
     ) : <></>
 };

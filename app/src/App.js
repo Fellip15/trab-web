@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import "./App.css";
 
 import Home from './Pages/Home';
-// import User from './Pages/User';
+import User from './Pages/User';
 import Login from './Pages/Login';
 import Register from './Pages/Register';
 import Search from './Pages/Search';
@@ -66,11 +66,11 @@ const App = () => {
             <Routes>
                 <Route path="/" exact element={<Home dataItens={itensInfo}/>}/>
                 <Route path="/home" exact element={<Home dataItens={itensInfo}/>}/>
-                {/* <Route path="/user" exact element={<User dataItens={itensInfo}/>}/> */}
+                <Route path="/user" exact element={<User dataItens={itensInfo}/>}/>
                 <Route path="/login" exact element={<Login dataUsers={usersInfo}/>}/>
                 <Route path="/register" exact element={<Register dataUsers={usersInfo} addUser={addUser}/>}/>
                 <Route path="/search/:itemName" exact element={<Search dataItens={itensInfo}/>}/>
-                {/*<Route path="/item/:itemId" exact element={<ItemDescr dataItens={itensInfo}/>}/>*/}
+                <Route path="/item/:itemId" exact element={<ItemDescr dataItens={itensInfo}/>}/>
                 <Route path="/about-us" exact element={<AboutUs />}/>
             </Routes>
         </Router>

@@ -59,11 +59,11 @@ const ItemDescr = ({ dataItens }) => {
             <div className="data-item">
                 <div className="imgs-item">
                     <div className="sub-imgs-item">
-                        {dataItem.srcImage.map(srcImg => {
+                        {dataItem.srcImage.map((srcImg, index) => {
                             if (srcImg === currentImg)
-                                return <img src={'../' + srcImg} className="sub-image-selected"/>
+                                return <img key={index} src={'../' + srcImg} className="sub-image-selected"/>
                             else
-                                return <img src={'../' + srcImg} className="sub-image" onClick={changeCurrentSubImage}/>
+                                return <img key={index} src={'../' + srcImg} className="sub-image" onClick={changeCurrentSubImage}/>
                         })}
                     </div>
                     <div className="current-image-item">
@@ -106,7 +106,7 @@ const ItemDescr = ({ dataItens }) => {
                 </div>
             </div>
             <div className="location-item">
-                <MiniMap coordnates={dataItem.coord}/>
+                {/* <MiniMap coordnates={dataItem.coord}/> */}
             </div>
         </div>
 
