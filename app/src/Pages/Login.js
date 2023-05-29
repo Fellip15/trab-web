@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useCookies } from 'react-cookie';
 
 import "./css/Login.css"
 
@@ -8,6 +9,7 @@ import Footer from "../Components/Footer";
 import ErrorMess from '../Components/ErrorMess';
 
 const Login = ({ dataUsers }) => {
+    const [cookies, setCookies, removeCookies] = useCookies(["user"]);
 
     const navigate = useNavigate();
     const handleRegister = () => {
@@ -16,7 +18,7 @@ const Login = ({ dataUsers }) => {
 
     // ainda é preciso tratar o que fazer com o id de usuário
     const handleLoginFinished = (userId) => {
-        alert(`Usuário ${userId} logado (!!!!!ainda tratar isso)`);
+        setCookies("user", `${userId}`);
         navigate('/');
     }
 
@@ -32,21 +34,33 @@ const Login = ({ dataUsers }) => {
     };
 
     // verifica o login nos dados e direciona à página do usuário
-    const [hasError, setHasError] = useState(false);
+    const isFilled = (input) => {
+        if(input === undefined || input.length === 0)
+            return false;
+
+        return true;
+    };
+    const [errorMessage, setErrorMessage] = useState(undefined);
     const handleClickLogin = () => {
+        if(!isFilled(inputEmail) || !isFilled(inputPassword)) {
+            setErrorMessage('Email e senha devem ser preenchidos.');
+            setInputEmail('');
+            setInputPassword('');
+            return;
+        }
+        
         // filtra os usuários no banco com email e senha lidos
         const targetUser = dataUsers.filter(user => 
-            user.email.toLowerCase() === inputEmail.toLowerCase() &&
-            user.password === inputPassword
+            user.email.toLowerCase() === inputEmail.toLowerCase() && user.password === inputPassword
         );
         
         // verifica se algum usuário possui email e senha definidos
         if (targetUser.length !== 1) {
-            setHasError(true);
+            setErrorMessage('Email ou senha inválidos.');
         }
         else {
             handleLoginFinished(targetUser[0].id);
-            setHasError(false);          
+            setErrorMessage(undefined);          
         }
 
         // reseta os valores de input
@@ -59,13 +73,13 @@ const Login = ({ dataUsers }) => {
             <Header />
             
             <div className="login-frame content">
-                <ErrorMess hidden={!hasError} message={'Email ou senha inválidos.'}/>
+                {errorMessage !== undefined && <ErrorMess message={errorMessage}/>}
 
                 <div className="form flex-col">
                     <h1 className="font-title-black title-login">Login</h1>
 
                     <div className="input">
-                        <label for="input-email" className="email font-inter-black">Email:</label>
+                        <label htmlFor="input-email" className="email font-inter-black">Email:</label>
                         <input 
                             id="input-email" 
                             onChange={handleInputEmailChange}
@@ -75,7 +89,7 @@ const Login = ({ dataUsers }) => {
                         />
                     </div>
                     <div className="input">
-                        <label for="input-senha" className="senha font-inter-black">Senha:</label>
+                        <label htmlFor="input-senha" className="senha font-inter-black">Senha:</label>
                         <input 
                             id="input-senha"
                             onChange={handleInputPasswordChange}

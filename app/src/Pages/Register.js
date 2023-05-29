@@ -36,8 +36,7 @@ const Register = ({ dataUsers, addUser }) => {
     };
 
     // verifica os dados de cadastro e finaliza
-    const [hasError, setHasError] = useState(false);
-    const [errorMessage, setErrorMessage] = useState('');
+    const [errorMessage, setErrorMessage] = useState(undefined);
     const handleClickRegister = () => {
         // analisa possíveis erros de cadastro
         const sameEmailUsers = dataUsers.filter(user =>
@@ -48,18 +47,15 @@ const Register = ({ dataUsers, addUser }) => {
             inputName === '' || inputEmail === '' || 
             inputPassword === '' || inputConfirmPassword === ''
         ) {
-            setHasError(true);
             setErrorMessage('Preencha todos os campos.');
         }
 
         else if (sameEmailUsers.length > 0) {
-            setHasError(true);
             setErrorMessage('Email de usuário já cadastrado.');
             setInputEmail('');
         }
 
         else if (inputPassword !== inputConfirmPassword) {
-            setHasError(true);
             setErrorMessage('As senhas escritas devem ser iguais.');
             setInputPassword('');
             setInputConfirmPassword('');
@@ -69,7 +65,7 @@ const Register = ({ dataUsers, addUser }) => {
         else {
             const newUser = {id: Math.random(), name: inputName, email: inputEmail, password: inputPassword};
             addUser(newUser);
-            setHasError(false);
+            setErrorMessage(undefined);
             alert('Faça login para confirmar o registro.');
             navigate('/login');
         }
@@ -80,13 +76,13 @@ const Register = ({ dataUsers, addUser }) => {
             <Header />
 
             <div className="register-frame content">
-                <ErrorMess hidden={!hasError} message={errorMessage}/>
+                {errorMessage !== undefined && <ErrorMess message={errorMessage}/>}
 
                 <div className="form flex-col">
                     <h1 className="font-title-black title-register">Cadastre-se</h1>
 
                     <div className="input">
-                        <label for="input-nome" className="nome font-inter-black">Nome:</label>
+                        <label htmlFor="input-nome" className="nome font-inter-black">Nome:</label>
                         <input 
                             id="input-nome"
                             onChange={handleInputNameChange}
@@ -96,7 +92,7 @@ const Register = ({ dataUsers, addUser }) => {
                         />
                     </div>
                     <div className="input">
-                        <label for="input-email" className="email font-inter-black">Email:</label>
+                        <label htmlFor="input-email" className="email font-inter-black">Email:</label>
                         <input 
                             id="input-email"
                             onChange={handleInputEmailChange}
@@ -106,7 +102,7 @@ const Register = ({ dataUsers, addUser }) => {
                         />
                     </div>
                     <div className="input">
-                        <label for="input-senha" className="senha font-inter-black">Senha:</label>
+                        <label htmlFor="input-senha" className="senha font-inter-black">Senha:</label>
                         <input 
                             id="input-senha" 
                             onChange={handleInputPasswordChange}
@@ -116,7 +112,7 @@ const Register = ({ dataUsers, addUser }) => {
                         />
                     </div>
                     <div className="input">
-                        <label for="input-confirmar-senha" className="confirmar-senha font-inter-black">Confirmar senha:</label>
+                        <label htmlFor="input-confirmar-senha" className="confirmar-senha font-inter-black">Confirmar senha:</label>
                         <input 
                             id="input-confirmar-senha"
                             onChange={handleInputConfirmPasswordChange}

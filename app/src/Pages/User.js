@@ -7,12 +7,13 @@ import Footer from '../Components/Footer';
 
 import users from './users.json';
 import Cookies from 'js-cookie';
+import { useCookies } from 'react-cookie';
 
 const User = ({}) => {
-
+    const [cookies, setCookies, removeCookies] = useCookies(["user"]);
     var userId = 0;
-    if (Cookies.get("userID")) {
-        userId = Number(Cookies.get("userID"));
+    if (cookies.user) {
+        userId = Number(cookies.user);
     }
 
     // TODO: get address from database
