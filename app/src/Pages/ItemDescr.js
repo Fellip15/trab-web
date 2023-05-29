@@ -81,8 +81,8 @@ const ItemDescr = ({ dataItens }) => {
                         </div>
                     </div>
                     <div className="row-item-info">
-                        <p className="font-inter-black">em estoque: {dataItem.stock}</p>
-                        <p className="font-inter-black">vendidos: {dataItem.sold}</p>
+                        <p className="item-info-price font-inter-black">em estoque: {dataItem.stock}</p>
+                        <p className="item-info-price font-inter-black">vendidos: {dataItem.sold}</p>
                     </div>
                     <div className="buttons-item-info">
                         <input 
@@ -106,7 +106,8 @@ const ItemDescr = ({ dataItens }) => {
                 </div>
             </div>
             <div className="location-item">
-                {/* <MiniMap coordnates={dataItem.coord}/> */}
+                <h2>Localização do item:</h2>
+                <MiniMap coordnates={dataItem.coord} size={['100%', '400px']}/>
             </div>
         </div>
 
