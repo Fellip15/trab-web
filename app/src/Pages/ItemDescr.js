@@ -17,7 +17,8 @@ const ItemDescr = ({ dataItens }) => {
     useEffect(() => {
         // verifica se os dados dos ítens já existem
         if (dataItens !== undefined) {
-            const filteredItem = dataItens.filter(item => item.id == itemId)[0];
+            const filteredItem = dataItens.filter(item => Number(item.id) === Number(itemId))[0];
+
             setDataItem(filteredItem);
             setCurrentImg(filteredItem.srcImage[0]);
         }
@@ -25,7 +26,7 @@ const ItemDescr = ({ dataItens }) => {
         else {
             fetch('../data/itens.json')
                 .then(data => data.json())
-                .then(jsonData => jsonData.array.filter(item => item.id == itemId)[0])
+                .then(jsonData => jsonData.array.filter(item => Number(item.id) === Number(itemId))[0])
                 .then(filteredItem => {
                     setDataItem(filteredItem);
                     setCurrentImg(filteredItem.srcImage[0]);
@@ -43,7 +44,8 @@ const ItemDescr = ({ dataItens }) => {
     // direciona o usuário à tela de compra do ítem
     const navigate = useNavigate();
     const handleBuyItem = () => {
-        navigate(`/buy/${dataItem.id}`);
+        // to fazendo ainda felps
+        // navigate(`/buy/${dataItem.id}`, {state: {itemToBuy: dataItem}});
     };
 
     // adiciona o item ao carrinho do usuário
@@ -53,9 +55,9 @@ const ItemDescr = ({ dataItens }) => {
 
     return (
         dataItem !== undefined && <>
-        <Header adjustPath={'../'}/>
+        <Header/>
         
-        <div className="screen-item">
+        <div className="screen-item content">
             <div className="data-item">
                 <div className="imgs-item">
                     <div className="sub-imgs-item">
@@ -67,7 +69,7 @@ const ItemDescr = ({ dataItens }) => {
                         })}
                     </div>
                     <div className="current-image-item">
-                        <img src={'../' + currentImg} />
+                        <img src={'../' + currentImg} id="current-image" />
                     </div>
                 </div>
                 <div className="info-item">

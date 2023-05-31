@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
 
 import "./css/Login.css"
@@ -9,6 +9,13 @@ import Footer from "../Components/Footer";
 import ErrorMess from '../Components/ErrorMess';
 
 const Login = ({ dataUsers }) => {
+    const locate = useLocation();
+    useEffect(() => {
+        if(locate.state && locate.state.errorMessage) {
+            setErrorMessage(locate.state.errorMessage);
+        }
+    }, [locate])
+
     const [cookies, setCookies, removeCookies] = useCookies(["user"]);
 
     const navigate = useNavigate();

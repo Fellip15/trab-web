@@ -1,5 +1,5 @@
 import React from 'react';
-import {useParams} from 'react-router-dom';
+import {useNavigate, useParams} from 'react-router-dom';
 import "./css/User.css";
 
 import Header from '../Components/Header';
@@ -10,10 +10,14 @@ import Cookies from 'js-cookie';
 import { useCookies } from 'react-cookie';
 
 const User = ({}) => {
+    const navigate = useNavigate()
+
     const [cookies, setCookies, removeCookies] = useCookies(["user"]);
     var userId = 0;
     if (cookies.user) {
         userId = Number(cookies.user);
+    } else {
+        navigate("/");
     }
 
     // TODO: get address from database

@@ -13,14 +13,14 @@ const Search = ({ dataItens }) => {
 
     return (
         <>
-        <Header adjustPath={'../'}/>
+            <Header />
 
-        <div className="container-search">
-            <h1>Buscando por: {nameFind}</h1>
-            {dataItens !== undefined && <SearchItens dataItens={dataItens} nameSearch={nameFind}/>}
-        </div>
-        
-        <Footer />
+            <div className="container-search content">
+                <h1>Buscando por: {nameFind}</h1>
+                {dataItens !== undefined && <SearchItens dataItens={dataItens} nameSearch={nameFind}/>}
+            </div>
+            
+            <Footer />
         </>
     );
 };

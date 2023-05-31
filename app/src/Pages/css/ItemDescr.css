@@ -1,5 +1,4 @@
 .screen-item {
-    margin: 25px auto;
     display: flex;
     flex-direction: column;
     gap: 20px;

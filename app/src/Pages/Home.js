@@ -7,9 +7,6 @@ import Itens from "../Components/Home/Itens";
 import { useLocation } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
 
-// import 'bootstrap/dist/css/bootstrap.css';
-// import Carousel from 'react-bootstrap/Carousel';
-
 const Home = ({ dataItens }) => {
     const [cookies, setCookies, removeCookies] = useCookies(["user"]);
 

@@ -78,14 +78,12 @@ body {
     flex-direction: row;
 }
 
-.screen {
+#root {
     position: relative;
     min-height: 100vh;
     min-width: 100vw;
-    background-color: rgba(128, 128, 128, 0.404);
 }
 
 .content {
-    padding-bottom: 2rem;
-    min-height: calc(100vh - var(--height-footer) - var(--height-header) - var(--padding-footer));
+    padding-bottom: 6rem;
 }
