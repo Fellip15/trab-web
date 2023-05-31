@@ -24,7 +24,7 @@ const Adm = ({ dataItens, remItem }) => {
                 onClick={handleClickAddItem}
                 type="button"
                 value="Adicionar item"
-                className="button-add-adm"
+                className="button-add-item"
             />
             {dataItens !== undefined && <AdmItens dataItens={dataItens} remItem={remItem}/>}
         </div>

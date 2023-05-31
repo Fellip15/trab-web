@@ -35,8 +35,12 @@ const AdmItem = ({ dataItem, remItem }) => {
                 {dataItem.description}
             </div>
             <div className="buttons-adm-item">
-                <MdCancel className="icon" onClick={handleRemItem}/>
-                <LuEdit className="icon" onClick={handleEditItem}/>
+                <div className="button-adm">
+                    <MdCancel className="icon-adm icon-red" onClick={handleRemItem}/>
+                </div>
+                <div className="button-adm">
+                    <LuEdit className="icon-adm" onClick={handleEditItem}/>
+                </div>
             </div>
         </div>
     );

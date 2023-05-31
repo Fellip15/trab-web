@@ -1,0 +1,31 @@
+.container-adm {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin: 10px 0;
+    padding: 8px;
+}
+
+.button-add-item {
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(32, 51, 59, 1);
+    border-radius: 12px;
+    border-style: none;
+    display: flex;
+    height: 30px;
+    align-self: center;
+    padding: 6px;
+
+    color: white;
+    font-size: var(--font-size-p);
+
+    transition: 0.25s;
+    cursor: pointer;
+}
+.button-add-item:hover {
+    color: #20333b;
+    background-color: rgba(32, 51, 59, 0.25);
+}
