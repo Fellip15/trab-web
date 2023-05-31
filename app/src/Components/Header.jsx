@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import { FaSearch } from 'react-icons/fa';
-import { BiHomeAlt2, BiCartAlt, BiUserCircle, BiLogOut, BiLogIn } from 'react-icons/bi'
+import { BiHomeAlt2, BiCartAlt, BiUserCircle, BiUserPlus, BiLogOut, BiLogIn } from 'react-icons/bi'
 import "./css/Header.css";
 import { useCookies } from "react-cookie";
 
@@ -32,22 +32,57 @@ const Header = ({ adjustPath }) => {
     const handleUserClick   = () => { navigate('/user') };
     const handleLogOutClick = () => { removeCookies("user"); navigate('/'); }
     const handleLogin       = () => { navigate('/login') };
+    const handleAddAdmClick = () => { navigate('/register'); alert('add os cookies do adm!!!!!!'); };
 
     const chooseIconUser = () => {
+        // se não está logado
         if(cookies.user === undefined) {
-            return (<div className="navbar-links" onClick={handleLogin}>
+            return (
+                <>
+                    <div className="navbar-links" onClick={handleHomeClick}>
+                        <BiHomeAlt2 className="icon"/>
+                    </div>
+                    <div className="navbar-links" onClick={handleCartClick}>
+                        <BiCartAlt className="icon"/>
+                    </div>
+                    <div className="navbar-links" onClick={handleLogin}>
                         <BiLogIn className="icon"/>
-                    </div>);
+                    </div>
+                </>
+            );
         }
 
-        return (<>
-                    <div className="navbar-links" onClick={handleUserClick}>
-                        <BiUserCircle className="icon"/>
+        // se é adm logado !!!!!!!!! tratar isso
+        else if (false) {
+            return (
+                <>
+                    <div className="navbar-links" onClick={handleAddAdmClick}>
+                        <BiUserPlus className="icon"/>
                     </div>
                     <div className="navbar-links" onClick={handleLogOutClick}>
                         <BiLogOut className="icon"/>
                     </div>
-                </>);
+                </>
+            );
+        }
+
+        // se é usuário logado
+        return (
+            <>
+                <div className="navbar-links" onClick={handleHomeClick}>
+                    <BiHomeAlt2 className="icon"/>
+                </div>
+                <div className="navbar-links" onClick={handleCartClick}>
+                    <BiCartAlt className="icon"/>
+                </div>
+                <div className="navbar-links" onClick={handleUserClick}>
+                    <BiUserCircle className="icon"/>
+                </div>
+                <div className="navbar-links" onClick={handleLogOutClick}>
+                    <BiLogOut className="icon"/>
+                </div>
+            </>
+        );
     }
 
     return (
@@ -66,12 +101,6 @@ const Header = ({ adjustPath }) => {
             </div>
 
             <div className="navbar">
-                <div className="navbar-links" onClick={handleHomeClick}>
-                    <BiHomeAlt2 className="icon"/>
-                </div>
-                <div className="navbar-links" onClick={handleCartClick}>
-                    <BiCartAlt className="icon"/>
-                </div>
                 {chooseIconUser()}
             </div>
         </header>
