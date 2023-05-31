@@ -9,6 +9,7 @@ import Register from './Pages/Register';
 import Search from './Pages/Search';
 import ItemDescr from './Pages/ItemDescr';
 import AboutUs from './Pages/AboutUs';
+import Adm from './Pages/Adm';
 
 // define as rotas da aplicação para cada componente
 const App = () => {
@@ -54,7 +55,31 @@ const App = () => {
             )
         })
         .then(response => {
-            console.log({array: newUsersInfo}); // os dados estão corretos
+            console.log({array: newUsersInfo});
+            console.log(response);
+        })
+        .catch(error => console.log(error));
+    };
+
+    // remove o ítem indicado no banco (!!!!!o post ta dando status 404)
+    const remItem = (itemId) => {
+        // atualiza os dados da var
+        const newItensInfo = itensInfo.filter(item => item.id !== itemId);
+        setItensInfo(newItensInfo);
+
+        // atualiza o banco com os novos dados
+        fetch('./data/itens.json', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(
+                {array: newItensInfo}
+            )
+        })
+        .then(response => {
+            console.log({array: newItensInfo}); // os dados estão corretos
             console.log(response);
         })
         .catch(error => console.log(error));
@@ -64,6 +89,7 @@ const App = () => {
     return (
         <Router>
             <Routes>
+                {/* Rotas de usuário comum */}
                 <Route path="/" exact element={<Home dataItens={itensInfo}/>}/>
                 <Route path="/home" exact element={<Home dataItens={itensInfo}/>}/>
                 <Route path="/user" exact element={<User dataItens={itensInfo}/>}/>
@@ -72,6 +98,9 @@ const App = () => {
                 <Route path="/search/:itemName" exact element={<Search dataItens={itensInfo}/>}/>
                 <Route path="/item/:itemId" exact element={<ItemDescr dataItens={itensInfo}/>}/>
                 <Route path="/about-us" exact element={<AboutUs />}/>
+
+                {/* Rotas de administradores */}
+                <Route path="/adm" exact element={<Adm dataItens={itensInfo} remItem={remItem}/>}/>
             </Routes>
         </Router>
     );

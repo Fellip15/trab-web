@@ -37,7 +37,7 @@ const Header = ({ adjustPath }) => {
         if(cookies.user === undefined) {
             return (<div className="navbar-links" onClick={handleLogin}>
                         <BiLogIn className="icon"/>
-                    </div>)
+                    </div>);
         }
 
         return (<>
@@ -47,7 +47,7 @@ const Header = ({ adjustPath }) => {
                     <div className="navbar-links" onClick={handleLogOutClick}>
                         <BiLogOut className="icon"/>
                     </div>
-                </>)
+                </>);
     }
 
     return (
