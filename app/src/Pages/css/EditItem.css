@@ -1,0 +1,118 @@
+.screen-item {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    justify-content: center;
+    align-items: center;
+
+    width: 50vw;
+    height: fit-content;
+
+    margin-top: 7vh;
+    padding-top: 3vh;
+    padding-bottom: 4vh;
+    background-color: #8bb4c1;
+    border-radius: 10%;
+}
+
+.mother-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.forms-title {
+    margin-bottom: 2vh;    
+}
+
+.forms-col {
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+    justify-content: center;
+    align-items: start;
+    margin: auto;
+}
+
+.forms-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: start;
+    width: 100%;
+}
+
+.forms-row input,
+.forms-row textarea{
+    margin-left: 1vw;
+    margin-right: 1vw;
+    width: 100%;
+}
+
+.forms-row label {
+    width: fit-content;
+    white-space: nowrap;
+}
+
+#description_input {
+    height: 10vh;
+}
+
+
+/* CSS */
+.submit-button {
+    margin-top: 3vh;
+
+    background-color: #fbeee0;
+    border: 2px solid #422800;
+    border-radius: 30px;
+    box-shadow: #422800 4px 4px 0 0;
+    color: #422800;
+    cursor: pointer;
+    display: inline-block;
+    font-weight: 600;
+    font-size: 18px;
+    padding: 0 18px;
+    line-height: 50px;
+    text-align: center;
+    text-decoration: none;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+}
+
+.submit-button:hover {
+    background-color: #fff;
+}
+
+#salvar-button {
+    border: 2px solid #2a6105;
+    box-shadow: #2a6105 4px 4px 0 0;
+    color: #2a6105;
+}
+
+#salvar-button:active {
+    box-shadow: #2a6105 2px 2px 0 0;
+    transform: translate(2px, 2px);
+}
+
+
+#cancelar-button {
+    border: 2px solid #831d06;
+    box-shadow: #831d06 4px 4px 0 0;
+    color: #831d06;
+}
+
+#cancelar-button:active {
+    box-shadow: #831d06 2px 2px 0 0;
+    transform: translate(2px, 2px);
+}
+
+@media (min-width: 768px) {
+    .submit-button {
+        min-width: 120px;
+        padding: 0 25px;
+    }
+}
