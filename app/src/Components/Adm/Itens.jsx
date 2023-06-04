@@ -5,6 +5,7 @@ import '../css/AdmItens.css';
 
 const AdmItens = ({ dataItens, remItem }) => {
 
+    console.log(dataItens);
     return (
         <div className="list-itens-adm">
             {dataItens.map(item => 
