@@ -12,54 +12,26 @@ import AboutUs from './Pages/AboutUs';
 import Adm from './Pages/Adm';
 import Cart from './Pages/Cart';
 
+import orgUsersInfo from './data/users.json';
+import orgItensInfo from './data/itens.json'; 
+import EditItem from './Pages/EditItem';
+
+
 // define as rotas da aplicação para cada componente
 const App = () => {
-    // lê o json das informações da aplicação e atribui à variáveis
-    const [itensInfo, setItensInfo] = useState(undefined);
-    const [usersInfo, setUsersInfo] = useState(undefined);
-    async function getData() {
-        // dados dos ítens
-        fetch('./data/itens.json')
-            .then(data => data.json())
-            .then(jsonData => setItensInfo(jsonData.array));
 
-        // dados dos usuários
-        fetch('./data/users.json')
-            .then(data => data.json())
-            .then(jsonData => setUsersInfo(jsonData.array));
-    }
-    useEffect(() => {
-        getData();
-    }, []);
+
+    // lê o json das informações da aplicação e atribui à variáveis
+    const [itensInfo, setItensInfo] = useState(orgItensInfo['array']);
+    const [usersInfo, setUsersInfo] = useState(orgUsersInfo);
+
+    console.log("Start: ", itensInfo)
 
     // adiciona um novo usuário no banco (!!!!!o post ta dando status 404)
     const addUser = (newUser) => {
         // atualiza a lista de usuários
-        let newUsersInfo = usersInfo
-        newUsersInfo.push({
-            id: newUser.id,
-            name: newUser.name,
-            email: newUser.email,
-            password: newUser.password
-        });
-
-        // manda os novos dados no banco
-        setUsersInfo(newUsersInfo);
-        fetch('./data/users.json', {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(
-                {array: newUsersInfo}
-            )
-        })
-        .then(response => {
-            console.log({array: newUsersInfo});
-            console.log(response);
-        })
-        .catch(error => console.log(error));
+        usersInfo.append(newUser);
+        setUsersInfo(usersInfo);
     };
 
     // remove o ítem indicado no banco (!!!!!o post ta dando status 404)
@@ -67,23 +39,6 @@ const App = () => {
         // atualiza os dados da var
         const newItensInfo = itensInfo.filter(item => item.id !== itemId);
         setItensInfo(newItensInfo);
-
-        // atualiza o banco com os novos dados
-        fetch('./data/itens.json', {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(
-                {array: newItensInfo}
-            )
-        })
-        .then(response => {
-            console.log({array: newItensInfo}); // os dados estão corretos
-            console.log(response);
-        })
-        .catch(error => console.log(error));
     };
 
     const addCartItem = (id, amount) => {
@@ -118,7 +73,8 @@ const App = () => {
                 <Route path="/cart" exact element={<Cart />}/>
 
                 {/* Rotas de administradores */}
-                <Route path="/adm" exact element={<Adm dataItens={itensInfo} remItem={remItem}/>}/>
+                <Route path="/adm" exact element={<Adm dataItens={itensInfo} setItems={setItensInfo} remItem={remItem} />}/>
+                <Route path="/adm/edit/:itemId" exact element={<EditItem dataItens={itensInfo} setItems={setItensInfo}/>}/>
             </Routes>
         </Router>
     );

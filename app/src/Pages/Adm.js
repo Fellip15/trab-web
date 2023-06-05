@@ -6,12 +6,12 @@ import Header from '../Components/Header';
 import Footer from '../Components/Footer';
 import AdmItens from '../Components/Adm/Itens';
 
-const Adm = ({ dataItens, remItem }) => {
+const Adm = ({ dataItens, setItems, remItem }) => {
 
     // direciona o usuário à tela de adicionar um novo item
     const navigate = useNavigate();
     const handleClickAddItem = () => {
-        navigate('/adm/additem');
+        navigate('/adm/edit/newItem');
     };
 
     return (
