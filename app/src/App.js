@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, json } from 'react-router-dom';
 import "./App.css";
 
 import Home from './Pages/Home';
@@ -10,6 +10,7 @@ import Search from './Pages/Search';
 import ItemDescr from './Pages/ItemDescr';
 import AboutUs from './Pages/AboutUs';
 import Adm from './Pages/Adm';
+import Cart from './Pages/Cart';
 
 // define as rotas da aplicação para cada componente
 const App = () => {
@@ -85,6 +86,22 @@ const App = () => {
         .catch(error => console.log(error));
     };
 
+    const addCartItem = (id, amount) => {
+        let cart = JSON.parse(localStorage.getItem("cart"));
+        if(cart === undefined || cart === null) {
+            cart = { itens: [] }
+        }
+        
+        const itemToAdd = itensInfo.filter((item) => Number(item.id) === Number(id))[0];
+        if(itemToAdd === undefined) return;
+        itemToAdd.amount = amount;
+
+        cart.itens.push(itemToAdd);
+
+        console.log(cart.itens);
+        localStorage.setItem("cart", JSON.stringify(cart));
+    };
+
     // tratar em toda página que utilizar os dados .json para renderizar apenas se for !== undefined, pois o fetch é assíncrono
     return (
         <Router>
@@ -96,8 +113,9 @@ const App = () => {
                 <Route path="/login" exact element={<Login dataUsers={usersInfo}/>}/>
                 <Route path="/register" exact element={<Register dataUsers={usersInfo} addUser={addUser}/>}/>
                 <Route path="/search/:itemName" exact element={<Search dataItens={itensInfo}/>}/>
-                <Route path="/item/:itemId" exact element={<ItemDescr dataItens={itensInfo}/>}/>
+                <Route path="/item/:itemId" exact element={<ItemDescr dataItens={itensInfo} addCartItem={addCartItem}/>}/>
                 <Route path="/about-us" exact element={<AboutUs />}/>
+                <Route path="/cart" exact element={<Cart />}/>
 
                 {/* Rotas de administradores */}
                 <Route path="/adm" exact element={<Adm dataItens={itensInfo} remItem={remItem}/>}/>

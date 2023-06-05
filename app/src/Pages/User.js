@@ -32,7 +32,7 @@ const User = ({}) => {
         <>
         <Header adjustPath={'../'}/>
 
-        <div className='userInfo'>
+        <div className='userInfo content'>
             <img className='avatar' src={"../img/chris.jpg"} />
 
             
