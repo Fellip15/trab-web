@@ -15,6 +15,7 @@ import Cart from './Pages/Cart';
 import orgUsersInfo from './data/users.json';
 import orgItensInfo from './data/itens.json'; 
 import EditItem from './Pages/EditItem';
+import FinishBuy from './Pages/FinishBuy';
 
 
 // define as rotas da aplicação para cada componente
@@ -71,6 +72,8 @@ const App = () => {
                 <Route path="/item/:itemId" exact element={<ItemDescr dataItens={itensInfo} addCartItem={addCartItem}/>}/>
                 <Route path="/about-us" exact element={<AboutUs />}/>
                 <Route path="/cart" exact element={<Cart />}/>
+                <Route path="/buy" exact element={<FinishBuy/>}/>
+                <Route path="/buy/:itemId" exact element={<FinishBuy/>}/>
 
                 {/* Rotas de administradores */}
                 <Route path="/adm" exact element={<Adm dataItens={itensInfo} setItems={setItensInfo} remItem={remItem} />}/>

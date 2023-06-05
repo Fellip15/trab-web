@@ -24,7 +24,6 @@ const Cart = () => {
         updateCart(newDataItens);
     };
     const updateCart = (dataItens) => {
-        console.log(dataItens);
         if(dataItens === undefined || dataItens === null || dataItens.length <= 0) {
             localStorage.removeItem("cart");
         } else {
@@ -48,17 +47,33 @@ const Cart = () => {
         }
     }, []);
 
+    const handleBuyButton = () => {
+        navigate("/buy");
+    };
+    const handleHomeButton = () => {
+        navigate("/");
+    };
+    const handleClearCart = () => {
+        localStorage.removeItem("cart");
+        setDataItens(undefined);
+    };
 
     return (
         <>
             <Header />
             <div className="container-cart content">
                 <h1 className="font-title-black">Carrinho</h1>
-                <CartItens dataItens={dataItens} removeCartItem={removeCartItem}/>
-
-                <div className="cart-buttons">
-                    <input type="button" id="clear-cart-button" name='clear-cart-button' value="Limpar carrinho"/>
-                    <input type="button" id="buy-button" name='buy-button' value="Finalizar compra"/>
+                <div className='cart'>
+                    <CartItens dataItens={dataItens} removeCartItem={removeCartItem}/>
+                    { (dataItens !== undefined && dataItens !== null && dataItens.length > 0) &&
+                        <div className="cart-buttons">
+                            <input type="button" onClick={handleClearCart} id="clear-cart-button" name='clear-cart-button' value="Limpar carrinho"/>
+                            <input type="button" onClick={handleBuyButton} id="buy-button" name='buy-button' value="Finalizar compra"/>
+                        </div>
+                    }
+                    { !(dataItens !== undefined && dataItens !== null && dataItens.length > 0) &&
+                        <input type="button" onClick={handleHomeButton} id="home-button" name='home-button' value="Ir para Home"/>
+                    }
                 </div>
             </div>
             <Footer />
