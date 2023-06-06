@@ -1,21 +1,21 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, json } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import "./App.css";
 
-import Home from './Pages/Home';
-import User from './Pages/User';
-import Login from './Pages/Login';
-import Register from './Pages/Register';
-import Search from './Pages/Search';
-import ItemDescr from './Pages/ItemDescr';
-import AboutUs from './Pages/AboutUs';
-import Adm from './Pages/Adm';
-import Cart from './Pages/Cart';
+import Home         from './Pages/HomePage/Home';
+import User         from './Pages/UserPage/User';
+import Login        from './Pages/LoginPage/Login';
+import Register     from './Pages/RegisterPage/Register';
+import Search       from './Pages/SearchPage/Search';
+import ItemDescr    from './Pages/ItemDescrPage/ItemDescr';
+import AboutUs      from './Pages/AboutUsPage/AboutUs';
+import Adm          from './Pages/AdmPage/Adm';
+import Cart         from './Pages/CartPage/Cart';
+import EditItem     from './Pages/EditItemPage/EditItem';
+import FinishBuy    from './Pages/FinishBuyPage/FinishBuy';
 
 import orgUsersInfo from './data/users.json';
 import orgItensInfo from './data/itens.json'; 
-import EditItem from './Pages/EditItem';
-import FinishBuy from './Pages/FinishBuy';
 
 
 // define as rotas da aplicação para cada componente

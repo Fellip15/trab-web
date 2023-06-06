@@ -10,6 +10,24 @@ body {
     overflow-x: hidden;
 }
 
+#root {
+    position: relative;
+    height: 100%;
+    width: 100%;
+    min-height: 100vh;
+    min-width: 100vw;
+}
+
+.content {
+    width: 100%;
+    height: calc(100% - var(--height-header) - var(--height-footer));
+    padding-bottom: 6rem;
+}
+
+.fixed-screen {
+    height: calc(100vh - var(--height-footer) - var(--height-header));
+}
+
 :root {
     --background: rgb(43, 43, 43);
     --background-sec: rgb(59, 59, 59);
@@ -76,14 +94,4 @@ body {
 .flex-row {
     display: flex;
     flex-direction: row;
-}
-
-#root {
-    position: relative;
-    min-height: 100vh;
-    min-width: 100vw;
-}
-
-.content {
-    padding-bottom: 6rem;
 }

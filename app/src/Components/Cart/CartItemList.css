@@ -1,0 +1,12 @@
+.list-itens-cart {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    background-color: var(--light-gray);
+    border-radius: 1.2em;
+    padding: 15px;
+    margin: 10px auto;
+    width: calc(100% - 30px);
+}

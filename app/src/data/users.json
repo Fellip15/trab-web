@@ -9,5 +9,6 @@
     {"id": 7, "name": "Grace", "email": "grace@example.com", "password": "grace456", "admin": 0},
     {"id": 8, "name": "Henry", "email": "henry@example.com", "password": "henry789", "admin": 0},
     {"id": 9, "name": "Ivy", "email": "ivy@example.com", "password": "ivy321", "admin": 0},
-    {"id": 10, "name": "admin", "email": "admin", "password": "admin", "admin": 1}
+    {"id": 10, "name": "admin", "email": "admin", "password": "admin", "admin": 1},
+    {"id": 11, "name": "felps", "email": "felps", "password": "felps", "admin": 0}
 ]

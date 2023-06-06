@@ -1,0 +1,23 @@
+.table-itens {
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+}
+
+.itens {
+    background-color: var(--light-gray);
+    border-radius: 20px;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 10px;
+    width: fit-content;
+    max-width: 90%;
+    min-width: 150px;
+    padding: 10px;
+    max-height: 300px;
+    overflow-y: auto;
+}

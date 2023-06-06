@@ -1,0 +1,36 @@
+.item {
+    background-color: var(--onyx);
+    border-radius: 0px 0px 10px 10px;
+    height: 225px;
+    width: 150px;
+    cursor: pointer;
+}
+
+.item-img {
+    width: 150px;
+    top: 0;
+    left: 0;
+    object-fit: cover;
+}
+
+.frame-7 {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    flex-direction: column;
+    padding: 10px;
+}
+
+.item-price {
+    align-self: stretch;
+    letter-spacing: 0;
+    line-height: normal;
+    position: relative;
+}
+
+.item-name {
+    height: 25px;
+    letter-spacing: 0;
+    line-height: normal;
+    position: relative;
+}
