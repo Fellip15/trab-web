@@ -6,7 +6,7 @@ import Footer from "../Components/Footer";
 import MiniMap from "../Components/MiniMap";
 import './css/ItemDescr.css';
 
-const ItemDescr = ({ dataItens }) => {
+const ItemDescr = ({ dataItens, addCartItem }) => {
     // pega e trata os parâmetros da url (id do ítem)
     const params = useParams();
     const itemId = params.itemId;
@@ -44,13 +44,15 @@ const ItemDescr = ({ dataItens }) => {
     // direciona o usuário à tela de compra do ítem
     const navigate = useNavigate();
     const handleBuyItem = () => {
-        // to fazendo ainda felps
-        // navigate(`/buy/${dataItem.id}`, {state: {itemToBuy: dataItem}});
+        const itemToBuy = dataItem;
+        dataItem.amount = 1;
+        navigate(`/buy`, {state: {itemToBuy: itemToBuy}});
     };
 
     // adiciona o item ao carrinho do usuário
     const handleAddCartItem = () => {
-        alert('Item adicionado no carrinho (!!!tratar isso)');
+        const amount = 1;
+        addCartItem(itemId, amount);
     };
 
     return (

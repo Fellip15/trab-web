@@ -1,0 +1,60 @@
+#payment {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    background-color: rgba(0, 0, 0, 0.295);
+    border-radius: 10px;
+    padding: 10px;
+}
+
+#card {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+}
+
+.inputs-payment {
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+}
+.inputs-payment label {
+    text-align: right;
+    width: 50%;
+}
+.inputs-payment input {
+    width: 50%;
+    border-radius: 5px;
+    outline: none;
+    border: 1px solid black;
+    padding: 2px;
+}
+
+.cvv-and-expiration {
+    display: flex;
+}
+
+#pix {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+#pix p {
+    max-width: 300px;
+}
+
+#payment-key-pix {
+    display: flex;
+    gap: 10px;
+}
+#copy-key-pix {
+    cursor: pointer;
+    border-radius: 50%;
+    padding: 2px;
+    transition: 0.2s;
+}
+#copy-key-pix:hover {
+    background-color: black;
+    color: white;
+}

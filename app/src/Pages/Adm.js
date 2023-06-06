@@ -18,7 +18,7 @@ const Adm = ({ dataItens, setItems, remItem }) => {
         <>
         <Header/>
 
-        <div className="container-adm">
+        <div className="container-adm content">
             <h1>Opções de administrador:</h1>
             <input
                 onClick={handleClickAddItem}

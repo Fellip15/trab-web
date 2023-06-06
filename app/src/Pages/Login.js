@@ -24,8 +24,10 @@ const Login = ({ dataUsers }) => {
     }
 
     // ainda é preciso tratar o que fazer com o id de usuário
-    const handleLoginFinished = (userId) => {
-        setCookies("user", `${userId}`);
+    const handleLoginFinished = (user) => {
+        setCookies("user", `${user.id}`);
+        if(Number(user.admin) === 1)
+            setCookies("admin", `1`);
         navigate('/');
     }
 
@@ -55,7 +57,7 @@ const Login = ({ dataUsers }) => {
             setInputPassword('');
             return;
         }
-        
+
         // filtra os usuários no banco com email e senha lidos
         const targetUser = dataUsers.filter(user => 
             user.email.toLowerCase() === inputEmail.toLowerCase() && user.password === inputPassword
@@ -66,7 +68,7 @@ const Login = ({ dataUsers }) => {
             setErrorMessage('Email ou senha inválidos.');
         }
         else {
-            handleLoginFinished(targetUser[0].id);
+            handleLoginFinished(targetUser[0]);
             setErrorMessage(undefined);          
         }
 
@@ -91,7 +93,7 @@ const Login = ({ dataUsers }) => {
                             id="input-email" 
                             onChange={handleInputEmailChange}
                             value={inputEmail}
-                            type="text" 
+                            type="email" 
                             className="input-text"
                         />
                     </div>
