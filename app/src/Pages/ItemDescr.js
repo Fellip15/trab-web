@@ -44,8 +44,9 @@ const ItemDescr = ({ dataItens, addCartItem }) => {
     // direciona o usuário à tela de compra do ítem
     const navigate = useNavigate();
     const handleBuyItem = () => {
-        // to fazendo ainda felps
-        // navigate(`/buy/${dataItem.id}`, {state: {itemToBuy: dataItem}});
+        const itemToBuy = dataItem;
+        dataItem.amount = 1;
+        navigate(`/buy`, {state: {itemToBuy: itemToBuy}});
     };
 
     // adiciona o item ao carrinho do usuário

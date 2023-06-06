@@ -94,7 +94,7 @@ const EditItem = ({ dataItens, setItems}) => {
         <Header/>
         
         <div className="mother-container">
-        <div className="screen-item content">
+        <div className="screen-edit-item content">
             <form>
                 <div className="forms-col">
                     <div className="forms-row">

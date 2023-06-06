@@ -23,8 +23,13 @@ const App = () => {
 
 
     // lê o json das informações da aplicação e atribui à variáveis
-    const [itensInfo, setItensInfo] = useState(orgItensInfo['array']);
-    const [usersInfo, setUsersInfo] = useState(orgUsersInfo);
+    const [itensInfo, setItensInfo] = useState(undefined);
+    const [usersInfo, setUsersInfo] = useState(undefined);
+
+    useEffect(() => {
+        setUsersInfo(orgUsersInfo);
+        setItensInfo(orgItensInfo['array']);
+    }, []);
 
     console.log("Start: ", itensInfo)
 
@@ -64,7 +69,7 @@ const App = () => {
             <Routes>
                 {/* Rotas de usuário comum */}
                 <Route path="/" exact element={<Home dataItens={itensInfo}/>}/>
-                <Route path="/home" exact element={<Home dataItens={itensInfo}/>}/>
+                <Route path="/home" exact element={<Home usersInfo={usersInfo} dataItens={itensInfo}/>}/>
                 <Route path="/user" exact element={<User dataItens={itensInfo}/>}/>
                 <Route path="/login" exact element={<Login dataUsers={usersInfo}/>}/>
                 <Route path="/register" exact element={<Register dataUsers={usersInfo} addUser={addUser}/>}/>
@@ -73,7 +78,6 @@ const App = () => {
                 <Route path="/about-us" exact element={<AboutUs />}/>
                 <Route path="/cart" exact element={<Cart />}/>
                 <Route path="/buy" exact element={<FinishBuy/>}/>
-                <Route path="/buy/:itemId" exact element={<FinishBuy/>}/>
 
                 {/* Rotas de administradores */}
                 <Route path="/adm" exact element={<Adm dataItens={itensInfo} setItems={setItensInfo} remItem={remItem} />}/>

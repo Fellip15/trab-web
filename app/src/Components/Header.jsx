@@ -5,11 +5,8 @@ import { BiHomeAlt2, BiCartAlt, BiUserCircle, BiUserPlus, BiLogOut, BiLogIn } fr
 import "./css/Header.css";
 import { useCookies } from "react-cookie";
 
-const Header = ({ adjustPath }) => {
+const Header = () => {
     const [cookies, setCookies, removeCookies] = useCookies(["user"]);
-
-    if (adjustPath === undefined)
-        adjustPath = '';
 
     // guarda o valor do que foi digitado no input na variável
     const [inputFind, setInputFind] = useState('');
@@ -30,7 +27,12 @@ const Header = ({ adjustPath }) => {
     const handleHomeClick   = () => { navigate('/') };
     const handleCartClick   = () => { navigate('/cart') };
     const handleUserClick   = () => { navigate('/user') };
-    const handleLogOutClick = () => { removeCookies("user"); navigate('/'); }
+    const handleLogOutClick = () => {
+        removeCookies("user");
+        if(cookies.admin)
+            removeCookies("admin");
+        navigate('/');
+    }
     const handleLogin       = () => { navigate('/login') };
     const handleAddAdmClick = () => { navigate('/register'); alert('add os cookies do adm!!!!!!'); };
 
@@ -87,7 +89,7 @@ const Header = ({ adjustPath }) => {
 
     return (
         <header className="flex-row">
-            <img src={adjustPath + "img/logo/logo.png"} alt="logo" className="logo"/>
+            <img src={"/img/logo/logo.png"} alt="logo" className="logo"/>
             <div className="search-bar">
                 <input
                     onChange={handleInputChange}

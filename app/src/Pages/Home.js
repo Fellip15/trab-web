@@ -1,18 +1,24 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import "./css/Home.css";
 
 import Header from "../Components/Header";
 import Footer from "../Components/Footer";
 import Itens from "../Components/Home/Itens";
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
 
-const Home = ({ dataItens }) => {
-    const [cookies, setCookies, removeCookies] = useCookies(["user"]);
+const Home = ({ usersInfo, dataItens }) => {
+    const navigate = useNavigate();
+    const [cookies, setCookies, removeCookies] = useCookies(["user", "admin"]);
+    useEffect(() => {
+        if(cookies.admin !== null && cookies.admin !== undefined && cookies.admin === "1") {
+            navigate("/adm");
+        }
+    }, [])
 
     return (
         <>
-        <Header user={cookies.user} />
+        <Header />
         <div className="main-page content">
             <div className="propaganda">
                 <div className="frame-3">
