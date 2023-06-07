@@ -3,8 +3,9 @@
 ### [Link do mockup do projeto](https://www.figma.com/file/7SPhFp78MEqhogvI7zdPX7/Projeto-Web?type=design&node-id=0%3A1&t=hIrwpg2fKBBboKdN-1)
 
 ### Sobre as entregas parciais
-<p>A pasta "html-css" do repositório contém os arquivos do **Milestone 1** (primeira entrega do projeto).</p>
-<p>A pasta "app" do repositório contém os arquivos do **Milestone 2** (segunda entrega do projeto). Se deseja rodar a aplicação dele, escreva os comandos (dentro da pasta "app") em seu terminal:</p>
+<p>A pasta "html-css" do repositório contém os arquivos do <b>Milestone 1</b> (primeira entrega do projeto).</p>
+<p>A pasta "app" do repositório contém os arquivos do <b>Milestone 2</b> (segunda entrega do projeto). Se deseja rodar a aplicação dele, escreva os comandos (dentro da pasta "app") em seu terminal:</p>
+
 ```bash
 npm install
 npm start
@@ -73,11 +74,12 @@ Para o funcionamento do servidor, o banco de dados vai precisar armazenar os dad
 
 ### Sobre a funcionalidade extra
 <p>
-Na 2° entrega do projeto, a funcionalidade extra de **vizualizar a localização real do ítem em sua página de descrição** funciona utilizando de uma API do Google Maps. Para isso, foi necessário criar uma conta e obter uma **chave de acesso pessoal** à essa API, para assim funcionar o minimapa na aplicação.
+Na 2° entrega do projeto, a funcionalidade extra de <b>vizualizar a localização real do ítem em sua página de descrição</b> funciona utilizando de uma API do Google Maps. Para isso, foi necessário criar uma conta e obter uma <b>chave de acesso pessoal</b> à essa API, para assim funcionar o minimapa na aplicação.
 </p>
 <p>
 Dessa forma, como a chave de acesso não pode ser de uso público, criamos um arquivo ".env" logo na raiz da pasta "app" no formato:
 </p>
+
 ```bash
 REACT_APP_GOOGLE_MAPS_API_KEY=xxxxxx_chave_pessoal_xxxxxxx
 ```
