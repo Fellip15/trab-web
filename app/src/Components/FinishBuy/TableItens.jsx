@@ -36,7 +36,7 @@ const TableItensFinishBuy = ({ itens }) => {
                 {makeRowsItens(itens)}
                 <tr>
                     <th colspan="2" className="tg-total">Total:</th>
-                    <th className="tg-tota">R${calcTotalPrice(itens)}</th>
+                    <th className="tg-tota">R${calcTotalPrice(itens).toFixed(2)}</th>
                 </tr>
             </tbody>
         </table>

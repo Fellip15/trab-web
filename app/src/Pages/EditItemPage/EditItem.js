@@ -93,65 +93,58 @@ const EditItem = ({ dataItens, setItems}) => {
         Object.keys(editingItem).length !== 0 && <>
         <Header/>
         
-        <div className="mother-container">
+        <div className="forms-row">
+            <h2 className="forms-title">{itemId=="newItem" ? "Adicionar Item" : "Alterar Item"}</h2>
+        </div>
         <div className="screen-edit-item content">
             <form>
-                <div className="forms-col">
+                <div className="forms-col">                        
                     <div className="forms-row">
-                        <h2 className="forms-title">{itemId=="newItem" ? "Adicionar Item" : "Alterar Item"}</h2>
-                    </div>
-                        
-                    <div className="forms-row">
-                        <label>Nome: </label>
+                        <label>Nome:</label>
                         <input type="text" id="name_input" defaultValue={editingItem.name}/>
                     </div>
 
                     <div className="forms-row">
-                        <label>Preço: </label>
+                        <label>Preço:</label>
                         <input type="number" id="price_input" defaultValue={editingItem.price}/>
                     </div>
 
                     <div className="forms-row">
-                        <label>Num parcelas: </label>
+                        <label>Num parcelas:</label>
                         <input type="number" id="num_parcelas_input" defaultValue={editingItem.numParc}/>
 
-                        <label>Preço Parcelas: </label>
+                        <label>Preço Parcelas:</label>
                         <input type="number" id="preco_parcelas_input" defaultValue={editingItem.priceParc}/>
                     </div>
 
                     <div className="forms-row">
-                        <label>Description: </label>
+                        <label>Descrição:</label>
                         <textarea  type="text" id="description_input" defaultValue={editingItem.description}/>
                     </div>
 
                     <div className="forms-row">
-                        <label>Estoque: </label>
+                        <label>Estoque:</label>
                         <input type="number" id="stock_input" defaultValue={editingItem.stock}/>
-                    </div>
-
-                    <div className="forms-row">
-                        <label>Vendidos: </label>
+                    
+                        <label>Vendidos:</label>
                         <input type="number" id="sold_input" defaultValue={editingItem.sold}/>
                     </div>
 
+                    <br />
+                    <h3>Coordenadas</h3>
                     <div className="forms-row">
-                        <label>Latitude: </label>
+                        <label>Latitude:</label>
                         <input type="number" id="lat_input" defaultValue={editingItem.coord[0]}/>
 
-                        <label>Longitude: </label>
+                        <label>Longitude:</label>
                         <input type="number" id="long_input" defaultValue={editingItem.coord[1]}/>
                     </div>
-
-                    
-
-                </div>
-                <div className="forms-row">
-                    <button class="submit-button" role="button" id="cancelar-button" onClick={(e) => redirectToAdm(e)}>Cancelar</button>
-
-                    <button class="submit-button" role="button" id="salvar-button" onClick={(e) => handleEditItem(e)}>Salvar</button>
                 </div>
             </form>
         </div>
+        <div className="buttons-edit">
+            <button class="submit-button" role="button" id="cancelar-button" onClick={(e) => redirectToAdm(e)}>Cancelar</button>
+            <button class="submit-button" role="button" id="salvar-button" onClick={(e) => handleEditItem(e)}>Salvar</button>
         </div>
 
         <Footer />
