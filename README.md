@@ -2,6 +2,15 @@
 
 ### [Link do mockup do projeto](https://www.figma.com/file/7SPhFp78MEqhogvI7zdPX7/Projeto-Web?type=design&node-id=0%3A1&t=hIrwpg2fKBBboKdN-1)
 
+### Sobre as entregas parciais
+<p>A pasta "html-css" do repositório contém os arquivos do **Milestone 1** (primeira entrega do projeto).</p>
+<p>A pasta "app" do repositório contém os arquivos do **Milestone 2** (segunda entrega do projeto). Se deseja rodar a aplicação dele, escreva os comandos (dentro da pasta "app") em seu terminal:</p>
+```bash
+npm install
+npm start
+```
+<p>Os códigos referentes à uma das entregas não dependem dos da outra entrega para funcionarem.</p>
+
 ### Grupo
 Gabriel Natal Coutinho<br>
 Fellip Silva Alves<br>
@@ -17,9 +26,10 @@ Neste trabalho da disciplina, o grupo desenvolve completamente um site de vendas
 Para a implementação, são utilizadas algumas técnicas/ferramentas de desenvolvimento e planejamento, como:
 </p>
 <ul>
-    <li>Utilização do Figma para o planejamento do layout das páginas;
-    <li>Utilização do Miro para desenhar o diagrama 
-    <li>Técnicas de HTML e CSS para a estilização das páginas;
+    <li>Utilização do Figma para o planejamento do layout das páginas (1° Entrega);
+    <li>Utilização do Miro para desenhar o diagrama (1° Entrega);
+    <li>Técnicas de HTML e CSS para a estilização das páginas (1° Entrega);
+    <li>Utilização do React e muitos de seus plugins para o front end completo (2° Entrega);
 </ul>
 E mais outras que serão utilizadas e especificadas nas próximas entregas do trabalho.
 
@@ -60,6 +70,20 @@ Para o funcionamento do servidor, o banco de dados vai precisar armazenar os dad
     <li>Administrador: usuário, email, senha;
     <li>Ítem: nome, descrição, preço, quant estoque, quant vendida, fotos, coordenadas.
 </ul>
+
+### Sobre a funcionalidade extra
+<p>
+Na 2° entrega do projeto, a funcionalidade extra de **vizualizar a localização real do ítem em sua página de descrição** funciona utilizando de uma API do Google Maps. Para isso, foi necessário criar uma conta e obter uma **chave de acesso pessoal** à essa API, para assim funcionar o minimapa na aplicação.
+</p>
+<p>
+Dessa forma, como a chave de acesso não pode ser de uso público, criamos um arquivo ".env" logo na raiz da pasta "app" no formato:
+</p>
+```bash
+REACT_APP_GOOGLE_MAPS_API_KEY=xxxxxx_chave_pessoal_xxxxxxx
+```
+<p>
+Portanto, se deseja ver o funcionamento do minimapa em cada item, obtenha sua chave de acesso à API e crie um arquivo ".env" colocando a chave onde é especificado.
+</p>
 
 ### Diagrama de acesso às páginas
 <p>
