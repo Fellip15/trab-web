@@ -37,7 +37,7 @@ const ItemDescr = ({ dataItens, addCartItem }) => {
     // modifica subimagem a ser visualizada
     const changeCurrentSubImage = (event) => {
         const selectedImgPath = event.target.src.split('/img')[1];
-        const newCurrentImg = './img' + selectedImgPath;
+        const newCurrentImg = '/img' + selectedImgPath;
         setCurrentImg(newCurrentImg);
     };
     
@@ -53,6 +53,8 @@ const ItemDescr = ({ dataItens, addCartItem }) => {
     const handleAddCartItem = () => {
         const amount = 1;
         addCartItem(itemId, amount);
+        alert('Item adicionado ao carrinho');
+        navigate('/');
     };
 
     return (

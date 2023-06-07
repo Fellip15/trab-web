@@ -36,7 +36,7 @@ const App = () => {
     // adiciona um novo usuário no banco (!!!!!o post ta dando status 404)
     const addUser = (newUser) => {
         // atualiza a lista de usuários
-        usersInfo.append(newUser);
+        usersInfo.push(newUser);
         setUsersInfo(usersInfo);
     };
 

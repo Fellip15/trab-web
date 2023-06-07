@@ -53,6 +53,9 @@ const Cart = () => {
         navigate("/");
     };
     const handleClearCart = () => {
+        let isToRemove = window.confirm("Tem certeza que deseja remover os itens?");
+        if(!isToRemove) return;
+
         localStorage.removeItem("cart");
         setDataItens(undefined);
     };

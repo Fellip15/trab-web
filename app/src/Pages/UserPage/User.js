@@ -34,47 +34,43 @@ const User = ({}) => {
         <div className='userInfo content'>
             <img className='avatar' src={"../img/chris.jpg"} />
 
-            
-            <div  className='usernome-box'>
-                <p className='userdata' >Nome: {users[userId].name}</p>
-                <p className='userdata'>Email: {users[userId].email}</p>
+            <div className='group-box'>
+                <p className='bigtext'>Nome: {users[userId].name}</p>
+                <p className='bigtext'>Email: {users[userId].email}</p>
             </div>
 
-            <p className='userdata bigtext'>Endereco: </p>
-            <div  className='useraddress-box'>
-                <label >Rua </label> 
-                <input className='addressinput' type='text' defaultValue={endereco['rua']}></input>
-                
-                <label >Numero </label> 
-                <input className='addressinput' type='text' defaultValue={endereco['numero']}></input>
+            <div className='group-box'>
+                <h2>Endereco:</h2>
+                <div className='street-line'>
+                    <label>Rua:</label> 
+                    <input className='user-input' type='text' defaultValue={endereco['rua']}></input>
+                    <label>Numero:</label> 
+                    <input className='user-input' type='text' defaultValue={endereco['numero']}></input>
+                </div>
 
-                <br/>
-
-                <label >Bairro </label> 
-                <input className='addressinput' type='text' defaultValue={endereco['bairro']}></input>
-
-                <label >Cep </label> 
-                <input className='addressinput' type='text' defaultValue={endereco['cep']}></input>
+                <div className='street-line'>
+                    <label>Bairro:</label> 
+                    <input className='user-input' type='text' defaultValue={endereco['bairro']}></input>
+                    <label>Cep:</label> 
+                    <input className='user-input' type='text' defaultValue={endereco['cep']}></input>
+                </div>
             </div>
 
-            <p className='userdata bigtext'>Alterar Senha: </p>
-            <div className='userpassword-box'>
-                <label >Senha atual </label> 
-                <input className='addressinput' type='text'></input>
-
-                <br/>
-                
-                <label >Nova senha </label> 
-                <input className='addressinput' type='text'></input>
-
-                <br/>
-
-                <label >Cnofirme nova senha </label> 
-                <input className='addressinput' type='text'></input>
-
-                <br/>
-
-                <button>Mudar senha</button>
+            <div className='group-box'>
+                <h2>Alterar Senha:</h2>
+                <div className='street-line'>
+                    <label>Senha atual:</label> 
+                    <input className='user-input password-input' type='password'></input>
+                </div>
+                <div className='street-line'>
+                    <label>Nova senha:</label> 
+                    <input className='user-input password-input' type='password'></input>
+                </div>
+                <div className='street-line'>
+                    <label>Cnofirme nova senha:</label> 
+                    <input className='user-input' type='password'></input>
+                </div>
+                <button className='button-user'>Mudar senha</button>
             </div>
         </div>
         

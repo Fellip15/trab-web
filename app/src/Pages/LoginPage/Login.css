@@ -55,7 +55,7 @@
     height: 40px;
     align-self: center;
     margin-top: 30px;
-
+    cursor: pointer;
     color: white;
     font-size: var(--font-size-p);
 

@@ -76,9 +76,10 @@ const FinishBuy = () => {
     const keyPix = "asda-s84s-asd2-aa8w-95ug";
     const pix = (
         <div id="pix">
-            <p>Escaneie o QR code abaixo e faça o pagamento.</p>
-            <BsQrCode size={150} />
-            <p>A confirmação será automática e instantânea após a verificação do pagamento.</p>
+            <div className="content-qrcode">
+                <p>Escaneie o QR code ao lado e faça o pagamento. A confirmação será automática e instantânea após a verificação do pagamento.</p>
+                <BsQrCode size={80} />
+            </div>
             <p>Você pode copiar a chave:</p>
             <div id="payment-key-pix">
                 <input type="text" id="key-pix" name="key-pix" value={keyPix} readOnly={true}/>
