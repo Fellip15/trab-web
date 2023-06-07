@@ -77,7 +77,7 @@ Para o funcionamento do servidor, o banco de dados vai precisar armazenar os dad
 Na 2° entrega do projeto, a funcionalidade extra de <b>vizualizar a localização real do ítem em sua página de descrição</b> funciona utilizando de uma API do Google Maps. Para isso, foi necessário criar uma conta e obter uma <b>chave de acesso pessoal</b> à essa API, para assim funcionar o minimapa na aplicação.
 </p>
 <p>
-Dessa forma, como a chave de acesso não pode ser de uso público, criamos um arquivo ".env" logo na raiz da pasta "app" no formato:
+Dessa forma, como a chave de acesso não pode ser de uso público, criamos um arquivo ".env" logo na raiz da pasta "app" (e adicionamos ao .gitignore para não subir ao repositório) contendo:
 </p>
 
 ```bash
