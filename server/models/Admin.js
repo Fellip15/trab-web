@@ -1,16 +1,11 @@
 const mongoose = require('mongoose');
 
-const UserSchema = mongoose.Schema({
+const AdminSchema = mongoose.Schema({
     userName: {
         type: String,
         required: true,
         trim: true,
         unique: true
-    },
-    name: {
-        type: String,
-        required: true,
-        trim: true
     },
     email: {
         type: String,
@@ -25,8 +20,8 @@ const UserSchema = mongoose.Schema({
     }
 })
 
-UserSchema.methods.matchPassword = async function (enteredPassword) {
+AdminSchema.methods.matchPassword = async function (enteredPassword) {
     return await bcrypt.compare(enteredPassword, this.password);
 };
 
-module.exports = mongoose.model('User', UserSchema)
+module.exports = mongoose.model('Admin', AdminSchema)
