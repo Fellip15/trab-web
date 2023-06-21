@@ -26,5 +26,6 @@ app/.env
 # backend
 # dependencies
 server/node_modules
+server/.env
 server/.pnp
 server/.pnp.js
