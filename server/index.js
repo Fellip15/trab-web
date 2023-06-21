@@ -36,6 +36,6 @@ db.once('open', function() {
 
 /*  por enquanto a gente ta sem mongodb entao fica assim,
     apagar quando for utilizar o mongodb */
-app.listen(PORT, () => {
-    console.log(`App listening at http://localhost:${PORT}`);
-});
+// app.listen(PORT, () => {
+//     console.log(`App listening at http://localhost:${PORT}`);
+// });
