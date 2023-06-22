@@ -7,11 +7,11 @@ const STATUS_CODE_DELETE_ACCEPTED = 202;
 const STATUS_CODE_INTERNAL_SERVER_ERROR = 500;
 
 exports.create = async (req, res) => {
+    console.log(req.body);
     try {
         const { name } = req.body;
 
         const file = req.file;
-        console.log(name)
         const picture = new ImageSchema({
             name,
             src: file.path,

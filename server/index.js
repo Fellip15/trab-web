@@ -3,7 +3,9 @@ const cors = require('cors');
 const mongoose = require("mongoose");
 
 const bodyParser = require('body-parser');
-// const cookieParser = require('cookie-parser');
+const cookieParser = require('cookie-parser');
+
+express.static("/public/itemImages");
 
 // var morgan = require('morgan')
 require('dotenv').config();
@@ -14,7 +16,7 @@ app.use(bodyParser.json());
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 app.use(cors());
-// app.use(cookieParser());
+app.use(cookieParser());
 // app.use(morgan('dev'));
 
 /* Rotas */
@@ -33,9 +35,3 @@ db.once('open', function() {
         console.log(`App listening at http://localhost:${PORT}`);
     });
 });
-
-/*  por enquanto a gente ta sem mongodb entao fica assim,
-    apagar quando for utilizar o mongodb */
-// app.listen(PORT, () => {
-//     console.log(`App listening at http://localhost:${PORT}`);
-// });

@@ -1,5 +1,7 @@
-// const jsonwebtoken = require('jsonwebtoken');
-const User = require("../models/User");
+const util = require("../config/util");
+const UserSchema = require("../models/User");
+const bcrypt = require("bcrypt");
+const utilToken = require("../config/utilToken");
 
 const STATUS_CODE_OK = 200;
 const STATUS_CODE_NO_CONTENT = 204;
@@ -7,39 +9,127 @@ const STATUS_CODE_DELETE_ACCEPTED = 202;
 const STATUS_CODE_ERROR = 400;
 const STATUS_CODE_INTERNAL_SERVER_ERROR = 500;
 
-module.exports.create = async (req, res) => {
-    try {
-        const newUser = new User({
-            userName: req.body.userName,
-            name: req.body.name,
-            email: req.body.email,
-            password: req.body.password
-        });
+exports.authToken = async (req, res) => {
+    const token = req.body.token;
 
+    if (util.isEmpty(token)) 
+        return res.status(STATUS_CODE_ERROR).send({ message: "Não autorizado" });
+
+    try {
+        const Token = await utilToken.verify(token);
+        const user = await UserSchema.findById(Token.id);
+
+        res.status(STATUS_CODE_OK).send({
+            message: "Token verificado",
+            user: {
+                id: user._id,
+                name: user.name,
+                email: user.email
+            }
+        });
+    } catch (error) {
+        console.log(error)
+        res.status(STATUS_CODE_ERROR).send({ 
+            message: "Não autorizado",
+            error: error
+        });
+    }
+};
+
+exports.authUser = async (req, res) => {
+    const { userName, password } = req.body;
+    
+    if(util.isEmpty(userName) || util.isEmpty(password)) {
+        return res.status(STATUS_CODE_ERROR).send({ message: "Dados insuficientes." });
+    }
+    let user = null;
+    
+    try {
+        if(userName.includes("@")) user = await UserSchema.findOne({ email: userName });
+        else user = await UserSchema.findOne({ userName: userName });
+    } catch(e) {
+        console.log(e);
+        return res.status(STATUS_CODE_INTERNAL_SERVER_ERROR).json({ message: "Erro ao fazer login." });
+    }
+
+    if(!util.isEmpty(user) && (await user.matchPassword(password))) {
+        res.cookie("token", utilToken.generateToken(user._id));
+        res.status(STATUS_CODE_OK).send({ 
+            message: "Logado com sucesso.",
+            user: {
+                name: user.name,
+                email: user.email
+            }
+        });
+    } else {
+        res.status(STATUS_CODE_ERROR).send({ message: "Usuário ou senha incorretos." });
+    }
+};
+
+exports.create = async (req, res) => {
+    const { userName, name, email, password } = req.body;
+
+    if(util.isEmpty(userName) || util.isEmpty(name) || util.isEmpty(email) || util.isEmpty(password)) {
+        return res.status(STATUS_CODE_ERROR).send({ message: "Dados insuficientes." });
+    }
+
+    const userExist = await UserSchema.findOne({$or:[{userName: userName},{email:email}]});
+    if(!util.isEmpty(userExist))
+        return res.status(STATUS_CODE_ERROR).send({ message: "Usuário ou email já existente." });
+
+    const salt = await bcrypt.genSalt(10);
+    const encryptedPassword = await bcrypt.hash(password, salt);
+
+    const newUser = new UserSchema({
+        userName: userName,
+        name: name,
+        email: email,
+        password: encryptedPassword
+    });
+
+    try {
         await newUser.save();
-        res.status(STATUS_CODE_OK).json({ message: "Usuário salvo com sucesso!" });
-    } catch (err) {
-        res.status(STATUS_CODE_INTERNAL_SERVER_ERROR).json({ message: "Erro ao salvar o usuário." });
+
+        const token = utilToken.generate(newUser._id);
+        res.cookie("token", token);
+
+        res.status(STATUS_CODE_OK).json({ 
+            message: "Usuário salvo com sucesso!",
+            user: {
+                name: newUser.name,
+                email: newUser.email
+            }
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(STATUS_CODE_INTERNAL_SERVER_ERROR).json({
+            message: "Erro ao salvar o usuário.",
+            error: error
+        });
     }
 };
 
 exports.remove = async (req, res) => {
     try {
-        const user = await User.findById(req.params.id);
+        const user = await UserSchema.findById(req.params.id);
 
         if (!user)
             return res.status(STATUS_CODE_NO_CONTENT).json({ message: "Usuário não encontrado." });
 
         await user.deleteOne();
         res.status(STATUS_CODE_DELETE_ACCEPTED).json({ message: "Usuário removido com sucesso." });
-    } catch (err) {
-        res.status(STATUS_CODE_INTERNAL_SERVER_ERROR).json({ message: "Erro ao remover o usuário." });
+    } catch (error) {
+        console.log(error);
+        res.status(STATUS_CODE_INTERNAL_SERVER_ERROR).json({
+            message: "Erro ao remover o usuário.",
+            error: error
+        });
     }
 };
 
-module.exports.update = async (req, res) => {
+exports.update = async (req, res) => {
     try {
-        await User.findByIdAndUpdate(req.params.id, {
+        await UserSchema.findByIdAndUpdate(req.params.id, {
             $set: {
                 userName: req.body.userName,
                 name: req.body.name,
@@ -48,38 +138,54 @@ module.exports.update = async (req, res) => {
             }
         });
         res.status(STATUS_CODE_OK).json({ message: "Usuário atualizado com sucesso." });
-    } catch (err) {
-        res.status(STATUS_CODE_ERROR).json({ message: "Erro ao atualizar o usuário." });;
+    } catch (error) {
+        console.log(error);
+        res.status(STATUS_CODE_ERROR).json({
+            message: "Erro ao atualizar o usuário.",
+            error: error
+        });;
     }
 };
 
-module.exports.findAll = async (req, res) => {
+exports.findAll = async (req, res) => {
     try {
-        const data = await User.find();
+        const data = await UserSchema.find();
         res.status(STATUS_CODE_OK).send(data);
-    } catch (err) {
-        res.status(STATUS_CODE_ERROR).json({ message: "Erro ao buscar os usuários." });;
+    } catch (error) {
+        console.log(error);
+        res.status(STATUS_CODE_ERROR).json({
+            message: "Erro ao buscar os usuários.",
+            error: error
+        });
     }
 };
 
-module.exports.findByEmail = async (req, res) => {
+exports.findByEmail = async (req, res) => {
     try {
-        const data = await User.find({
+        const data = await UserSchema.find({
             email: req.params.email
         });
         res.status(STATUS_CODE_OK).send(data);
-    } catch (err) {
-        res.status(STATUS_CODE_ERROR).json({ message: "Erro ao buscar o usuário." });;
+    } catch (error) {
+        console.log(error);
+        res.status(STATUS_CODE_ERROR).json({
+            message: "Erro ao buscar o usuário.",
+            error: error
+        });
     }
 };
 
-module.exports.findByUserName = async (req, res) => {
+exports.findByUserName = async (req, res) => {
     try {
-        const data = await User.find({
+        const data = await UserSchema.find({
             userName: req.params.userName
         });
         res.status(STATUS_CODE_OK).send(data);
-    } catch (err) {
-        res.status(STATUS_CODE_ERROR).json({ message: "Erro ao buscar o usuário." });;
+    } catch (error) {
+        console.log(error);
+        res.status(STATUS_CODE_ERROR).json({
+            message: "Erro ao buscar o usuário.",
+            error: error
+        });
     }
 };
