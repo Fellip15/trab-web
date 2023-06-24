@@ -134,7 +134,11 @@ exports.update = async (req, res) => {
                 userName: req.body.userName,
                 name: req.body.name,
                 email: req.body.email,
-                password: req.body.password
+                password: req.body.password,
+                end_street: req.body.street,
+                end_num: req.body.num,
+                end_neighborhood: req.body.neighborhood,
+                end_cep: req.body.cep
             }
         });
         res.status(STATUS_CODE_OK).json({ message: "Usuário atualizado com sucesso." });
