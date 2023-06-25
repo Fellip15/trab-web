@@ -23,6 +23,30 @@ const UserSchema = mongoose.Schema({
         type: String,
         required: true,
         trim: false
+    },
+    end_street: {
+        type: String,
+        required: false,
+        default: "",
+        trim: true
+    },
+    end_num: {
+        type: Number,
+        required: false,
+        default: 0,
+        trim: true
+    },
+    end_neighborhood: {
+        type: String,
+        required: false,
+        default: "",
+        trim: true
+    },
+    end_cep: {
+        type: String,
+        required: false,
+        default: "",
+        trim: true
     }
 })
 

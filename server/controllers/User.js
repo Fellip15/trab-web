@@ -58,11 +58,7 @@ exports.authUser = async (req, res) => {
         res.cookie("token", token);
         res.status(STATUS_CODE_OK).send({ 
             message: "Logado com sucesso.",
-            user: {
-                name: user.name,
-                email: user.email,
-                token: token
-            }
+            user: user
         });
     } else {
         res.status(STATUS_CODE_ERROR).send({ message: "Usuário ou senha incorretos." });
@@ -153,7 +149,11 @@ exports.update = async (req, res) => {
                 userName: req.body.userName,
                 name: req.body.name,
                 email: req.body.email,
-                password: encryptedPassword
+                password: encryptedPassword,
+                end_street: req.body.street,
+                end_num: req.body.num,
+                end_neighborhood: req.body.neighborhood,
+                end_cep: req.body.cep
             }
         });
         res.status(STATUS_CODE_OK).json({ message: "Usuário atualizado com sucesso." });
