@@ -11,6 +11,7 @@ const STATUS_CODE_INTERNAL_SERVER_ERROR = 500;
 
 exports.authToken = async (req, res) => {
     const token = req.body.token;
+    console.log(token);
 
     if (util.isEmpty(token)) 
         return res.status(STATUS_CODE_ERROR).send({ message: "Não autorizado" });
@@ -53,12 +54,14 @@ exports.authUser = async (req, res) => {
     }
 
     if(!util.isEmpty(user) && (await user.matchPassword(password))) {
-        res.cookie("token", utilToken.generateToken(user._id));
+        const token = utilToken.generate(user._id);
+        res.cookie("token", token);
         res.status(STATUS_CODE_OK).send({ 
             message: "Logado com sucesso.",
             user: {
                 name: user.name,
-                email: user.email
+                email: user.email,
+                token: token
             }
         });
     } else {
@@ -66,11 +69,25 @@ exports.authUser = async (req, res) => {
     }
 };
 
-exports.create = async (req, res) => {
-    const { userName, name, email, password } = req.body;
+const validateEmail = (email) => {
+    var re = /\S+@\S+\.\S+/;
+    return re.test(email);
+};
 
-    if(util.isEmpty(userName) || util.isEmpty(name) || util.isEmpty(email) || util.isEmpty(password)) {
+exports.create = async (req, res) => {
+    console.log(req.body)
+    const { userName, name, email, password, confirmPassword } = req.body;
+
+    if(util.isEmpty(userName) || util.isEmpty(name) || util.isEmpty(email) || util.isEmpty(password) || util.isEmpty(confirmPassword)) {
         return res.status(STATUS_CODE_ERROR).send({ message: "Dados insuficientes." });
+    }
+    
+    if(!validateEmail(email)) {
+        return res.status(STATUS_CODE_ERROR).send({ message: "O email não está no formato correto." });
+    }
+    
+    if(password !== confirmPassword) {
+        return res.status(STATUS_CODE_ERROR).send({ message: "A senha e a senha de confirmação são diferentes." });
     }
 
     const userExist = await UserSchema.findOne({$or:[{userName: userName},{email:email}]});
@@ -128,13 +145,15 @@ exports.remove = async (req, res) => {
 };
 
 exports.update = async (req, res) => {
+    const salt = await bcrypt.genSalt(10);
+    const encryptedPassword = await bcrypt.hash(req.body.password, salt);
     try {
         await UserSchema.findByIdAndUpdate(req.params.id, {
             $set: {
                 userName: req.body.userName,
                 name: req.body.name,
                 email: req.body.email,
-                password: req.body.password
+                password: encryptedPassword
             }
         });
         res.status(STATUS_CODE_OK).json({ message: "Usuário atualizado com sucesso." });
@@ -185,6 +204,21 @@ exports.findByUserName = async (req, res) => {
         console.log(error);
         res.status(STATUS_CODE_ERROR).json({
             message: "Erro ao buscar o usuário.",
+            error: error
+        });
+    }
+};
+
+exports.clearUsers = async (req, res) => {
+    console.log("Deletando tudo")
+    try {
+        const data = await UserSchema.find();
+        data.forEach(async (user) => await user.deleteOne());
+        res.status(STATUS_CODE_OK).send({ message: "Todos os usuários foram apagados."});
+    } catch (error) {
+        console.log(error);
+        res.status(STATUS_CODE_ERROR).json({
+            message: "Erro ao buscar os usuários.",
             error: error
         });
     }
