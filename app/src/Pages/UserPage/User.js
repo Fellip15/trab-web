@@ -10,16 +10,18 @@ import Message from '../../Components/Message'
 import users from '../../data/users.json';
 import { useCookies } from 'react-cookie';
 import axios from 'axios';
-import { baseURL } from '../../config';
+import { baseURL, cepMask, cpfMask, telMask } from '../../config';
 
 const User = ({}) => {
     const navigate = useNavigate()
-
     const [cookies, setCookies, removeCookies] = useCookies(["user"]);
 
+    // variáveis de estado e setters
     const [ idUser, setIdUser ] = useState(undefined);
     const [ name, setName ] = useState("");
     const [ email, setEmail ] = useState("");
+    const [ tel, setTel ] = useState("");
+    const [ cpf, setCpf ] = useState("");
     const [ endStreet, setEndStreet ] = useState("");
     const [ endNum, setEndNum ] = useState("");
     const [ endCEP, setEndCEP ] = useState("");
@@ -27,14 +29,15 @@ const User = ({}) => {
     const [ srcImage, setSrcImage ] = useState("/img/defaultProfile.png");
     
     const setUser = (user) => {
-        console.log("Settando o usuário")
         console.log(user);
         setIdUser(user._id);
         setName(user.name);
         setEmail(user.email);
+        setTel(telMask(user.tel));
+        setCpf(cpfMask(user.cpf));
         setEndStreet(user.end_street);
         setEndNum(user.end_num);
-        setEndCEP(user.end_cep);
+        setEndCEP(cepMask(user.end_cep));
         setEndNeighborhood(user.end_neighborhood);
     };
 
@@ -58,7 +61,6 @@ const User = ({}) => {
             }
 
         }
-
         fetchAndSetUser();
     }, []);
 
@@ -66,6 +68,7 @@ const User = ({}) => {
     const refNewPassword = useRef(null);
     const refConfNewPassword = useRef(null);
 
+    // autenticação de usuário
     const authToken = async () => {
         let user = undefined;
         await axios.post(baseURL + "/users/token", {
@@ -85,6 +88,7 @@ const User = ({}) => {
         return user;
     };
     
+    // envio de mudança nos dados para as rotas no backend
     const changePassword = async () => {
         const valOldPassword = refOldPassword.current.value;
         const valNewPassword = refNewPassword.current.value;
@@ -110,6 +114,49 @@ const User = ({}) => {
         }
     };
 
+    const handleChangeTel = (event) => {
+        event.preventDefault();
+        const { value } = event.target;
+        setTel(telMask(value));
+    };
+
+    const handleChangeCPF = (event) => {
+        event.preventDefault();
+        const { value } = event.target;
+        setCpf(cpfMask(value));
+    };
+
+    const handleChangeCEP = (event) => {
+        event.preventDefault();
+        const { value } = event.target;
+        setEndCEP(cepMask(value));
+    };
+
+    const savePers = async () => {
+        const user = await authToken();
+
+        if(user !== undefined) {
+            await axios.request({
+                method: "put",
+                url: baseURL + "/usersPers/" + user._id,
+                data:{
+                    name: name,
+                    email: email,
+                    tel: Number(tel.replace(/\D/g, '')),
+                    cpf: Number(cpf.replace(/\D/g, ''))
+                }
+            })
+            .then((res) => {
+                console.log(res);
+                toast.success(res.data.message);
+            })
+            .catch((e) => {
+                console.log(e.response)
+                toast.error(e.response.data.message + " Erro: " + e.response.data.error.message);
+            });
+        }
+    };
+
     const saveEnd = async () => {
         const user = await authToken();
 
@@ -121,7 +168,7 @@ const User = ({}) => {
                     street: endStreet,
                     num: endNum,
                     neighborhood: endNeighborhood,
-                    cep: endCEP
+                    cep: Number(endCEP.replace(/\D/g, ''))
                 }
             })
             .then((res) => {
@@ -197,18 +244,29 @@ const User = ({}) => {
         <>
         <Message/>
         <Header adjustPath={'../'}/>
-
         
         <div className='userInfo content'>
             <img className='avatar' src={srcImage} />
-            <form onSubmit={handleSubmit}>
-                <input ref={refInputFile} type="file" onChange={handleFileSelect}/>
-                <input type="submit" value="Upload imagem" />
+            <form onSubmit={handleSubmit} className='group-box'>
+                <input ref={refInputFile} className='input-file-user' type="file" onChange={handleFileSelect}/>
+                <input className='submit-file-user' type="submit" value="Upload imagem"/>
             </form>
 
             <div className='group-box'>
-                <p className='bigtext'>Nome: {name}</p>
-                <p className='bigtext'>Email: {email}</p>
+                <h2>Dados pessoais:</h2>
+                <div className='street-line'>
+                    <label>Nome:</label> 
+                    <input className='user-input' type='text' defaultValue={name} onChange={(e) => handleChangeValueInput(e, setName)}></input>
+                    <label>Email:</label> 
+                    <input className='user-input' type='text' defaultValue={email} onChange={(e) => handleChangeValueInput(e, setEmail)}></input>
+                </div>
+                <div className='street-line'>
+                    <label>Telefone:</label> 
+                    <input className='user-input' type='text' value={tel} onChange={handleChangeTel}></input>
+                    <label>CPF:</label> 
+                    <input className='user-input' type='text' value={cpf} onChange={handleChangeCPF}></input>
+                </div>
+                <button className='button-user' onClick={savePers}>Salvar</button>
             </div>
 
             <div className='group-box'>
@@ -217,14 +275,14 @@ const User = ({}) => {
                     <label>Rua:</label> 
                     <input className='user-input' type='text' defaultValue={endStreet} onChange={(e) => handleChangeValueInput(e, setEndStreet)}/>
                     <label>Numero:</label> 
-                    <input className='user-input' type='text' defaultValue={endNum} onChange={(e) => handleChangeValueInput(e, setEndNum)}/>
+                    <input className='user-input' type='number' defaultValue={endNum} onChange={(e) => handleChangeValueInput(e, setEndNum)}/>
                 </div>
 
                 <div className='street-line'>
                     <label>Bairro:</label> 
                     <input className='user-input' type='text' defaultValue={endNeighborhood} onChange={(e) => handleChangeValueInput(e, setEndNeighborhood)}/>
                     <label>Cep:</label> 
-                    <input className='user-input' type='text' defaultValue={endCEP} onChange={(e) => handleChangeValueInput(e, setEndCEP)}/>
+                    <input className='user-input' type='text' value={endCEP} onChange={handleChangeCEP}/>
                 </div>
                 <button className='button-user' onClick={saveEnd}>Salvar</button>
             </div>
@@ -240,7 +298,7 @@ const User = ({}) => {
                     <input ref={refNewPassword} className='user-input password-input' type='password'></input>
                 </div>
                 <div className='street-line'>
-                    <label>Cnofirme nova senha:</label> 
+                    <label>Confirme nova senha:</label> 
                     <input ref={refConfNewPassword} className='user-input' type='password'></input>
                 </div>
                 <button className='button-user' onClick={changePassword}>Mudar senha</button>

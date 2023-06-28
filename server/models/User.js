@@ -19,6 +19,14 @@ const UserSchema = mongoose.Schema({
         trim: true,
         unique: true
     },
+    tel: {
+        type: Number,
+        required: false
+    },
+    cpf: {
+        type: Number,
+        required: false
+    },
     password: {
         type: String,
         required: true,
@@ -33,8 +41,7 @@ const UserSchema = mongoose.Schema({
     end_num: {
         type: Number,
         required: false,
-        default: 0,
-        trim: true
+        default: 0
     },
     end_neighborhood: {
         type: String,
@@ -43,9 +50,9 @@ const UserSchema = mongoose.Schema({
         trim: true
     },
     end_cep: {
-        type: String,
+        type: Number,
         required: false,
-        default: "",
+        default: 0,
         trim: true
     },
     image: {

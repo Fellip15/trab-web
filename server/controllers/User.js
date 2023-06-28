@@ -28,6 +28,8 @@ exports.authToken = async (req, res) => {
                 userName: user.userName,
                 name: user.name,
                 email: user.email,
+                tel: user.tel,
+                cpf: user.cpf,
                 image: user.image,
                 end_street: user.end_street,
                 end_num: user.end_num,
@@ -162,6 +164,26 @@ exports.update = async (req, res) => {
             }
         });
         res.status(STATUS_CODE_OK).json({ message: "Usuário atualizado com sucesso." });
+    } catch (error) {
+        console.log(error);
+        res.status(STATUS_CODE_ERROR).json({
+            message: "Erro ao atualizar o usuário.",
+            error: error
+        });
+    }
+};
+
+exports.updatePers = async (req, res) => {
+    try {
+        await UserSchema.findByIdAndUpdate(req.params.id, {
+            $set: {
+                name: req.body.name,
+                email: req.body.email,
+                tel: req.body.tel,
+                cpf: req.body.cpf
+            }
+        });
+        res.status(STATUS_CODE_OK).json({ message: "Dados pessoais atualizados com sucesso." });
     } catch (error) {
         console.log(error);
         res.status(STATUS_CODE_ERROR).json({
