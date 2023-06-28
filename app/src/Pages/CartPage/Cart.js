@@ -6,12 +6,13 @@ import "./Cart.css";
 import Header from '../../Components/Header/Header';
 import Footer from '../../Components/Footer/Footer';
 import CartItemList from '../../Components/Cart/CartItemList';
+import axios from 'axios';
+import { baseURL } from '../../config';
 
 const Cart = () => {
     const navigate = useNavigate();
 
     const [cookies, setCookies, removeCookies] = useCookies(["user"]);
-    let userId = 0;
     
     const [ dataItens, setDataItens ] = useState(undefined);
     const removeCartItem = (event, id) => {
@@ -29,19 +30,35 @@ const Cart = () => {
             localStorage.setItem("cart", JSON.stringify({ itens: dataItens }));
         }
     };
+
+    const authToken = async () => {
+        let user = undefined;
+        await axios.post(baseURL + "/users/token", {
+            token: cookies.user
+        })
+        .then((res) => {
+            console.log(res.data.user);
+            user = res.data.user;
+        })
+        .catch((e) => {
+            removeCookies("user");
+            navigate("/login", { state: { 
+                errorMessage: e.response.data.message
+            }});
+        });
+
+        return user;
+    };
     
     useEffect(() => {
-        if (cookies.user) {
-            userId = Number(cookies.user);
-        } else {
-            navigate("/login", { state: { errorMessage: "Se quiser entrar no carrinho é necessário fazer o login" }});
-        }
+        authToken();
 
         const cart = JSON.parse(localStorage.getItem("cart"));
 
         if(cart !== null && cart !== undefined && cart.itens !== null && cart.itens !== undefined) {
             setDataItens(cart.itens);
         } else {
+            navigate("/", { state: { infoMessage:"O carrinho está vazio!" }});
             setDataItens([]);
         }
     }, []);
@@ -72,9 +89,6 @@ const Cart = () => {
                             <input type="button" onClick={handleClearCart} id="clear-cart-button" name='clear-cart-button' value="Limpar carrinho"/>
                             <input type="button" onClick={handleBuyButton} id="buy-button" name='buy-button' value="Finalizar compra"/>
                         </div>
-                    }
-                    { !(dataItens !== undefined && dataItens !== null && dataItens.length > 0) &&
-                        <input type="button" onClick={handleHomeButton} id="home-button" name='home-button' value="Ir para Home"/>
                     }
                 </div>
             </div>

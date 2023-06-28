@@ -1,12 +1,16 @@
 import React, { useState, useEffect } from "react";
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 
 import Header from "../../Components/Header/Header";
 import Footer from "../../Components/Footer/Footer";
 import MiniMap from "../../Components/MiniMap";
 import './ItemDescr.css';
+import Message from "../../Components/Message";
+import { toast } from "react-toastify";
 
 const ItemDescr = ({ dataItens, addCartItem }) => {
+    const locate = useLocation();
+
     // pega e trata os parâmetros da url (id do ítem)
     const params = useParams();
     const itemId = params.itemId;
@@ -32,7 +36,14 @@ const ItemDescr = ({ dataItens, addCartItem }) => {
                     setCurrentImg(filteredItem.srcImage[0]);
                 });
         }
-    }, [dataItens, itemId]);
+
+        if(locate.state && locate.state.successMessage) {
+            toast.success(locate.state.successMessage);
+        }
+        if(locate.state && locate.state.errorMessage) {
+            toast.error(locate.state.errorMessage);
+        }
+    }, [dataItens, itemId, locate]);
 
     // modifica subimagem a ser visualizada
     const changeCurrentSubImage = (event) => {
@@ -53,13 +64,13 @@ const ItemDescr = ({ dataItens, addCartItem }) => {
     const handleAddCartItem = () => {
         const amount = 1;
         addCartItem(itemId, amount);
-        alert('Item adicionado ao carrinho');
-        navigate('/');
+        navigate('/', { state: { successMessage: "Item adicionado ao carrinho"} });
     };
 
     return (
         dataItem !== undefined && <>
         <Header/>
+        <Message />
         
         <div className="screen-item content">
             <div className="data-item">

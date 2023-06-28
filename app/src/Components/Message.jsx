@@ -1,12 +1,21 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.min.css';
 
-const Message = ({ message }) => {
+const Message = () => {
     return (
-        <div className="message">
-            <p className="message-text">
-                {message}
-            </p>
-        </div>
+        <>
+            <ToastContainer
+                position="top-center"
+                autoClose={2000}
+                hideProgressBar={false}
+                newestOnTop
+                closeOnClick
+                rtl={false}
+                draggable
+                theme="colored"
+            />
+        </>
     );
 };
 

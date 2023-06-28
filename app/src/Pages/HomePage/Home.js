@@ -6,18 +6,33 @@ import Footer from "../../Components/Footer/Footer";
 import HomeItemList from "../../Components/Home/HomeItemList";
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
+import Message from '../../Components/Message';
+import { toast } from 'react-toastify';
 
 const Home = ({ usersInfo, dataItens }) => {
+    const locate = useLocation();
+
     const navigate = useNavigate();
     const [cookies, setCookies, removeCookies] = useCookies(["user", "admin"]);
     useEffect(() => {
         if(cookies.admin !== null && cookies.admin !== undefined && cookies.admin === "1") {
             navigate("/adm");
         }
+
+        if(locate.state && locate.state.successMessage) {
+            toast.success(locate.state.successMessage);
+        }
+        if(locate.state && locate.state.errorMessage) {
+            toast.error(locate.state.errorMessage);
+        }
+        if(locate.state && locate.state.infoMessage) {
+            toast.info(locate.state.infoMessage);
+        }
     }, [])
 
     return (
         <>
+        <Message />
         <Header />
         <div className="main-page content">
             <div className="propaganda">

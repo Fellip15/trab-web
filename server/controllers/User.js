@@ -1,5 +1,7 @@
 const util = require("../config/util");
+const fs = require("fs");
 const UserSchema = require("../models/User");
+const ImageSchema = require("../models/Image");
 const bcrypt = require("bcrypt");
 const utilToken = require("../config/utilToken");
 
@@ -11,27 +13,32 @@ const STATUS_CODE_INTERNAL_SERVER_ERROR = 500;
 
 exports.authToken = async (req, res) => {
     const token = req.body.token;
-    console.log(token);
 
     if (util.isEmpty(token)) 
-        return res.status(STATUS_CODE_ERROR).send({ message: "Não autorizado" });
+        return res.status(STATUS_CODE_ERROR).send({ message: "Não autorizado!" });
 
     try {
         const Token = await utilToken.verify(token);
         const user = await UserSchema.findById(Token.id);
 
         res.status(STATUS_CODE_OK).send({
-            message: "Token verificado",
+            message: "Token verificado!",
             user: {
-                id: user._id,
+                _id: user._id,
+                userName: user.userName,
                 name: user.name,
-                email: user.email
+                email: user.email,
+                image: user.image,
+                end_street: user.end_street,
+                end_num: user.end_num,
+                end_neighborhood: user.end_neighborhood,
+                end_cep: user.end_cep
             }
         });
     } catch (error) {
         console.log(error)
         res.status(STATUS_CODE_ERROR).send({ 
-            message: "Não autorizado",
+            message: "Não autorizado!",
             error: error
         });
     }
@@ -56,9 +63,11 @@ exports.authUser = async (req, res) => {
     if(!util.isEmpty(user) && (await user.matchPassword(password))) {
         const token = utilToken.generate(user._id);
         res.cookie("token", token);
+        
         res.status(STATUS_CODE_OK).send({ 
             message: "Logado com sucesso.",
-            user: user
+            user: user,
+            token: token
         });
     } else {
         res.status(STATUS_CODE_ERROR).send({ message: "Usuário ou senha incorretos." });
@@ -150,13 +159,29 @@ exports.update = async (req, res) => {
                 name: req.body.name,
                 email: req.body.email,
                 password: encryptedPassword,
+            }
+        });
+        res.status(STATUS_CODE_OK).json({ message: "Usuário atualizado com sucesso." });
+    } catch (error) {
+        console.log(error);
+        res.status(STATUS_CODE_ERROR).json({
+            message: "Erro ao atualizar o usuário.",
+            error: error
+        });
+    }
+};
+
+exports.updateEnd = async (req, res) => {
+    try {
+        await UserSchema.findByIdAndUpdate(req.params.id, {
+            $set: {
                 end_street: req.body.street,
                 end_num: req.body.num,
                 end_neighborhood: req.body.neighborhood,
                 end_cep: req.body.cep
             }
         });
-        res.status(STATUS_CODE_OK).json({ message: "Usuário atualizado com sucesso." });
+        res.status(STATUS_CODE_OK).json({ message: "Endereço atualizado com sucesso." });
     } catch (error) {
         console.log(error);
         res.status(STATUS_CODE_ERROR).json({
@@ -166,13 +191,42 @@ exports.update = async (req, res) => {
     }
 };
 
+exports.updateImage = async (req, res) => {
+    const { idUser, idImage } = req.body;
+    console.log(idUser, idImage)
+    let user = await UserSchema.findById(idUser);
+    
+    console.log(user);
+    if(user === null)
+        res.status(STATUS_CODE_ERROR).send({ message: "Não foi possível achar o usuário" });
+    
+    const oldImage = await ImageSchema.findById(user.image);
+    console.log(oldImage)
+    if(oldImage !== null) {
+        fs.unlinkSync(oldImage.src);
+        oldImage.deleteOne();
+    }
+
+    const newImage = await ImageSchema.findById(idImage);
+    console.log(newImage);
+    try {
+        await UserSchema.findByIdAndUpdate(idUser, {
+            image: newImage._id
+        })
+
+        res.status(STATUS_CODE_OK).send({ message: "Imagem linkada com o usuário com sucesso!", image: newImage });
+    } catch(e) {
+        res.status(STATUS_CODE_ERROR).send({ message: "Não foi possível achar a nova imagem" });
+    }
+};
+
 exports.findAll = async (req, res) => {
     try {
         const data = await UserSchema.find();
         res.status(STATUS_CODE_OK).send(data);
     } catch (error) {
         console.log(error);
-        res.status(STATUS_CODE_ERROR).json({
+        res.status(STATUS_CODE_ERROR).send({
             message: "Erro ao buscar os usuários.",
             error: error
         });
@@ -187,7 +241,7 @@ exports.findByEmail = async (req, res) => {
         res.status(STATUS_CODE_OK).send(data);
     } catch (error) {
         console.log(error);
-        res.status(STATUS_CODE_ERROR).json({
+        res.status(STATUS_CODE_ERROR).send({
             message: "Erro ao buscar o usuário.",
             error: error
         });
@@ -202,7 +256,7 @@ exports.findByUserName = async (req, res) => {
         res.status(STATUS_CODE_OK).send(data);
     } catch (error) {
         console.log(error);
-        res.status(STATUS_CODE_ERROR).json({
+        res.status(STATUS_CODE_ERROR).send({
             message: "Erro ao buscar o usuário.",
             error: error
         });
@@ -217,7 +271,7 @@ exports.clearUsers = async (req, res) => {
         res.status(STATUS_CODE_OK).send({ message: "Todos os usuários foram apagados."});
     } catch (error) {
         console.log(error);
-        res.status(STATUS_CODE_ERROR).json({
+        res.status(STATUS_CODE_ERROR).send({
             message: "Erro ao buscar os usuários.",
             error: error
         });

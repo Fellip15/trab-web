@@ -1,18 +1,25 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import { useCookies } from 'react-cookie';
+
+import axios from "axios";
+import { baseURL } from "../../config";
 
 import "./Login.css"
 
 import Header from "../../Components/Header/Header";
 import Footer from "../../Components/Footer/Footer";
-import ErrorMess from '../../Components/ErrorMess';
+import Message from '../../Components/Message';
 
-const Login = ({ dataUsers }) => {
+const Login = () => {
     const locate = useLocation();
     useEffect(() => {
+        if(locate.state && locate.state.successMessage) {
+            toast.success(locate.state.successMessage);
+        }
         if(locate.state && locate.state.errorMessage) {
-            setErrorMessage(locate.state.errorMessage);
+            toast.error(locate.state.errorMessage);
         }
     }, [locate])
 
@@ -49,32 +56,22 @@ const Login = ({ dataUsers }) => {
 
         return true;
     };
-    const [errorMessage, setErrorMessage] = useState(undefined);
+    const [message, setMessage] = useState(undefined);
+    const [isMessageError, setIsMessageError] = useState(false);
     const handleClickLogin = () => {
-        if(!isFilled(inputEmail) || !isFilled(inputPassword)) {
-            setErrorMessage('Email e senha devem ser preenchidos.');
-            setInputEmail('');
-            setInputPassword('');
-            return;
-        }
-
-        // filtra os usuários no banco com email e senha lidos
-        const targetUser = dataUsers.filter(user => 
-            user.email.toLowerCase() === inputEmail.toLowerCase() && user.password === inputPassword
-        );
-        
-        // verifica se algum usuário possui email e senha definidos
-        if (targetUser.length !== 1) {
-            setErrorMessage('Email ou senha inválidos.');
-        }
-        else {
-            handleLoginFinished(targetUser[0]);
-            setErrorMessage(undefined);          
-        }
-
-        // reseta os valores de input
-        setInputEmail('');
-        setInputPassword('');
+        axios.post(baseURL + "/users/login", {
+            userName: inputEmail,
+            password: inputPassword
+        })
+        .then((res) => {
+            console.log(res);
+            setCookies("user", res.data.token);
+            navigate("/", { state: { successMessage: "Login efetuado com sucesso!" } });
+        })
+        .catch((e) => {
+            console.log(e);
+            toast.error(e.response.data.message)
+        });
     };
 
     const listenerKeyEnter = (event) => {
@@ -86,16 +83,15 @@ const Login = ({ dataUsers }) => {
 
     return (
         <>
+            <Message />
             <Header />
             
             <div className="login-frame content fixed-screen">
-                {errorMessage !== undefined && <ErrorMess message={errorMessage}/>}
-
                 <div className="form flex-col">
                     <h1 className="font-title-black title-login">Login</h1>
 
                     <div className="input">
-                        <label htmlFor="input-email" className="email font-inter-black">Email:</label>
+                        <label htmlFor="input-email" className="email font-inter-black">Email ou User:</label>
                         <input 
                             id="input-email" 
                             onChange={handleInputEmailChange}

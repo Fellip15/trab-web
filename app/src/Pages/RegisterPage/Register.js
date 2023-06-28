@@ -1,13 +1,26 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import axios from "axios";
+import { useLocation, useNavigate } from 'react-router-dom';
+
+import { baseURL } from "../../config";
 
 import "./Register.css"
 
 import Header from "../../Components/Header/Header";
 import Footer from "../../Components/Footer/Footer";
-import ErrorMess from '../../Components/ErrorMess';
+import Message from '../../Components/Message';
+import { toast } from 'react-toastify';
 
 const Register = ({ dataUsers, addUser }) => {
+    const locate = useLocation();
+    useEffect(() => {
+        if(locate.state && locate.state.successMessage) {
+            toast.success(locate.state.successMessage);
+        }
+        if(locate.state && locate.state.errorMessage) {
+            toast.error(locate.state.errorMessage);
+        }
+    }, [locate])
 
     const navigate = useNavigate();
     const handleLogin = () => {
@@ -36,39 +49,25 @@ const Register = ({ dataUsers, addUser }) => {
     };
 
     // verifica os dados de cadastro e finaliza
-    const [errorMessage, setErrorMessage] = useState(undefined);
     const handleClickRegister = () => {
-        // analisa possíveis erros de cadastro
-        const sameEmailUsers = dataUsers.filter(user =>
-            user.email.toLowerCase() === inputEmail.toLowerCase()
-        );
-        
-        if (
-            inputName === '' || inputEmail === '' || 
-            inputPassword === '' || inputConfirmPassword === ''
-        ) {
-            setErrorMessage('Preencha todos os campos.');
-        }
-
-        else if (sameEmailUsers.length > 0) {
-            setErrorMessage('Email de usuário já cadastrado.');
-            setInputEmail('');
-        }
-
-        else if (inputPassword !== inputConfirmPassword) {
-            setErrorMessage('As senhas escritas devem ser iguais.');
-            setInputPassword('');
-            setInputConfirmPassword('');
-        }
-
-        // se não possui erro, envia os dados do novo registro
-        else {
-            const newUser = {id: Math.random(), name: inputName, email: inputEmail, password: inputPassword};
-            addUser(newUser);
-            setErrorMessage(undefined);
-            alert('Faça login para confirmar o registro.');
-            navigate('/login');
-        }
+        const url = baseURL + "/users";
+        console.log("Fazendo a requisição para" + url);
+        // requisicao pro backend
+        axios.post(url, {
+            userName: inputName,
+            name: inputName,
+            email:inputEmail,
+            password: inputPassword,
+            confirmPassword: inputConfirmPassword
+        })
+        .then((res) => {
+            console.log(res);
+            navigate("/login", { state: { successMessage: res.data.message } });
+        })
+        .catch((e) => {
+            console.log(e);
+            toast.error(e.response.data.message);
+        });
     };
 
     const listenerKeyEnter = (event) => {
@@ -80,11 +79,10 @@ const Register = ({ dataUsers, addUser }) => {
 
     return (
         <>
+            <Message />
             <Header />
 
             <div className="register-frame content fixed-screen">
-                {errorMessage !== undefined && <ErrorMess message={errorMessage}/>}
-
                 <div className="form flex-col">
                     <h1 className="font-title-black title-register">Cadastre-se</h1>
 
@@ -105,7 +103,7 @@ const Register = ({ dataUsers, addUser }) => {
                             id="input-email"
                             onChange={handleInputEmailChange}
                             value={inputEmail}
-                            type="text" 
+                            type="email" 
                             className="input-text"
                             onKeyDown={(e) => listenerKeyEnter(e)}
                         />

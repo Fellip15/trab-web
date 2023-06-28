@@ -75,25 +75,6 @@
     background-color: white;
 }
 
-.error-message {
-    display: flex;
-    align-items: center;
-    background-color: #de0000a6;
-    border-radius: 30px;
-    overflow: hidden;
-    padding: 5px 15px;
-    position: relative;
-    width: 50%;
-    max-width: 500px;
-    margin-top: 10px;
-}
-
-.error-message-text {
-    color: var(--text);
-    font-family: var(--font-family-inter);
-    font-size: var(--font-size-p);
-}
-
 #with-register {
     margin: 20px 0 0 0;
     text-align: right;

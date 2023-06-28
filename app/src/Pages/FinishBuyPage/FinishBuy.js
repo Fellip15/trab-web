@@ -9,13 +9,14 @@ import { BiCopy } from "react-icons/bi";
 import Header from '../../Components/Header/Header';
 import Footer from '../../Components/Footer/Footer';
 import "./FinishBuy.css";
+import Message from '../../Components/Message';
+import { toast } from 'react-toastify';
 
 
 const FinishBuy = () => {
     const location = useLocation();
     const navigate = useNavigate();
     const [cookies, setCookies, removeCookies] = useCookies(["user"]);
-    let userId;
 
     const [ itemsToBuy, setItemsToBuy ] = useState(undefined);
     const dateExpRef = useRef();
@@ -31,10 +32,10 @@ const FinishBuy = () => {
     const cpfRef = useRef();
 
     useEffect(() => {
-        if (cookies.user) {
-            userId = Number(cookies.user);
-        } else {
-            navigate("/login", { state: { errorMessage: "Se quiser entrar na tela de compra é necessário fazer o login" }});
+        if(!cookies.user) {
+            navigate("/login", { state: { 
+                errorMessage: "Se quiser entrar na tela de compra é necessário fazer o login"
+            }});
         }
 
         if(location.state !== null && location.state !== undefined && 
@@ -42,7 +43,7 @@ const FinishBuy = () => {
                 setItemsToBuy([location.state.itemToBuy]);
         } else {
             const cart = JSON.parse(localStorage.getItem("cart"));
-            console.log(cart)
+
             if(cart !== null && cart.itens !== null) {
                 setItemsToBuy(cart.itens);
             }
@@ -118,18 +119,19 @@ const FinishBuy = () => {
                                 || cpfRef.current.value === "";
         
         if(verifyInputs) {
-            alert("É necessário preencher todos inputs");
+            toast("É necessário preencher todos os dados!");
             return;
         }
 
-        alert("Sua compra foi finalizada");
         localStorage.removeItem("cart");
-        navigate("/");
+        navigate("/", { state: { successMessage:"Sua compra foi realizada com sucesso!" }});
     }
 
     return (
         <>
             <Header />
+            <Message />
+
             { itemsToBuy !== undefined &&
                 (
                     <div className="content finish-buy-screen fixed-screen">

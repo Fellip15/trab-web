@@ -47,6 +47,11 @@ const UserSchema = mongoose.Schema({
         required: false,
         default: "",
         trim: true
+    },
+    image: {
+        type: mongoose.Schema.Types.ObjectId,
+        required: false,
+        ref: 'Image'
     }
 })
 
