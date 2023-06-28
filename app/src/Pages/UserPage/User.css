@@ -61,7 +61,23 @@
     font-size: var(--font-size-p);
     transition: 0.25s;
 }
-.button-user:hover {
+
+.submit-file-user, .input-file-user::file-selector-button {
+    padding: 0 6px;
+    align-items: center;
+    justify-content: center;
+    background-color: #20333b;
+    border-radius: 20px;
+    border-style: none;
+    height: 30px;
+    align-self: center;
+    cursor: pointer;
+    color: white;
+    font-size: var(--font-size-p);
+    transition: 0.25s;
+}
+
+.button-user:hover, .submit-file-user:hover, .input-file-user::file-selector-button:hover {
     color: #20333b;
     background-color: var(--light-gray);
 }

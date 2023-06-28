@@ -82,7 +82,7 @@ const Register = ({ dataUsers, addUser }) => {
             <Message />
             <Header />
 
-            <div className="register-frame content fixed-screen">
+            <div className="register-frame content">
                 <div className="form flex-col">
                     <h1 className="font-title-black title-register">Cadastre-se</h1>
 

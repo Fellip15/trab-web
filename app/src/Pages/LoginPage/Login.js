@@ -86,7 +86,7 @@ const Login = () => {
             <Message />
             <Header />
             
-            <div className="login-frame content fixed-screen">
+            <div className="login-frame content">
                 <div className="form flex-col">
                     <h1 className="font-title-black title-login">Login</h1>
 
