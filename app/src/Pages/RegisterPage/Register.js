@@ -28,6 +28,11 @@ const Register = ({ dataUsers, addUser }) => {
     }
 
     // atribui os valores do input lido a cada variável referente
+    const [inputUser, setInputUser] = useState('');
+    const handleInputUserChange = (event) => {
+        setInputUser(event.target.value);
+    };
+
     const [inputName, setInputName] = useState('');
     const handleInputNameChange = (event) => {
         setInputName(event.target.value);
@@ -54,7 +59,7 @@ const Register = ({ dataUsers, addUser }) => {
         console.log("Fazendo a requisição para" + url);
         // requisicao pro backend
         axios.post(url, {
-            userName: inputName,
+            userName: inputUser,
             name: inputName,
             email:inputEmail,
             password: inputPassword,
@@ -86,6 +91,17 @@ const Register = ({ dataUsers, addUser }) => {
                 <div className="form flex-col">
                     <h1 className="font-title-black title-register">Cadastre-se</h1>
 
+                    <div className="input">
+                        <label htmlFor="input-user" className="nome font-inter-black">Usuário:</label>
+                        <input 
+                            id="input-user"
+                            onChange={handleInputUserChange}
+                            value={inputUser}
+                            type="text" 
+                            className="input-text"
+                            onKeyDown={(e) => listenerKeyEnter(e)}
+                        />
+                    </div>
                     <div className="input">
                         <label htmlFor="input-nome" className="nome font-inter-black">Nome:</label>
                         <input 
