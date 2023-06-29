@@ -11,6 +11,7 @@ router.put('/users/:id', UserController.update);
 router.put('/usersEnd/:id', UserController.updateEnd);
 router.put('/usersPers/:id', UserController.updatePers);
 router.put('/usersImage', UserController.updateImage);
+router.put('/usersPassword/:id', UserController.updatePassword);
 router.get('/users', UserController.findAll);
 router.get('/users-email/:email', UserController.findByEmail);
 router.get('/users-usrname/:userName', UserController.findByUserName);

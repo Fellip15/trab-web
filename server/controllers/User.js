@@ -209,7 +209,7 @@ exports.updateEnd = async (req, res) => {
         res.status(STATUS_CODE_ERROR).json({
             message: "Erro ao atualizar o usuário.",
             error: error
-        });;
+        });
     }
 };
 
@@ -239,6 +239,38 @@ exports.updateImage = async (req, res) => {
         res.status(STATUS_CODE_OK).send({ message: "Imagem linkada com o usuário com sucesso!", image: newImage });
     } catch(e) {
         res.status(STATUS_CODE_ERROR).send({ message: "Não foi possível achar a nova imagem" });
+    }
+};
+
+exports.updatePassword = async (req, res) => {
+    const { oldPassword, newPassword } = req.body;
+    const salt = await bcrypt.genSalt(10);
+    const encryptedPassword = await bcrypt.hash(newPassword, salt);
+    
+    // verifica a senha antiga para prosseguir a atualização
+    const userData = await UserSchema.findById(req.params.id);
+    if (!(await userData.matchPassword(oldPassword))) {
+        res.status(STATUS_CODE_ERROR).json({
+            message: "Senha incorreta.",
+            error: new Error('Senha incorreta')
+        });
+        return;
+    }
+
+    // atualiza a senha no banco
+    try {
+        await UserSchema.findByIdAndUpdate(req.params.id, {
+            $set: {
+                password: encryptedPassword
+            }
+        });
+        res.status(STATUS_CODE_OK).json({ message: "Senha atualizada com sucesso." });
+    } catch (error) {
+        console.log(error);
+        res.status(STATUS_CODE_ERROR).json({
+            message: "Erro ao atualizar a senha.",
+            error: error
+        });
     }
 };
 

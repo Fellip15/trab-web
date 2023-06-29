@@ -28,6 +28,9 @@ const Home = ({ usersInfo, dataItens }) => {
         if(locate.state && locate.state.infoMessage) {
             toast.info(locate.state.infoMessage);
         }
+        if(locate.state && locate.state.logoutMessage) {
+            toast.success(locate.state.logoutMessage);
+        }
     }, [])
 
     return (

@@ -18,6 +18,7 @@ const User = ({}) => {
 
     // variáveis de estado e setters
     const [ idUser, setIdUser ] = useState(undefined);
+    const [ userName, setUserName ] = useState("");
     const [ name, setName ] = useState("");
     const [ email, setEmail ] = useState("");
     const [ tel, setTel ] = useState("");
@@ -31,6 +32,7 @@ const User = ({}) => {
     const setUser = (user) => {
         console.log(user);
         setIdUser(user._id);
+        setUserName(user.userName);
         setName(user.name);
         setEmail(user.email);
         setTel(telMask(user.tel));
@@ -94,14 +96,20 @@ const User = ({}) => {
         const valNewPassword = refNewPassword.current.value;
         const valConfNewPassword = refConfNewPassword.current.value;
         
-        const user = await authToken();
+        if (valNewPassword !== valConfNewPassword) {
+            toast.error("Confirmação diferente da nova senha.");
+            return;
+        }
+        else if (valNewPassword === '' || valNewPassword === undefined || valNewPassword === null) {
+            toast.error("Senha vazia.");
+            return;
+        }
 
+        const user = await authToken();
         if(user !== undefined) {
-            await axios.put(baseURL + "/users/" + user._id, {
-                userName: user.name,
-                name: user.name,
-                email: user.email,
-                password: valNewPassword
+            await axios.put(baseURL + "/usersPassword/" + user._id, {
+                oldPassword: valOldPassword,
+                newPassword: valNewPassword
             })
             .then((res) => {
                 console.log(res);
@@ -189,7 +197,7 @@ const User = ({}) => {
 
     const refInputFile = useRef(null);
     const handleSubmit = async (event) => {
-        event.preventDefault()
+        event.preventDefault();
         if(refInputFile.current && refInputFile.current.value === "" || refInputFile.current.value === undefined || refInputFile.current.value === null) {
             toast.error("É necessário colocar uma imagem primeiro!");
             return;
@@ -246,6 +254,7 @@ const User = ({}) => {
         <Header adjustPath={'../'}/>
         
         <div className='userInfo content'>
+            <h2>Usuário: {userName}</h2>
             <img className='avatar' src={srcImage} />
             <form onSubmit={handleSubmit} className='group-box'>
                 <input ref={refInputFile} className='input-file-user' type="file" onChange={handleFileSelect}/>

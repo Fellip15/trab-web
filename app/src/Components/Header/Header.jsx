@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { FaSearch } from 'react-icons/fa';
 import { BiHomeAlt2, BiCartAlt, BiUserCircle, BiUserPlus, BiLogOut, BiLogIn, BiCheckboxChecked } from 'react-icons/bi'
 import "./Header.css";
 import { useCookies } from "react-cookie";
+import { toast } from 'react-toastify';
 
 const Header = () => {
     const [cookies, setCookies, removeCookies] = useCookies(["user", "admin"]);
@@ -24,6 +25,7 @@ const Header = () => {
 
     // direciona o usuário para as páginas de cada click
     const navigate = useNavigate();
+    const location = useLocation();
     const handleHomeClick   = () => { navigate('/') };
     const handleCartClick   = () => { navigate('/cart') };
     const handleUserClick   = () => { navigate('/user') };
@@ -31,7 +33,12 @@ const Header = () => {
         removeCookies("user");
         if(cookies.admin)
             removeCookies("admin");
-        navigate('/');
+        
+        // direciona para a home com a mensagem de logout
+        if (location.pathname === '/')
+            toast.success('Usuário deslogado');
+        else
+            navigate('/', {state: {logoutMessage: 'Usuário deslogado'}});
     }
     const handleLogin       = () => { navigate('/login') };
     const handleAddAdmClick = () => { navigate('/register'); alert('add os cookies do adm!!!!!!'); };
