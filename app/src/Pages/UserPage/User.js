@@ -47,7 +47,7 @@ const User = ({}) => {
             const user = await authToken();
             if(user !== undefined) {
                 setUser(user);
-                axios.get(baseURL + "/image/user/" + user.image)
+                axios.get(baseURL + "/image/" + user.image)
                 .then((res) => {
                     setSrcImage(baseURL + "/" + res.data.image.src);
                 })
