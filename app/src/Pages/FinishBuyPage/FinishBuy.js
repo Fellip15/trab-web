@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
 
 import TableItensFinishBuy from "../../Components/FinishBuy/TableItens";
@@ -11,32 +11,89 @@ import Footer from '../../Components/Footer/Footer';
 import "./FinishBuy.css";
 import Message from '../../Components/Message';
 import { toast } from 'react-toastify';
+import axios from 'axios';
+import { baseURL } from '../../config';
 
 
 const FinishBuy = () => {
     const location = useLocation();
+    const param = useParams();
     const navigate = useNavigate();
     const [cookies, setCookies, removeCookies] = useCookies(["user"]);
 
+    const dateExpStr = "Data de vencimento";
+    const personCardStr = "Titular do cartão";
+    const numberCardStr = "Número do cartão";
+    const cvvStr = "CVV";
+    const cepStr = "CEP";
+    const complementStr = "Complemento";
+    const quarterStr = "Bairro";
+    const streetStr = "Rua";
+    const houseNumberStr = "Número da casa/apartamento";
+    const personNumberStr = "Número de telefone";
+    const cpfStr = "CPF";
+
     const [ itemsToBuy, setItemsToBuy ] = useState(undefined);
-    const dateExpRef = useRef();
-    const personCardRef = useRef();
-    const numberCardRef = useRef();
-    const cvvRef = useRef();
-    const cepRef = useRef();
-    const complementRef = useRef();
-    const quarterRef = useRef();
-    const streetRef = useRef();
-    const houseNumberRef = useRef();
-    const personNumberRef = useRef();
-    const cpfRef = useRef();
+    const [ idUser, setIdUser ] = useState(undefined);
+    const [ dateExp, setDateExp ] = useState(undefined);
+    const [ personCard, setPersonCard ] = useState(undefined);
+    const [ numberCard, setNumberCard ] = useState(undefined);
+    const [ cvv, setCvv ] = useState(undefined);
+    const [ cep, setCep ] = useState(undefined);
+    const [ complement, setComplement ] = useState(undefined);
+    const [ quarter, setQuarter ] = useState(undefined);
+    const [ street, setStreet ] = useState(undefined);
+    const [ houseNumber, setHouseNumber ] = useState(undefined);
+    const [ personNumber, setPersonNumber ] = useState(undefined);
+    const [ cpf, setCpf ] = useState(undefined);
+
+    const setUser = (user) => {
+        console.log(user);
+        setCep(user.end_cep);
+        setQuarter(user.end_neighborhood);
+        setStreet(user.end_street);
+        setHouseNumber(user.end_num);
+        setPersonNumber(user.tel);
+        setCpf(user.cpf);
+    }
+
+    const authToken = async () => {
+        let user = undefined;
+        await axios.post(baseURL + "/users/token", {
+            token: cookies.user
+        })
+        .then((res) => {
+            user = res.data.user;
+            setUser(user);
+        })
+        .catch((e) => {
+            removeCookies("user");
+            navigate("/login", { state: { 
+                errorMessage: e.response.data.message
+            }});
+        });
+
+        return user;
+    };
 
     useEffect(() => {
         if(!cookies.user) {
             navigate("/login", { state: { 
                 errorMessage: "Se quiser entrar na tela de compra é necessário fazer o login"
             }});
+            return;
         }
+
+        authToken();
+
+        const id = param.idUser;
+        if(id === undefined) {
+            navigate("/login", { state: { 
+                errorMessage: "Ocorreu algum erro!"
+            }});
+            return;
+        }
+        setIdUser(id);
 
         if(location.state !== null && location.state !== undefined && 
             location.state.itemToBuy !== null && location.state.itemToBuy !== undefined) {
@@ -45,7 +102,7 @@ const FinishBuy = () => {
             const cart = JSON.parse(localStorage.getItem("cart"));
 
             if(cart !== null && cart.itens !== null) {
-                setItemsToBuy(cart.itens);
+                setItemsToBuy(cart[String(id)]);
             }
         }
     }, []);
@@ -54,20 +111,20 @@ const FinishBuy = () => {
         <div id="card">
             <div className="inputs-payment">
                 <label htmlFor="card-number">Número do cartão:</label>
-                <input ref={numberCardRef} type="text" id="card-number" name="card-number" />
+                <input value={numberCard} onChange={(e) => handleOnChange(e.target.value, setNumberCard)} type="text" id="card-number" name="card-number" />
             </div>
             <div className="inputs-payment">
                 <label htmlFor="card-person">Titular:</label>
-                <input ref={personCardRef} type="text" id="card-person" name="card-person" />
+                <input value={personCard} onChange={(e) => handleOnChange(e.target.value, setPersonCard)} type="text" id="card-person" name="card-person" />
             </div>
             <div className="cvv-and-expiration">
                 <div className="inputs-payment">
                     <label htmlFor="card-expiration">Vencimento:</label>
-                    <input ref={dateExpRef} type="date" id="card-expiration" name="card-expiration" />
+                    <input value={dateExp} onChange={(e) => handleOnChange(e.target.value, setDateExp)} type="date" id="card-expiration" name="card-expiration" />
                 </div>
                 <div className="inputs-payment">
                     <label htmlFor="cvv">cvv:</label>
-                    <input ref={cvvRef} type="number" id="cvv" name="cvv" />
+                    <input value={cvv} onChange={(e) => handleOnChange(e.target.value, setCvv)} type="number" id="cvv" name="cvv" />
                 </div>
             </div>
         </div>
@@ -105,27 +162,62 @@ const FinishBuy = () => {
     const handleCancelBuying = () => {
         navigate("/");
     }
+    const isEmpty = (value) => {
+        if(value === null || value === undefined || value === ""){
+            return true;
+        }
+        return false;
+    }
     const handleFinishBuying = () => {
-        const verifyInputs =       dateExpRef.current.value === ""
-                                || personCardRef.current.value === ""
-                                || numberCardRef.current.value === ""
-                                || cvvRef.current.value === ""
-                                || cepRef.current.value === ""
-                                || complementRef.current.value === ""
-                                || quarterRef.current.value === ""
-                                || streetRef.current.value === ""
-                                || houseNumberRef.current.value === ""
-                                || personNumberRef.current.value === ""
-                                || cpfRef.current.value === "";
+        const emptyInputs = [];
+        if(type === "card") {
+            if(isEmpty(dateExp)) emptyInputs.push(dateExpStr);
+            if(isEmpty(personCard)) emptyInputs.push(personCardStr);
+            if(isEmpty(numberCard)) emptyInputs.push(numberCardStr);
+            if(isEmpty(cvv)) emptyInputs.push(cvvStr);
+        }
         
-        if(verifyInputs) {
-            toast("É necessário preencher todos os dados!");
+        if(isEmpty(cep)) emptyInputs.push(cepStr);
+        if(isEmpty(complement)) emptyInputs.push(complementStr);
+        if(isEmpty(quarter)) emptyInputs.push(quarterStr);
+        if(isEmpty(street)) emptyInputs.push(streetStr);
+        if(isEmpty(houseNumber)) emptyInputs.push(houseNumberStr);
+        if(isEmpty(personNumber)) emptyInputs.push(personNumberStr);
+        if(isEmpty(cpf)) emptyInputs.push(cpfStr);
+
+        if(emptyInputs.length > 0) {
+            toast.warn("Há campos vazios: " + emptyInputs.join(", "));
             return;
         }
 
-        localStorage.removeItem("cart");
-        navigate("/", { state: { successMessage:"Sua compra foi realizada com sucesso!" }});
+        const buyItens = {};
+        for(let item of itemsToBuy) {
+            buyItens[String(item._id)] = item.amount;
+        }
+        console.log(buyItens);
+        axios.post(baseURL + "/item/buy", {
+            itensToBuy: buyItens
+        })
+        .then((res) => {
+            console.log(res.data.message);
+            const cart = JSON.parse(localStorage.getItem("cart"));
+            delete cart[String(idUser)];
+            if(Object.keys(cart).length <= 0)
+                localStorage.removeItem("cart");
+            else 
+                localStorage.setItem("cart", JSON.stringify(cart));
+    
+            navigate("/", { state: { successMessage:"Sua compra foi realizada com sucesso!" }});
+        })
+        .catch((e) => {
+            console.log(e);
+        })
+
     }
+
+    const handleOnChange = (value, setValue) => {
+        setValue(value);
+    };
 
     return (
         <>
@@ -153,34 +245,34 @@ const FinishBuy = () => {
                                     <div className='cep-complement-number'>
                                         <div className='inputs-address-three'>
                                             <label htmlFor='cep'>CEP:</label>
-                                            <input ref={cepRef} id='cep' name='cep'/>
+                                            <input value={cep} onChange={(e) => handleOnChange(e.target.value, setCep)} id='cep' name='cep'/>
                                         </div>
                                         <div className='inputs-address-three'>
                                             <label htmlFor='complement'>Compl:</label>
-                                            <input ref={complementRef} id='complement' name='complement'/>
+                                            <input value={complement} onChange={(e) => handleOnChange(e.target.value, setComplement)} id='complement' name='complement'/>
                                         </div>
                                         <div className='inputs-address-three'>
                                             <label htmlFor='house-number'>N°:</label>
-                                            <input ref={houseNumberRef} id='house-number' name='house-number'/>
+                                            <input value={houseNumber} onChange={(e) => handleOnChange(e.target.value, setHouseNumber)} id='house-number' name='house-number'/>
                                         </div>
                                     </div>
                                     <div className='cep-complement-number'>
                                         <div className='inputs-address'>
                                             <label htmlFor='street'>Rua:</label>
-                                            <input ref={streetRef} id='street' name='street'/>
+                                            <input value={street} onChange={(e) => handleOnChange(e.target.value, setStreet)} id='street' name='street'/>
                                         </div>
                                         <div className='inputs-address'>
                                             <label htmlFor='quarter'>Bairro:</label>
-                                            <input ref={quarterRef} id='quarter' name='quarter'/>
+                                            <input value={quarter} onChange={(e) => handleOnChange(e.target.value, setQuarter)} id='quarter' name='quarter'/>
                                         </div>
                                     </div>
                                     <div className='inputs-address'>
                                         <label htmlFor='cpf'>CPF:</label>
-                                        <input ref={cpfRef} id='cpf' name='cpf'/>
+                                        <input value={cpf} onChange={(e) => handleOnChange(e.target.value, setCpf)} id='cpf' name='cpf'/>
                                     </div>
                                     <div className='inputs-address'>
                                         <label htmlFor='person-number'>Telef:</label>
-                                        <input ref={personNumberRef} id='person-number' name='person-number'/>
+                                        <input value={personNumber} onChange={(e) => handleOnChange(e.target.value, setPersonNumber)} id='person-number' name='person-number'/>
                                     </div>
                                 </div>
                             </div>

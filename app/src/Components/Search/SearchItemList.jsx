@@ -6,16 +6,16 @@ import './SearchItemList.css';
 const SearchItens = ({ dataItens, nameSearch }) => {
     // retorna os ítens que satisfaçam a busca
     const getItensSearch = () => {
-        return dataItens.filter(item => 
-            item.name.toLowerCase().includes(nameSearch.toLowerCase())
+        return dataItens.filter(card => 
+            card.item.name.toLowerCase().includes(nameSearch.toLowerCase())
         );
     };
     console.log(getItensSearch());
 
     return (
         <div className="list-itens-search">
-            {getItensSearch().map(item => 
-                <SearchItem key={item.id} dataItem={item} />
+            {getItensSearch().map(card => 
+                <SearchItem key={card.item._id} dataItem={card} />
             )}
         </div>
     );

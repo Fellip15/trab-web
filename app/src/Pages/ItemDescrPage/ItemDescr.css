@@ -101,9 +101,16 @@
     color: #20333b;
     background-color: white;
 }
+.button-buy:disabled, .button-add-cart:disabled {
+    background-color: #252f33b0;
+    pointer-events: none;
+}
 
 .button-add-cart {
     background-color: #4a7987;
+}
+.button-add-cart:disabled {
+    background-color: #5d7d86cc;
 }
 
 .descr-item-info {

@@ -1,6 +1,7 @@
 const fs = require("fs");
 const ImageSchema = require("../models/Image");
 const sharp = require("sharp");
+const { execFileSync } = require("child_process");
 
 const STATUS_CODE_OK = 200;
 const STATUS_CODE_NO_CONTENT = 204;
@@ -8,7 +9,51 @@ const STATUS_CODE_DELETE_ACCEPTED = 202;
 const STATUS_CODE_ERROR = 400;
 const STATUS_CODE_INTERNAL_SERVER_ERROR = 500;
 
-exports.create = async (req, res) => {
+exports.createImagesItem = async (req, res) => {
+    const files = req.files;
+    if(files === undefined) {
+        return res.status(STATUS_CODE_INTERNAL_SERVER_ERROR).json({ message: "Erro ao salvar a imagem." });
+    }
+
+    try {
+        files.forEach((file) => {
+            sharp(file.path)
+                .resize({
+                    width: 500,
+                    height: 500
+                })
+                .toBuffer(function (err, buffer) {
+                    fs.writeFile(file.path, buffer, function (e) {
+    
+                    });
+                });
+        });
+    } catch (error) {
+        console.log(error);
+    }
+
+    try {
+        const { name } = req.body;
+
+        console.log(files);
+        const pictures = [];
+        for(let i = 0; i < files.length; i++) {
+            const picture = new ImageSchema({
+                name,
+                src: files[i].path,
+            });
+    
+            await picture.save();
+            pictures.push(picture);
+        }
+        res.status(STATUS_CODE_OK).send({ message: "Imagem enviada com sucesso!", images: pictures });
+    } catch (err) {
+        console.log(err)
+        res.status(STATUS_CODE_INTERNAL_SERVER_ERROR).json({ message: "Erro ao salvar a imagem." });
+    }
+};
+
+exports.createImageUser = async (req, res) => {
     try {
         sharp(req.file.path)
             .resize({
@@ -66,7 +111,7 @@ exports.findAll = async (req, res) => {
     }
 };
 
-exports.getImageUser = async (req, res) => {
+exports.getImage = async (req, res) => {
     const id = req.params.id;
     console.log(id)
 

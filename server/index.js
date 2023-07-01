@@ -24,6 +24,7 @@ app.use("/public/userImages", express.static("./public/userImages"));
 // ex: app.use(require("./routes/User")); -> exemplo da monitoria
 app.use(require("./routes/User"));
 app.use(require("./routes/Image"));
+app.use(require("./routes/Item"));
 
 app.use((err, req, res, next)=>{
     console.log(err.message);

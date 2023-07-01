@@ -7,8 +7,10 @@ const HomeItemList = ({ dataItens, title }) => {
         <div className="table-itens">
             <h1 className="font-title-black">{title}</h1>
             <div className="itens">
-                {dataItens.map(item => 
-                    <HomeItem key={item.id} dataItem={item} />
+                {dataItens.map(card => {
+                    console.log(card)
+                    return <HomeItem key={card.item._id} cardItem={card} />
+                }
                 )}
             </div>
         </div>

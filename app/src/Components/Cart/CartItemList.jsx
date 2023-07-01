@@ -13,7 +13,7 @@ const CartItens = ({ dataItens, removeCartItem }) => {
                 (<>
                 <div className="list-itens-cart">
                     {dataItens.map(
-                        item => <CartItem key={item.id} dataItem={item} removeCartItem={removeCartItem} />
+                        item => <CartItem key={item._id} dataItem={item} removeCartItem={removeCartItem} />
                     )}
                 </div>
                 </>)

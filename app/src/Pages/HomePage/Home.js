@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import "./Home.css";
 
 import Header from "../../Components/Header/Header";
@@ -8,9 +8,14 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
 import Message from '../../Components/Message';
 import { toast } from 'react-toastify';
+import { baseURL } from "../../config";
+import axios from 'axios';
 
-const Home = ({ usersInfo, dataItens }) => {
+const Home = () => {
     const locate = useLocation();
+
+    const [ dataItens, setDataItens ] = useState(null);
+    const [ fetched, setFetched ] = useState(false);
 
     const navigate = useNavigate();
     const [cookies, setCookies, removeCookies] = useCookies(["user", "admin"]);
@@ -31,6 +36,17 @@ const Home = ({ usersInfo, dataItens }) => {
         if(locate.state && locate.state.logoutMessage) {
             toast.success(locate.state.logoutMessage);
         }
+        
+        axios.get(baseURL + "/cardItem")
+        .then((res) => {
+            console.log(res.data.cardItens);
+            setDataItens(res.data.cardItens);
+            setFetched(true);
+        })
+        .catch((e) => {
+            console.log(e);
+            toast.error(e.response.data.message);
+        })
     }, [])
 
     return (
@@ -52,7 +68,7 @@ const Home = ({ usersInfo, dataItens }) => {
                 <img src="img/logo/logo-completa.png" alt="Logo" id="img-logo-propaganda"/>
             </div>
 
-            {dataItens !== undefined && <HomeItemList dataItens={dataItens} title={'Ilhas recomendadas para você:'}/>}
+            {fetched && <HomeItemList dataItens={dataItens} title={'Ilhas recomendadas para você:'}/>}
         </div>
         <Footer />
         </>

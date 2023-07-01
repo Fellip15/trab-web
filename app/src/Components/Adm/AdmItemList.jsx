@@ -7,8 +7,10 @@ const AdmItemList = ({ dataItens, remItem }) => {
     console.log(dataItens);
     return (
         <div className="list-itens-adm">
-            {dataItens.map(item => 
-                <AdmItem key={item.id} dataItem={item} remItem={remItem}/>
+            {dataItens.map((card) => {
+                console.log(card)
+                return <AdmItem key={card.item._id} card={card} remItem={remItem} />
+            }
             )}
         </div>
     );

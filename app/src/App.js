@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom';
 import "./App.css";
 
 import Home         from './Pages/HomePage/Home';
@@ -16,11 +16,14 @@ import FinishBuy    from './Pages/FinishBuyPage/FinishBuy';
 
 import orgUsersInfo from './data/users.json';
 import orgItensInfo from './data/itens.json'; 
+import { baseURL } from './config';
+import axios from 'axios';
+import { useCookies } from 'react-cookie';
 
 
 // define as rotas da aplicação para cada componente
 const App = () => {
-
+    const [ cookies, setCookies, removeCookies ] = useCookies(["user"]);
 
     // lê o json das informações da aplicação e atribui à variáveis
     const [itensInfo, setItensInfo] = useState(undefined);
@@ -47,17 +50,34 @@ const App = () => {
         setItensInfo(newItensInfo);
     };
 
-    const addCartItem = (id, amount) => {
+    const addCartItem = async (idUser, item, amount) => {
+        if(idUser === undefined) {
+            return;
+        }
+
         let cart = JSON.parse(localStorage.getItem("cart"));
         if(cart === undefined || cart === null) {
-            cart = { itens: [] }
+            cart = {}
         }
-        
-        const itemToAdd = itensInfo.filter((item) => Number(item.id) === Number(id))[0];
-        if(itemToAdd === undefined) return;
-        itemToAdd.amount = amount;
 
-        cart.itens.push(itemToAdd);
+        let srcImage = null;
+        if(item.images !== null && item.images.length > 0) {
+            await axios.get(baseURL + "/image/" + item.images[0])
+            .then((res) => {
+                srcImage = res.data.image;
+            })
+            .catch((e) => {
+                console.log(e);
+            })
+        }
+
+        let itemToAdd = item;
+        itemToAdd.amount = Number(amount);
+        itemToAdd.image = srcImage.src;
+        if(cart[String(idUser)] === undefined) {
+            cart[String(idUser)] = [];
+        }
+        cart[String(idUser)].push(itemToAdd);
 
         console.log(cart.itens);
         localStorage.setItem("cart", JSON.stringify(cart));
@@ -77,7 +97,7 @@ const App = () => {
                 <Route path="/item/:itemId" exact element={<ItemDescr dataItens={itensInfo} addCartItem={addCartItem}/>}/>
                 <Route path="/about-us" exact element={<AboutUs />}/>
                 <Route path="/cart" exact element={<Cart />}/>
-                <Route path="/buy" exact element={<FinishBuy/>}/>
+                <Route path="/buy/:idUser" exact element={<FinishBuy/>}/>
 
                 {/* Rotas de administradores */}
                 <Route path="/adm" exact element={<Adm dataItens={itensInfo} setItems={setItensInfo} remItem={remItem} />}/>

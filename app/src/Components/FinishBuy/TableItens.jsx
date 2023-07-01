@@ -6,7 +6,7 @@ const TableItensFinishBuy = ({ itens }) => {
         return (<tr>
             <td className="tg-c3ow">{item.name}</td>
             <td className="tg-c3ow">x{item.amount}</td>
-            <td className="tg-c3ow">R$ {(item.price * item.amount).toFixed(2)}</td>
+            <td className="tg-c3ow">R$ {item.price}</td>
         </tr>)
     };
     
@@ -16,8 +16,10 @@ const TableItensFinishBuy = ({ itens }) => {
 
     const calcTotalPrice = (itens) => {
         let totalPrice = 0;
-        for (let item of itens)
-            totalPrice += item.price; // * item.amout;
+        console.log(itens);
+        for (let item of itens) {
+            totalPrice += Number(item.price) * Number(item.amount);
+        }
 
         return totalPrice;
     };

@@ -15,19 +15,29 @@ const Cart = () => {
     const [cookies, setCookies, removeCookies] = useCookies(["user"]);
     
     const [ dataItens, setDataItens ] = useState(undefined);
+    const [ idUser, setIdUser ] = useState(undefined);
     const removeCartItem = (event, id) => {
         let isToRemove = window.confirm("Tem certeza que deseja remover o item?");
         if(!isToRemove) return;
-
-        const newDataItens = dataItens.filter((item) => Number(item.id) !== Number(id));
+        
+        const newDataItens = dataItens.filter((item) => String(item._id) !== String(id));
+        
         setDataItens([...newDataItens]);
         updateCart(newDataItens);
     };
     const updateCart = (dataItens) => {
+        const cart = JSON.parse(localStorage.getItem("cart"));
+        
         if(dataItens === undefined || dataItens === null || dataItens.length <= 0) {
-            localStorage.removeItem("cart");
+            delete cart[String(idUser)];
+
+            if(Object.keys(cart).length <= 0)
+                localStorage.removeItem("cart");
+            else 
+                localStorage.setItem("cart", JSON.stringify(cart));
         } else {
-            localStorage.setItem("cart", JSON.stringify({ itens: dataItens }));
+            cart[String(idUser)] = dataItens;
+            localStorage.setItem("cart", JSON.stringify(cart));
         }
     };
 
@@ -51,20 +61,31 @@ const Cart = () => {
     };
     
     useEffect(() => {
-        authToken();
-
-        const cart = JSON.parse(localStorage.getItem("cart"));
-
-        if(cart !== null && cart !== undefined && cart.itens !== null && cart.itens !== undefined) {
-            setDataItens(cart.itens);
-        } else {
-            navigate("/", { state: { infoMessage:"O carrinho está vazio!" }});
-            setDataItens([]);
+        async function asyncGetCart() {
+            const user = await authToken();
+            if(user === undefined) {
+                return;
+            }
+            setIdUser(user._id);
+            
+            const cart = JSON.parse(localStorage.getItem("cart"));
+            console.log("User cart")
+            console.log(cart[String(user._id)]);
+            const userCart = cart[String(user._id)];
+    
+            if(userCart !== null && userCart !== undefined) {
+                setDataItens(userCart);
+            } else {
+                navigate("/", { state: { infoMessage:"O carrinho está vazio!" }});
+                setDataItens([]);
+            }
         }
+        asyncGetCart();
+
     }, []);
 
     const handleBuyButton = () => {
-        navigate("/buy");
+        navigate("/buy/" + idUser);
     };
     const handleHomeButton = () => {
         navigate("/");
@@ -72,8 +93,16 @@ const Cart = () => {
     const handleClearCart = () => {
         let isToRemove = window.confirm("Tem certeza que deseja remover os itens?");
         if(!isToRemove) return;
+        const teste = {};
 
-        localStorage.removeItem("cart");
+        const cart = JSON.parse(localStorage.getItem("cart"));
+
+        delete cart[String(idUser)];
+        if(Object.keys(cart).length <= 0)
+            localStorage.removeItem("cart");
+        else 
+            localStorage.setItem("cart", JSON.stringify(cart));
+
         setDataItens(undefined);
     };
 
