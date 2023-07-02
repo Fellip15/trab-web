@@ -4,13 +4,66 @@
     justify-content: center;
     align-items: center;
     width: 50vw;
-    min-width: 400px;
-    max-width: 600px;
+    min-width: 600px;
+    max-width: 900px;
     height: fit-content;
-    margin: auto;
-    padding-top: 3vh;
+    margin: 0 auto 10px auto;
+    padding: 3vh 12px;
     background-color: rgba(139, 180, 193, 0.65);
     border-radius: 20px;
+}
+
+.form-edit {
+    display: flex;
+    flex-direction: row;
+    gap: 12px;
+}
+
+.submit-img-container {
+    width: 350px;
+}
+
+.submit-file-item, .input-file-item::file-selector-button {
+    padding: 0 6px;
+    align-items: center;
+    justify-content: center;
+    background-color: #20333b;
+    border-radius: 10px;
+    border-style: none;
+    height: 25px;
+    margin-bottom: 6px;
+    align-self: center;
+    cursor: pointer;
+    color: white;
+    font-size: var(--font-size-p);
+    transition: 0.25s;
+}
+.submit-file-item:hover, .input-file-item::file-selector-button:hover {
+    color: #20333b;
+    background-color: var(--light-gray);
+}
+
+.list-images {
+    display: flex;
+    flex-direction: column;
+    max-height: 120px;
+    overflow-y: auto;
+    gap: 4px;
+    align-items: center;
+}
+
+.img-item-edit {
+    display: flex;
+    flex-direction: row;
+    gap: 2px;
+    align-items: center;
+    background-color: rgba(22, 22, 22, 0.15);
+    padding-right: 2px;
+    border-radius: 4px;
+}
+
+.delete-img-item {
+    cursor: pointer;
 }
 
 .forms-title {

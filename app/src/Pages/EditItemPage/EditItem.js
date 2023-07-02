@@ -291,77 +291,83 @@ const EditItem = ({ dataItens, setItems }) => {
         fetched && <>
             <Header />
             <Message />
-
-            <div className="forms-row">
-                <h2 className="forms-title">{itemId == "newItem" ? "Adicionar Item" : "Alterar Item"}</h2>
-            </div>
-            <div className="screen-edit-item content">
-                <form>
-                    <div className="forms-col">
-                        <div className="forms-row">
-                            <label>Nome:</label>
-                            <input type="text" id="name_input" defaultValue={name} onChange={(e) => handleSetValue(e.target.value, setName)} />
+            <div className="content">
+                <div className="forms-row">
+                    <h2 className="forms-title">{itemId == "newItem" ? "Adicionar Item" : "Alterar Item"}</h2>
+                </div>
+                <div className="screen-edit-item">
+                    <form className="form-edit">
+                        <div className="submit-img-container">
+                            <div className="submit-img-item">
+                                <input className="input-file-item" ref={refInputFile} type="file" onChange={handleSetImage} multiple />
+                                <input className="submit-file-item" type="submit" value="Upload imagem" onClick={handleAddImage}/>
+                            </div>
+                            <div className="list-images">
+                                {imagesURLs.map((imageSrc, index) => (
+                                    <div className="img-item-edit">
+                                        <img key={index} src={imageSrc} alt="not found" width={"100px"} />
+                                        <AiFillDelete className="delete-img-item" onClick={() => removeImage(index)} />
+                                    </div>
+                                ))}
+                            </div>
+                            <p>Imagens que o item já possui:</p>
+                            <div className="list-images">
+                                {storageImages.map((image) => {
+                                    return(
+                                    <div className="img-item-edit">
+                                        <img key={image._id} src={baseURL + "/" + image.src} alt="not found" width={"100px"} />
+                                        <AiFillDelete className="delete-img-item" onClick={() => removeImageStorage(image._id)} />
+                                    </div>
+                                )})}
+                            </div>
                         </div>
 
-                        <div className="forms-row">
-                            <label>Preço:</label>
-                            <input type="number" id="price_input" defaultValue={price} onChange={(e) => handleSetValue(e.target.value, setPrice)} />
+                        <div className="forms-col">
+                            <div className="forms-row">
+                                <label>Nome:</label>
+                                <input type="text" id="name_input" defaultValue={name} onChange={(e) => handleSetValue(e.target.value, setName)} />
+                            </div>
+
+                            <div className="forms-row">
+                                <label>Preço:</label>
+                                <input type="number" id="price_input" defaultValue={price} onChange={(e) => handleSetValue(e.target.value, setPrice)} />
+                            </div>
+
+                            <div className="forms-row">
+                                <label>Num parcelas:</label>
+                                <input type="number" id="num_parcelas_input" defaultValue={numParc} onChange={(e) => handleSetValue(e.target.value, setNumParc)} />
+                            </div>
+
+                            <div className="forms-row">
+                                <label>Descrição:</label>
+                                <textarea type="text" id="description_input" defaultValue={description} onChange={(e) => handleSetValue(e.target.value, setDescription)} />
+                            </div>
+
+                            <div className="forms-row">
+                                <label>Estoque:</label>
+                                <input type="number" id="stock_input" defaultValue={stock} onChange={(e) => handleSetValue(e.target.value, setStock)} />
+
+                                <label>Vendidos:</label>
+                                <input type="number" id="sold_input" defaultValue={sold} onChange={(e) => handleSetValue(e.target.value, setSold)} />
+                            </div>
+
+                            <br />
+                            <h3>Coordenadas</h3>
+                            <div className="forms-row">
+                                <label>Latitude:</label>
+                                <input type="number" id="lat_input" defaultValue={latitude} onChange={(e) => handleSetValue(e.target.value, setLatitude)} />
+
+                                <label>Longitude:</label>
+                                <input type="number" id="long_input" defaultValue={longitude} onChange={(e) => handleSetValue(e.target.value, setLongitude)} />
+                            </div>
                         </div>
-
-                        <div className="forms-row">
-                            <label>Num parcelas:</label>
-                            <input type="number" id="num_parcelas_input" defaultValue={numParc} onChange={(e) => handleSetValue(e.target.value, setNumParc)} />
-                        </div>
-
-                        <div className="forms-row">
-                            <label>Descrição:</label>
-                            <textarea type="text" id="description_input" defaultValue={description} onChange={(e) => handleSetValue(e.target.value, setDescription)} />
-                        </div>
-
-                        <div className="forms-row">
-                            <label>Estoque:</label>
-                            <input type="number" id="stock_input" defaultValue={stock} onChange={(e) => handleSetValue(e.target.value, setStock)} />
-
-                            <label>Vendidos:</label>
-                            <input type="number" id="sold_input" defaultValue={sold} onChange={(e) => handleSetValue(e.target.value, setSold)} />
-                        </div>
-
-                        <br />
-                        <h3>Coordenadas</h3>
-                        <div className="forms-row">
-                            <label>Latitude:</label>
-                            <input type="number" id="lat_input" defaultValue={latitude} onChange={(e) => handleSetValue(e.target.value, setLatitude)} />
-
-                            <label>Longitude:</label>
-                            <input type="number" id="long_input" defaultValue={longitude} onChange={(e) => handleSetValue(e.target.value, setLongitude)} />
-                        </div>
+                    </form>
+                    <div className="buttons-edit">
+                        <button class="submit-button" role="button" id="cancelar-button" onClick={(e) => redirectToAdm(e)}>Cancelar</button>
+                        <button class="submit-button" role="button" id="salvar-button" onClick={(e) => handleEditItem(e)}>Salvar</button>
                     </div>
-
-                    <div>
-                        <input ref={refInputFile} type="file" onChange={handleSetImage} multiple />
-                        <input type="submit" value="Upload imagem" onClick={handleAddImage}/>
-                    </div>
-                    {imagesURLs.map((imageSrc, index) => (
-                        <>
-                            <AiFillDelete onClick={() => removeImage(index)} />
-                            <img key={index} src={imageSrc} alt="not found" width={"100px"} />
-                        </>
-                    ))}
-                    <p>Imagens que o item já possui:</p>
-                    {storageImages.map((image) => {
-                        return(
-                        <>
-                            <AiFillDelete onClick={() => removeImageStorage(image._id)} />
-                            <img key={image._id} src={baseURL + "/" + image.src} alt="not found" width={"100px"} />
-                        </>
-                    )})}
-                </form>
-                <div className="buttons-edit">
-                    <button class="submit-button" role="button" id="cancelar-button" onClick={(e) => redirectToAdm(e)}>Cancelar</button>
-                    <button class="submit-button" role="button" id="salvar-button" onClick={(e) => handleEditItem(e)}>Salvar</button>
                 </div>
             </div>
-
             <Footer />
         </>
     );

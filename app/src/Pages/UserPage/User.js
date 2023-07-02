@@ -141,8 +141,12 @@ const User = ({}) => {
     };
 
     const savePers = async () => {
+        if (name === null || email === null || tel === null || cpf === null) {
+            toast.error('Preencha todos os campos!');
+            return;
+        }
+        
         const user = await authToken();
-
         if(user !== undefined) {
             await axios.request({
                 method: "put",
@@ -166,8 +170,12 @@ const User = ({}) => {
     };
 
     const saveEnd = async () => {
-        const user = await authToken();
+        if (endStreet === '' || endNum === null || endNeighborhood === '' || endCEP === null) {
+            toast.error('Preencha todos os campos!');
+            return;
+        }
 
+        const user = await authToken();
         if(user !== undefined) {
             await axios.request({
                 method: "put",

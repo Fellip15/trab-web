@@ -10,6 +10,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    margin-top: 30px;
 }
 
 .buy-infos {
@@ -83,7 +84,7 @@
 }
 
 .buying-buttons {
-    width: 70%;
+    width: 55%;
     padding: 0% 30%;
     display: flex;
     justify-content: space-between;
@@ -97,6 +98,7 @@
     padding: 10px;
     color: white;
     width: 30%;
+    min-width: 110px;
 
     cursor: pointer;
 }

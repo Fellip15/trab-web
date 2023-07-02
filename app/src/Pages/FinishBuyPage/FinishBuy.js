@@ -226,7 +226,7 @@ const FinishBuy = () => {
 
             { itemsToBuy !== undefined &&
                 (
-                    <div className="content finish-buy-screen fixed-screen">
+                    <div className="content finish-buy-screen">
                         <div className="buy-infos">
                             <div className='buy-table'>
                                 <TableItensFinishBuy itens={itemsToBuy} />
