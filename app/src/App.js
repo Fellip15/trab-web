@@ -77,7 +77,18 @@ const App = () => {
         if(cart[String(idUser)] === undefined) {
             cart[String(idUser)] = [];
         }
-        cart[String(idUser)].push(itemToAdd);
+
+        console.log(cart[String(idUser)]);
+        const indexOfExistItem = cart[String(idUser)].map((item) => String(item._id)).indexOf(String(itemToAdd._id));
+        console.log("index: ", indexOfExistItem);
+        if(indexOfExistItem === -1) {
+            cart[String(idUser)].push(itemToAdd);
+        } else {
+            cart[String(idUser)][indexOfExistItem].amount += itemToAdd.amount;
+            if(cart[String(idUser)][indexOfExistItem].amount > cart[String(idUser)][indexOfExistItem].stock) {
+                cart[String(idUser)][indexOfExistItem].amount = cart[String(idUser)][indexOfExistItem].stock;
+            }
+        }
 
         console.log(cart.itens);
         localStorage.setItem("cart", JSON.stringify(cart));

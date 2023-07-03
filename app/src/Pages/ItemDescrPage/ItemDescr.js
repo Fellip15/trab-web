@@ -10,6 +10,7 @@ import { toast } from "react-toastify";
 import axios from "axios";
 import { baseURL } from "../../config";
 import { useCookies } from "react-cookie";
+import { AiFillMinusSquare, AiFillPlusSquare } from "react-icons/ai";
 
 const ItemDescr = ({ addCartItem }) => {
     const locate = useLocation();
@@ -46,8 +47,6 @@ const ItemDescr = ({ addCartItem }) => {
         if(locate.state && locate.state.errorMessage) {
             toast.error(locate.state.errorMessage);
         }
-
-        authToken();
     }, [locate]);
 
     const loadImages = async (item) => {
@@ -84,37 +83,56 @@ const ItemDescr = ({ addCartItem }) => {
         navigate(`/buy/${idUser}`, {state: {itemToBuy: itemToBuy}});
     };
 
-    const authToken = async () => {
-        let user = undefined;
-        await axios.post(baseURL + "/users/token", {
-            token: cookies.user
-        })
-        .then((res) => {
-            console.log(res.data.user);
-            user = res.data.user;
-            setIdUser(user._id);
-        })
-        .catch((e) => {
-            removeCookies("user");
-        });
-
-        return user;
-    };
-
     // adiciona o item ao carrinho do usuário
     const handleAddCartItem = () => {
-        if(idUser === undefined) {
-            toast.warn("Para adicionar um item ao carrinho é necessário estar logado!");
-            return;
-        }
+        
+        axios.get(baseURL + "/getUserByToken/" + cookies.user)
+        .then((res) => {
+            const idUser = res.data.user._id;
+            addCartItem(idUser, dataItem, refAmount.current.value);
+            navigate('/', { state: { successMessage: "Item adicionado ao carrinho"} });
+        })
+        .catch((e) => {
+            console.log(e);
+            if(e && e.response && e.response.status === 401) {
+                removeCookies("user");
+                navigate("/login", { state: { errorMessage: "Não autorizado!" }});
+                return;
+            } else if (e && e.response) {
+                toast.warn("Para adicionar um item ao carrinho é necessário estar logado!");
+                return;
+            }
+            navigate("/", { state: { errorMessage: "Ocorreu algum erro" }});
+        });
 
-        addCartItem(idUser, dataItem, refAmount.current.value);
-        navigate('/', { state: { successMessage: "Item adicionado ao carrinho"} });
+    };
+    const verifyAmount = () => {
+        const numericValue = String(refAmount.current.value).replaceAll("-", "").replace(/\D/g, '');
+        refAmount.current.value = numericValue;
+        if(Number(numericValue) > Number(dataItem.stock)) {
+            refAmount.current.value = dataItem.stock;
+        }
+        if(Number(numericValue) <= 0) {
+            refAmount.current.value = 1;
+        }
+    };
+
+    const changeAmountValue = (e, value) => {
+        refAmount.current.value = Number(refAmount.current.value) + Number(value);
+        verifyAmount(e);
     };
 
     const chooseInputAmount = () => {
         if(dataItem.stock > 0) {
-            return <input type="number" id="amount" ref={refAmount} defaultValue={1} min={1} max={dataItem.stock} disabled={Number(dataItem.stock) <= 0}/>
+            return (
+                <div className="input-amount">
+                    <AiFillMinusSquare onClick={(e) => changeAmountValue(e, -1)} className="icon-amount"/>
+                    <input type="text" id="amount" ref={refAmount} onChange={(e) => verifyAmount(e)} defaultValue={1} min={1} max={dataItem.stock} disabled={Number(dataItem.stock) <= 0}/>
+                    <AiFillPlusSquare onClick={(e) => changeAmountValue(e, 1)} className="icon-amount"/>
+                </div>
+
+            )
+            
         }
 
         return <input type="text" id="amount" ref={refAmount} value="Fora de estoque" disabled/>

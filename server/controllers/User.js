@@ -9,40 +9,29 @@ const STATUS_CODE_OK = 200;
 const STATUS_CODE_NO_CONTENT = 204;
 const STATUS_CODE_DELETE_ACCEPTED = 202;
 const STATUS_CODE_ERROR = 400;
+const STATUS_CODE_UNAUTHORIZED = 401;
 const STATUS_CODE_INTERNAL_SERVER_ERROR = 500;
 
-exports.authToken = async (req, res) => {
-    const token = req.body.token;
-
+const authToken = async (token) => {
     if (util.isEmpty(token)) 
-        return res.status(STATUS_CODE_ERROR).send({ message: "Não autorizado!" });
-
+    return { user: null, admin: false};
+    
+    let Token = null;
     try {
-        const Token = await utilToken.verify(token);
-        const user = await UserSchema.findById(Token.id);
-
-        res.status(STATUS_CODE_OK).send({
-            message: "Token verificado!",
-            user: {
-                _id: user._id,
-                userName: user.userName,
-                name: user.name,
-                email: user.email,
-                tel: user.tel,
-                cpf: user.cpf,
-                image: user.image,
-                end_street: user.end_street,
-                end_num: user.end_num,
-                end_neighborhood: user.end_neighborhood,
-                end_cep: user.end_cep
-            }
-        });
+        Token = await utilToken.verify(token);
     } catch (error) {
         console.log(error)
-        res.status(STATUS_CODE_ERROR).send({ 
-            message: "Não autorizado!",
-            error: error
-        });
+        return { user: null, admin: false };
+    }
+    
+    try {
+        console.log(Token.id);
+        const userFound = await UserSchema.findById(Token.id);
+        
+        return { user: userFound, admin: false };
+    } catch (erro) {
+        console.log(erro);
+        return { user: null, admin: false };
     }
 };
 
@@ -57,6 +46,9 @@ exports.authUser = async (req, res) => {
     try {
         if(userName.includes("@")) user = await UserSchema.findOne({ email: userName });
         else user = await UserSchema.findOne({ userName: userName });
+
+        //TODO:
+        //se não achar tem que procurar nos admins
     } catch(e) {
         console.log(e);
         return res.status(STATUS_CODE_INTERNAL_SERVER_ERROR).json({ message: "Erro ao fazer login." });
@@ -82,7 +74,6 @@ const validateEmail = (email) => {
 };
 
 exports.create = async (req, res) => {
-    console.log(req.body)
     const { userName, name, email, password, confirmPassword } = req.body;
 
     if(util.isEmpty(userName) || util.isEmpty(name) || util.isEmpty(email) || util.isEmpty(password) || util.isEmpty(confirmPassword)) {
@@ -152,10 +143,15 @@ exports.remove = async (req, res) => {
 };
 
 exports.update = async (req, res) => {
+    const { user, admin } = await authToken(req.body.auth);
+    if(user === null) {
+        return res.status(STATUS_CODE_UNAUTHORIZED).json({ message: "Não autorizado." });
+    }
+
     const salt = await bcrypt.genSalt(10);
     const encryptedPassword = await bcrypt.hash(req.body.password, salt);
     try {
-        await UserSchema.findByIdAndUpdate(req.params.id, {
+        await user.updateOne({
             $set: {
                 userName: req.body.userName,
                 name: req.body.name,
@@ -174,8 +170,13 @@ exports.update = async (req, res) => {
 };
 
 exports.updatePers = async (req, res) => {
+    const { user, admin } = await authToken(req.body.auth);
+    if(user === null) {
+        return res.status(STATUS_CODE_UNAUTHORIZED).json({ message: "Não autorizado." });
+    }
+
     try {
-        await UserSchema.findByIdAndUpdate(req.params.id, {
+        await user.updateOne({
             $set: {
                 name: req.body.name,
                 email: req.body.email,
@@ -194,8 +195,13 @@ exports.updatePers = async (req, res) => {
 };
 
 exports.updateEnd = async (req, res) => {
+    const { user, admin } = await authToken(req.body.auth);
+    if(user === null) {
+        return res.status(STATUS_CODE_UNAUTHORIZED).json({ message: "Não autorizado." });
+    }
+
     try {
-        await UserSchema.findByIdAndUpdate(req.params.id, {
+        await user.updateOne({
             $set: {
                 end_street: req.body.street,
                 end_num: req.body.num,
@@ -214,13 +220,13 @@ exports.updateEnd = async (req, res) => {
 };
 
 exports.updateImage = async (req, res) => {
-    const { idUser, idImage } = req.body;
-    console.log(idUser, idImage)
-    let user = await UserSchema.findById(idUser);
-    
-    console.log(user);
-    if(user === null)
-        res.status(STATUS_CODE_ERROR).send({ message: "Não foi possível achar o usuário" });
+    const { user, admin } = await authToken(req.body.auth);
+
+    if(user === null) {
+        return res.status(STATUS_CODE_UNAUTHORIZED).json({ message: "Não autorizado." });
+    }
+
+    const { idImage } = req.body;
     
     const oldImage = await ImageSchema.findById(user.image);
     console.log(oldImage)
@@ -232,7 +238,7 @@ exports.updateImage = async (req, res) => {
     const newImage = await ImageSchema.findById(idImage);
     console.log(newImage);
     try {
-        await UserSchema.findByIdAndUpdate(idUser, {
+        await user.updateOne({
             image: newImage._id
         })
 
@@ -243,13 +249,17 @@ exports.updateImage = async (req, res) => {
 };
 
 exports.updatePassword = async (req, res) => {
+    const { user, admin } = await authToken(req.body.auth);
+    if(user === null) {
+        return res.status(STATUS_CODE_UNAUTHORIZED).json({ message: "Não autorizado." });
+    }
+    
     const { oldPassword, newPassword } = req.body;
     const salt = await bcrypt.genSalt(10);
     const encryptedPassword = await bcrypt.hash(newPassword, salt);
     
     // verifica a senha antiga para prosseguir a atualização
-    const userData = await UserSchema.findById(req.params.id);
-    if (!(await userData.matchPassword(oldPassword))) {
+    if (!(await user.matchPassword(oldPassword))) {
         res.status(STATUS_CODE_ERROR).json({
             message: "Senha incorreta.",
             error: new Error('Senha incorreta')
@@ -259,7 +269,7 @@ exports.updatePassword = async (req, res) => {
 
     // atualiza a senha no banco
     try {
-        await UserSchema.findByIdAndUpdate(req.params.id, {
+        await user.updateOne({
             $set: {
                 password: encryptedPassword
             }
@@ -318,7 +328,6 @@ exports.findByUserName = async (req, res) => {
 };
 
 exports.clearUsers = async (req, res) => {
-    console.log("Deletando tudo")
     try {
         const data = await UserSchema.find();
         data.forEach(async (user) => await user.deleteOne());
@@ -330,4 +339,13 @@ exports.clearUsers = async (req, res) => {
             error: error
         });
     }
+};
+
+exports.getUserByToken = async (req, res) => {
+    const { user, admin } = await authToken(req.params.token);
+    if(user === null) {
+        return res.status(STATUS_CODE_UNAUTHORIZED).json({ message: "Não autorizado." });
+    }
+    console.log(user);
+    return res.status(STATUS_CODE_OK).send({message: "Usuário buscado com sucesso!", user: user});
 };

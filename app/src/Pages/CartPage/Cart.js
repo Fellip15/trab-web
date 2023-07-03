@@ -35,50 +35,40 @@ const Cart = () => {
                 localStorage.removeItem("cart");
             else 
                 localStorage.setItem("cart", JSON.stringify(cart));
+            setDataItens(undefined);
+            navigate("/", { state: { infoMessage: "Carrinho vazio!" }});
         } else {
             cart[String(idUser)] = dataItens;
             localStorage.setItem("cart", JSON.stringify(cart));
         }
     };
-
-    const authToken = async () => {
-        let user = undefined;
-        await axios.post(baseURL + "/users/token", {
-            token: cookies.user
-        })
-        .then((res) => {
-            console.log(res.data.user);
-            user = res.data.user;
-        })
-        .catch((e) => {
-            removeCookies("user");
-            navigate("/login", { state: { 
-                errorMessage: e.response.data.message
-            }});
-        });
-
-        return user;
-    };
     
     useEffect(() => {
         async function asyncGetCart() {
-            const user = await authToken();
-            if(user === undefined) {
-                return;
-            }
-            setIdUser(user._id);
-            
-            const cart = JSON.parse(localStorage.getItem("cart"));
-            console.log("User cart")
-            console.log(cart[String(user._id)]);
-            const userCart = cart[String(user._id)];
-    
-            if(userCart !== null && userCart !== undefined) {
+            await axios.get(baseURL + "/getUserByToken/" + cookies.user)
+            .then(async (res) => {
+                console.log(res.data);
+                const user = res.data.user;
+                setIdUser(user._id);
+                
+                const cart = await JSON.parse(localStorage.getItem("cart"));
+                if(cart === null || cart[user._id] === null) {
+                    navigate("/", { state: { infoMessage:"O carrinho está vazio!" }});
+                    return;
+                }
+                const userCart = cart[String(user._id)];
+                
                 setDataItens(userCart);
-            } else {
-                navigate("/", { state: { infoMessage:"O carrinho está vazio!" }});
-                setDataItens([]);
-            }
+            })
+            .catch((e) => {
+                console.log(e);
+                if(e.response.status === 401) {
+                    removeCookies("user");
+                    navigate("/login", { state: { errorMessage: "Não autorizado!" }});
+                    return;
+                }
+                navigate("/", { state: { errorMessage: "Ocorreu algum erro" }});
+            });
         }
         asyncGetCart();
 
@@ -104,23 +94,24 @@ const Cart = () => {
             localStorage.setItem("cart", JSON.stringify(cart));
 
         setDataItens(undefined);
+        navigate("/", { state: { successMessage: "Carrinho limpo!"}});
     };
 
     return (
         <>
             <Header />
-            <div className="container-cart content">
-                <h1 className="font-title-black">Carrinho</h1>
-                <div className='cart'>
-                    <CartItemList dataItens={dataItens} removeCartItem={removeCartItem}/>
-                    { (dataItens !== undefined && dataItens !== null && dataItens.length > 0) &&
+            {dataItens !== undefined && 
+                <div className="container-cart content">
+                    <h1 className="font-title-black">Carrinho</h1>
+                    <div className='cart'>
+                        <CartItemList dataItens={dataItens} removeCartItem={removeCartItem}/>
                         <div className="cart-buttons">
                             <input type="button" onClick={handleClearCart} id="clear-cart-button" name='clear-cart-button' value="Limpar carrinho"/>
                             <input type="button" onClick={handleBuyButton} id="buy-button" name='buy-button' value="Finalizar compra"/>
                         </div>
-                    }
+                    </div>
                 </div>
-            </div>
+            }
             <Footer />
         </>
     );

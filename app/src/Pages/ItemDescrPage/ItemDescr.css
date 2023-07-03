@@ -153,3 +153,34 @@
     gap: 10px;
     align-items: center;
 }
+
+.input-amount {
+    max-width: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#amount {
+    width: 40%;
+    max-width: 50px;
+    text-align: center;
+    height: 15px;
+    padding: 2px;
+    border: none;
+}
+.icon-amount {
+    height: 17px;
+    width: 17px;
+    color: black;
+    border: none;
+}
+.icon-amount:hover {
+    color: rgba(0, 0, 0, 0.616);
+}
+.icon-amount:active {
+    color: rgba(0, 0, 0, 0.336);
+}
+#amount:disabled {
+    max-width: none;
+    background-color: transparent;
+}

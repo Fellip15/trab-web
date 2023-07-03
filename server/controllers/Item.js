@@ -241,9 +241,11 @@ exports.buyItens = async (req, res) => {
         }
 
         const newStock = Number(item.stock) - amount;
+        const newSold = Number(item.sold) + amount;
         console.log(newStock);
         await item.updateOne({
-            stock: newStock
+            stock: newStock,
+            sold: newSold
         });
         message += "O item " + item.name + " foi comprado com sucesso";
     }

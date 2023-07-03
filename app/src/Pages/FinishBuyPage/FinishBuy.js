@@ -58,22 +58,19 @@ const FinishBuy = () => {
     }
 
     const authToken = async () => {
-        let user = undefined;
-        await axios.post(baseURL + "/users/token", {
-            token: cookies.user
-        })
+        await axios.get(baseURL + "/getUserByToken/" + cookies.user)
         .then((res) => {
-            user = res.data.user;
-            setUser(user);
+            setUser(res.data.user);
         })
         .catch((e) => {
-            removeCookies("user");
-            navigate("/login", { state: { 
-                errorMessage: e.response.data.message
-            }});
+            console.log(e);
+            if(e && e.response && e.response.status === 401) {
+                removeCookies("user");
+                navigate("/login", { state: { errorMessage: "Não autorizado!" }});
+                return;
+            }
+            navigate("/", { state: { errorMessage: "Ocorreu algum erro" }});
         });
-
-        return user;
     };
 
     useEffect(() => {
@@ -140,7 +137,7 @@ const FinishBuy = () => {
             </div>
             <p>Você pode copiar a chave:</p>
             <div id="payment-key-pix">
-                <input type="text" id="key-pix" name="key-pix" value={keyPix} readOnly={true}/>
+                <input type="text" id="key-pix" name="key-pix" defaultValue={keyPix} readOnly={true}/>
                 <BiCopy id="copy-key-pix" onClick={() => {navigator.clipboard.writeText(keyPix); alert("Chave copiada")}}/>
             </div>
         </div>
@@ -200,17 +197,21 @@ const FinishBuy = () => {
         })
         .then((res) => {
             console.log(res.data.message);
-            const cart = JSON.parse(localStorage.getItem("cart"));
-            delete cart[String(idUser)];
-            if(Object.keys(cart).length <= 0)
-                localStorage.removeItem("cart");
-            else 
-                localStorage.setItem("cart", JSON.stringify(cart));
+            
+            if(location.state === null || location.state === undefined || location.state.itemToBuy === null || location.state.itemToBuy === undefined) {
+                const cart = JSON.parse(localStorage.getItem("cart"));
+                delete cart[String(idUser)];
+                if(Object.keys(cart).length <= 0)
+                    localStorage.removeItem("cart");
+                else 
+                    localStorage.setItem("cart", JSON.stringify(cart));
+            }
     
             navigate("/", { state: { successMessage:"Sua compra foi realizada com sucesso!" }});
         })
         .catch((e) => {
             console.log(e);
+            toast.error(e.response.data.message);
         })
 
     }

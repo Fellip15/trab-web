@@ -17,7 +17,6 @@ const User = ({}) => {
     const [cookies, setCookies, removeCookies] = useCookies(["user"]);
 
     // variáveis de estado e setters
-    const [ idUser, setIdUser ] = useState(undefined);
     const [ userName, setUserName ] = useState("");
     const [ name, setName ] = useState("");
     const [ email, setEmail ] = useState("");
@@ -30,8 +29,8 @@ const User = ({}) => {
     const [ srcImage, setSrcImage ] = useState("/img/defaultProfile.png");
     
     const setUser = (user) => {
+        console.log("Settando usuario:")
         console.log(user);
-        setIdUser(user._id);
         setUserName(user.userName);
         setName(user.name);
         setEmail(user.email);
@@ -49,19 +48,35 @@ const User = ({}) => {
     
     useEffect(() => {
         async function fetchAndSetUser() {
-            const user = await authToken();
-            if(user !== undefined) {
-                setUser(user);
-                axios.get(baseURL + "/image/" + user.image)
-                .then((res) => {
-                    setSrcImage(baseURL + "/" + res.data.image.src);
-                })
-                .catch((e) => {
-                    console.log(e)
-                    toast.info(e.response.data.message);
-                });
+            let userFound = null;
+            await axios.get(baseURL + "/getUserByToken/" + cookies.user)
+            .then(async (res) => {
+                console.log(res.data);
+                userFound = res.data.user;
+                setUser(userFound);
+            })
+            .catch((e) => {
+                console.log(e);
+                if(e.response.status === 401) {
+                    removeCookies("user");
+                    navigate("/login", { state: { errorMessage: "Não autorizado!" }});
+                    return;
+                }
+                navigate("/", { state: { errorMessage: "Ocorreu algum erro" }});
+            });
+
+            if(userFound === null) {
+                return;
             }
 
+            await axios.get(baseURL + "/image/" + userFound.image)
+            .then((res) => {
+                setSrcImage(baseURL + "/" + res.data.image.src);
+            })
+            .catch((e) => {
+                console.log(e)
+                toast.info(e.response.data.message);
+            });
         }
         fetchAndSetUser();
     }, []);
@@ -105,21 +120,20 @@ const User = ({}) => {
             return;
         }
 
-        const user = await authToken();
-        if(user !== undefined) {
-            await axios.put(baseURL + "/usersPassword/" + user._id, {
-                oldPassword: valOldPassword,
-                newPassword: valNewPassword
-            })
-            .then((res) => {
-                console.log(res);
-                toast.success("Senha atualizada com sucesso!");
-            })
-            .catch((e) => {
-                console.log(e.response)
-                toast.error(e.response.data.message + " Erro: " + e.response.data.error.message);
-            });
-        }
+        
+        await axios.put(baseURL + "/usersPassword", {
+            oldPassword: valOldPassword,
+            newPassword: valNewPassword,
+            auth: cookies.user
+        })
+        .then((res) => {
+            console.log(res);
+            toast.success("Senha atualizada com sucesso!");
+        })
+        .catch((e) => {
+            console.log(e.response)
+            toast.error(e.response.data.message + " Erro: " + e.response.data.error.message);
+        });
     };
 
     const handleChangeTel = (event) => {
@@ -146,27 +160,26 @@ const User = ({}) => {
             return;
         }
         
-        const user = await authToken();
-        if(user !== undefined) {
-            await axios.request({
-                method: "put",
-                url: baseURL + "/usersPers/" + user._id,
-                data:{
-                    name: name,
-                    email: email,
-                    tel: Number(tel.replace(/\D/g, '')),
-                    cpf: Number(cpf.replace(/\D/g, ''))
-                }
-            })
-            .then((res) => {
-                console.log(res);
-                toast.success(res.data.message);
-            })
-            .catch((e) => {
-                console.log(e.response)
-                toast.error(e.response.data.message + " Erro: " + e.response.data.error.message);
-            });
-        }
+        
+        await axios.request({
+            method: "put",
+            url: baseURL + "/usersPers",
+            data:{
+                name: name,
+                email: email,
+                tel: Number(tel.replace(/\D/g, '')),
+                cpf: Number(cpf.replace(/\D/g, '')),
+                auth: cookies.user
+            }
+        })
+        .then((res) => {
+            console.log(res);
+            toast.success(res.data.message);
+        })
+        .catch((e) => {
+            console.log(e.response)
+            toast.error(e.response.data.message + " Erro: " + e.response.data.error.message);
+        });
     };
 
     const saveEnd = async () => {
@@ -175,27 +188,26 @@ const User = ({}) => {
             return;
         }
 
-        const user = await authToken();
-        if(user !== undefined) {
-            await axios.request({
-                method: "put",
-                url: baseURL + "/usersEnd/" + user._id,
-                data:{
-                    street: endStreet,
-                    num: endNum,
-                    neighborhood: endNeighborhood,
-                    cep: Number(endCEP.replace(/\D/g, ''))
-                }
-            })
-            .then((res) => {
-                console.log(res);
-                toast.success(res.data.message);
-            })
-            .catch((e) => {
-                console.log(e.response)
-                toast.error(e.response.data.message + " Erro: " + e.response.data.error.message);
-            });
-        }
+        
+        await axios.request({
+            method: "put",
+            url: baseURL + "/usersEnd",
+            data:{
+                street: endStreet,
+                num: endNum,
+                neighborhood: endNeighborhood,
+                cep: Number(endCEP.replace(/\D/g, '')),
+                auth: cookies.user
+            }
+        })
+        .then((res) => {
+            console.log(res);
+            toast.success(res.data.message);
+        })
+        .catch((e) => {
+            console.log(e.response)
+            toast.error(e.response.data.message + " Erro: " + e.response.data.error.message);
+        });
     };
 
     const [selectedFile, setSelectedFile] = useState(null);
@@ -216,6 +228,7 @@ const User = ({}) => {
         }
 
         const formData = new FormData();
+        console.log("name:", name);
         formData.append("name", "image" + name);
         formData.append("file", selectedFile);
         
@@ -231,6 +244,7 @@ const User = ({}) => {
             console.log(res.data);
             toast.success(res.data.message);
             imageStorage = res.data.image;
+            console.log(imageStorage);
         })
         .catch((e) => {
             console.log(e);
@@ -241,8 +255,8 @@ const User = ({}) => {
             // se o upload foi bem sucedido
             // linkar ela com o user
             axios.put(baseURL + "/usersImage", {
-                idUser: idUser,
-                idImage: imageStorage._id
+                idImage: imageStorage._id,
+                auth: cookies.user
             })
             .then((res) => {
                 console.log(res);

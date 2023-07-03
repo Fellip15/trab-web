@@ -37,7 +37,7 @@ const EditItem = ({ dataItens, setItems }) => {
     const setEditingItem = async (item) => {
         setName(item.name);
         setPrice(item.price);
-        setNumParc(item.numParce);
+        setNumParc(item.numParc);
         setStock(item.stock);
         setSold(item.sold);
         setLatitude(item.latitude);
@@ -172,7 +172,7 @@ const EditItem = ({ dataItens, setItems }) => {
                 })
                 .then((res) => {
                     console.log(res.data);
-                    navigate("/adm", { state: { successMessage: res.data.message}})
+                    navigate("/adm", { state: { successMessage: res.data.message}});
                 })
                 .catch((e) => {
                     console.log(e);
@@ -194,13 +194,16 @@ const EditItem = ({ dataItens, setItems }) => {
             description: description
         })
         .then((res) => {
-            navigate("/adm", { state: { successMessage: res.data.message }});
+            toast.success(res.data.message);
         })
         .catch((e) => {
             toast.error(e.response.data.message);
         });
 
-        if(images.length <= 0) return;
+        if(images.length <= 0) {
+            navigate("/adm", { state: { successMessage: "Item salvo com sucesso!"}});
+            return;
+        }
 
         const formData = new FormData();
         formData.append("name", "image " + name);
@@ -242,6 +245,8 @@ const EditItem = ({ dataItens, setItems }) => {
                 console.log(e);
                 toast.error(e.response.data.message);
             });
+        } else {
+            navigate("/adm", { state: { successMessage: "Item salvo com sucesso."}});
         }
     };
 

@@ -43,6 +43,8 @@ const Adm = () => {
             .then((res) => {
                 console.log(res.data.cardItens);
                 setDataItens(res.data.cardItens);
+                console.log("Itens:");
+                console.log(res.data.cardItens);
                 setFetched(true);
             })
             .catch((e) => {
