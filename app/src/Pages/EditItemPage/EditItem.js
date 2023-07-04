@@ -55,8 +55,6 @@ const EditItem = ({ dataItens, setItems }) => {
                 toast.error(e.response.data.message);
             });
         }
-        console.log("Imagens")
-        console.log(imagesStorage);
         setStorageImages([...imagesStorage]);
     }
 
@@ -78,7 +76,6 @@ const EditItem = ({ dataItens, setItems }) => {
 
         if(fetched || itemIdParam === "newItem") return;
 
-        console.log("Buscando")
         axios.get(baseURL + "/item/" + itemIdParam)
         .then((res) => {
             console.log(res.data);
@@ -140,8 +137,6 @@ const EditItem = ({ dataItens, setItems }) => {
         if(item !== undefined) {
             const formData = new FormData();
             formData.append("name", "image " + name);
-            console.log("Imagens:");
-            console.log(images);
             images.forEach((images) => formData.append("file", images));
             
             let imagesStorage = undefined;
@@ -207,8 +202,6 @@ const EditItem = ({ dataItens, setItems }) => {
 
         const formData = new FormData();
         formData.append("name", "image " + name);
-        console.log("Imagens:");
-        console.log(images);
         images.forEach((images) => formData.append("file", images));
         
         let imagesStorage = undefined;
@@ -270,8 +263,6 @@ const EditItem = ({ dataItens, setItems }) => {
     }
 
     const removeImageStorage = (id) => {
-        console.log(itemId);
-        console.log(id);
         axios({
             method: "delete",
             url: baseURL + "/deleteImageItem",

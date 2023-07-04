@@ -56,7 +56,6 @@ const Register = ({ dataUsers, addUser }) => {
     // verifica os dados de cadastro e finaliza
     const handleClickRegister = () => {
         const url = baseURL + "/users";
-        console.log("Fazendo a requisição para" + url);
         // requisicao pro backend
         axios.post(url, {
             userName: inputUser,

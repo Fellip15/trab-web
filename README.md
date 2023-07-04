@@ -1,26 +1,41 @@
 # Trabalho de Introdução ao Desenvolvimento Web
 
-### [Link do mockup do projeto](https://www.figma.com/file/7SPhFp78MEqhogvI7zdPX7/Projeto-Web?type=design&node-id=0%3A1&t=hIrwpg2fKBBboKdN-1)
-
-### Sobre as entregas parciais
-<p>A pasta "html-css" do repositório contém os arquivos do <b>Milestone 1</b> (primeira entrega do projeto).</p>
-<p>A pasta "app" do repositório contém os arquivos do <b>Milestone 2</b> (segunda entrega do projeto). Se deseja rodar a aplicação dele, escreva os comandos (dentro da pasta "app") em seu terminal:</p>
-
-```bash
-npm install
-npm start
-```
-<p>Os códigos referentes à uma das entregas não dependem dos da outra entrega para funcionarem.</p>
-
-### Grupo
-Gabriel Natal Coutinho<br>
-Fellip Silva Alves<br>
-João Vitor Tigre<br>
-
 ### Introdução
 <p>
 Neste trabalho da disciplina, o grupo desenvolve completamente um site de vendas de imóveis próximos ao mar e lotes de ilhas, denominado <b>OceanView Properties</b>.
 </p>
+
+### [Link do mockup do projeto](https://www.figma.com/file/7SPhFp78MEqhogvI7zdPX7/Projeto-Web?type=design&node-id=0%3A1&t=hIrwpg2fKBBboKdN-1)
+
+### Sobre as entregas parciais
+<p>A pasta "html-css" do repositório contém os arquivos do <b>Milestone 1</b> (primeira entrega do projeto). Os códigos escritos nela não compõem o funcionamento da aplicação final, servindo apenas de modelo para o desenvolvimento.</p>
+<p>A pasta "app" do repositório contém os arquivos do <b>Milestone 2</b> (segunda entrega do projeto) com algumas adições feitas no <b>Milestone 3<b> (terceira entrega do projeto).</p>
+<p>Por fim, a pasta "server" do repositório foi feita completamente durante o <b>Milestone 3</b>.</p>
+<p>Tanto os códigos da pasta "app" (cliente) quanto os da pasta "server" (servidor) compõem realmente a aplicação do trabalho.</p>
+
+### Como rodar o projeto
+<p>Para o site funcionar em sua máquina, é necessário abrir 2 abas em seu terminal simultaneamente. Em uma delas, vá para dentro da pasta "server" do projeto e digite os comandos:</p>
+```bash
+npm install
+npm run dev
+```
+Isso irá inicializar a parte do servidor da aplicação.
+
+<p>Enquanto isso, na outra aba do seu terminal, vá para dentro da pasta "app" do projeto e digite os comandos:</p>
+```bash
+npm install
+npm start
+```
+Isso irá inicializar a parte do cliente da aplicação.
+
+<p>Após isso, o projeto deverá funcionar corretamente em seu navegador no localhost e porta 3000</p>
+
+### Diagrama de acesso às páginas
+<p>
+Ao criar o HTML e CSS de todas as páginas de nosso site, definimos um grafo que mostra quais páginas poderão ser acessadas diretamente através de outras ou quais páginas possuem locais de acessos a outras. Para isso, as páginas de nossa aplicação Web seguirá a seguinte lógica de acesso: 
+</p>
+
+<img src="https://github.com/Fellip15/trab-web/blob/main/diagr%20paginas.jpg" width="500"/>
 
 ### Ferramentas
 <p>
@@ -31,8 +46,8 @@ Para a implementação, são utilizadas algumas técnicas/ferramentas de desenvo
     <li>Utilização do Miro para desenhar o diagrama (1° Entrega);
     <li>Técnicas de HTML e CSS para a estilização das páginas (1° Entrega);
     <li>Utilização do React e muitos de seus plugins para o front end completo (2° Entrega);
+    <li>Utilização do Node.js com Express e Mongoose para a elaboração do back end completo, juntamente com banco de dados (3° Entrega);
 </ul>
-E mais outras que serão utilizadas e especificadas nas próximas entregas do trabalho.
 
 ### Requisitos
 <p>
@@ -66,10 +81,10 @@ Para a implementação do requisitos descritos, o projeto terá:
 Para o funcionamento do servidor, o banco de dados vai precisar armazenar os dados sobre:
 </p>
 <ul>
-    <li>Clientes: nome completo, email, senha, foto, endereço, telefone;
-    <li>Endereço: CEP, cidade, estado, país, rua, número, complemento;
-    <li>Administrador: usuário, email, senha;
-    <li>Ítem: nome, descrição, preço, quant estoque, quant vendida, fotos, coordenadas.
+    <li>Clientes: nome de usuário, nome completo, email, cpf, senha, foto, endereço, telefone;
+    <li>Endereço: CEP, rua, número, bairro;
+    <li>Administrador: nome de usuário, email, senha;
+    <li>Ítem: nome, descrição, preço, número de parcelas, quant estoque, quant vendida, fotos, coordenadas.
 </ul>
 
 ### Sobre a funcionalidade extra
@@ -87,9 +102,26 @@ REACT_APP_GOOGLE_MAPS_API_KEY=xxxxxx_chave_pessoal_xxxxxxx
 Portanto, se deseja ver o funcionamento do minimapa em cada item, obtenha sua chave de acesso à API e crie um arquivo ".env" colocando a chave onde é especificado.
 </p>
 
-### Diagrama de acesso às páginas
-<p>
-Ao criar o HTML e CSS de todas as páginas de nosso site, definimos um grafo que mostra quais páginas poderão ser acessadas diretamente através de outras ou quais páginas possuem locais de acessos a outras. Para isso, as páginas de nossa aplicação Web seguirá a seguinte lógica de acesso: 
-</p>
+### Plano de testes
+Com o projeto finalizado, é possível realizar alguns testes sobre suas principais funcionalidades e verifica se elas operam como o esperado. Para isso, temos os testes sobre a aplicação:
+<ul>
+    <li><b>Cadastrar novo usuário:</b> Na tela inicial, clique no ícone do canto superior direito para ser direcionado à tela de Login, nela vc clica em "ainda não possui cadastro" para ir para a tela de cadastro. Então preencha os dados do novo usuário, confirme e, se nenhum nome de usuário ou email descritos foram utilizados, o cadastro será feito;
+    <li><b>Fazer login como usuário:</b> Na tela inicial, clique no ícone do canto superior direito para ser direcionado à tela de Login, então preencha seus dados de usuário e confirme. Se os dados já foram cadastrados e estiverem corretos, então o login será feito;
+    <li><b>Editar perfil:</b> Na tela inicial e com o usuário logado, clique no ícone superior para ir para a tela de perfil do usuário, lá serão mostrados todos os dados que o usuário possui e deixar editável aqueles que podem ser mudados. Caso tenha feita alguma alteração neles, clique em "salvar" que eles já serão atualizados;
+    <li><b>Ver informações sobre um item:</b> Em qualquer tela que possua uma miniatura do item disponível (tela principal ou de busca), clicando na miniatura do ítem desejado, o usuário será direcionado à tela que fala sobre as informações do item;
+    <li><b>Comprar um item:</b> Na tela de informações do item, se ele estiver em estoque, será possível selecionar a quantidade e clicar em "comprar item" e ser direcionado à tela de finalização de compras. Nesta tela será necessário preencher os dados de compra e finalizá-la. Isso irá atualizar o estoque do item no banco;
+    <li><b>Comprar vários itens:</b> Na tela de informações do item, se ele estiver em estoque, será possível selecionar a quantidade e clicar em "adicionar ao carrinho". Fazendo isso com todos os itens que desejar, eles estarão armazenados no carrinho do usuário. Portanto, ao clicar no ícone do carrinho no canto superior, o usuário será levado à tela de carrinho e poderá ver todos os itens adicionados (podendo removê-los ou limpar todo o carrinho). Por fim, clicando em "finalizar compra", o usuário será direcionado à tela de finalização de compra novamente;
+    <li><b>Buscar itens pelo nome:</b> No header da página, inserindo algum nome na barra de busca e clicando no ícone da lupa, o usuário será mandado à uma página de busca que retorna todos os itens de nome correspondente ao buscado;
+    <li><b>Fazer login como administrador:</b> Na mesma tela de login (descrita antes), se o usuário ou email forem de um usuário administrador e a senha estiver correta, o login será efetuado;
+    <li><b>Cadastrar novo administrador:</b> Logado como administrador e em sua tela principal, clique no ícone presente no canto superior para ser direcionado à tela de cadastrar um novo administrador. Com isso, informe os dados necessários e confirme. Se nenhum outro usuário ou administrador utilizou do email ou nome informados, o cadastro será efetuado;
+    <li><b>Editar itens presentes no banco:</b> Logado como administrador e em sua tela principal, clique no ícone presente no canto inferior direito do ítem para ser direcionado à tela de editar os dados do item escolhido. Após editar os dados desejados, clique em "salvar";
+    <li><b>Remover itens presentes no banco:</b> Logado como administrador e em sua tela principal, clique no ícone presente no canto superior direito do ítem para removê-lo do banco;
+    <li><b>Adicionar novos itens no banco:</b> Logado como administrador e em sua tela principal, clique em "adicionar item" para ser direcionado à tela de preencher as informações do novo item. Após finalizar, clique em "salvar" que ele já estará disponível no banco;
+    <li><b>Remover usuário do bacno:</b> Logado como administrador e em sua tela principal, clique no ícone presente no canto superior para ser direcionado à tela de usuários presentes no site. Com isso, clique no ícone presente à direita do usuário desejado e confirme para removê-lo do banco.
+</ul>
+Todos esses testes descritos já foram verificados e funcionam corretamente no projeto.
 
-<img src="https://github.com/Fellip15/trab-web/blob/main/diagr%20paginas.jpg" width="500"/>
+### Grupo
+Gabriel Natal Coutinho<br>
+Fellip Silva Alves<br>
+João Vitor Tigre<br>

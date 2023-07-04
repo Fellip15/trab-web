@@ -71,8 +71,6 @@ const ItemDescr = ({ addCartItem }) => {
                 toast.error(e.response.data.message);
             });
         }
-        console.log("Imagens")
-        console.log(imagesStorage);
         setStorageImages([...imagesStorage]);
         if(imagesStorage.length > 0) {
             setCurrentImg(imagesStorage[0].src);
@@ -90,7 +88,7 @@ const ItemDescr = ({ addCartItem }) => {
     const handleBuyItem = () => {
         const itemToBuy = dataItem;
         itemToBuy.amount = refAmount.current.value;
-        navigate(`/buy/${idUser}`, {state: {itemToBuy: itemToBuy}});
+        navigate(`/buy/item`, {state: {itemToBuy: itemToBuy}});
     };
 
     // adiciona o item ao carrinho do usuário

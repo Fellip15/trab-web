@@ -7,7 +7,6 @@ import Header from '../../Components/Header/Header';
 import Footer from '../../Components/Footer/Footer';
 import Message from '../../Components/Message'
 
-import users from '../../data/users.json';
 import { useCookies } from 'react-cookie';
 import axios from 'axios';
 import { baseURL, cepMask, cpfMask, telMask } from '../../config';
@@ -29,8 +28,6 @@ const User = ({}) => {
     const [ srcImage, setSrcImage ] = useState("/img/defaultProfile.png");
     
     const setUser = (user) => {
-        console.log("Settando usuario:")
-        console.log(user);
         setUserName(user.userName);
         setName(user.name);
         setEmail(user.email);
@@ -243,7 +240,6 @@ const User = ({}) => {
         }
 
         const formData = new FormData();
-        console.log("name:", name);
         formData.append("name", "image" + name);
         formData.append("file", selectedFile);
         

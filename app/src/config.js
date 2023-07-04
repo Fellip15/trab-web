@@ -64,3 +64,18 @@ export const cepMask = (value) => {
 
     return maskedValue;
 };
+
+export const numCartMask = (value) => {
+    if (value === undefined || value === null) return null;
+    const numericValue = String(value).replace(/\D/g, '');
+    
+    let maskedValue = '';
+    if (numericValue.length <= 16) {
+        maskedValue = numericValue.replace(/(\d{4})(?=\d)/g, '$1 ');
+    }
+    else {
+        maskedValue = numericValue.slice(0, 16).replace(/(\d{4})(?=\d)/g, '$1 ');
+    }
+
+    return maskedValue;
+};

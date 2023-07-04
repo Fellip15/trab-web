@@ -8,7 +8,6 @@ const HomeItemList = ({ dataItens, title }) => {
             <h1 className="font-title-black">{title}</h1>
             <div className="itens">
                 {dataItens.map(card => {
-                    console.log(card)
                     return <HomeItem key={card.item._id} cardItem={card} />
                 }
                 )}
