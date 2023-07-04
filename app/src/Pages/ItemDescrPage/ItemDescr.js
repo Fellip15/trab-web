@@ -78,7 +78,7 @@ const ItemDescr = ({ addCartItem }) => {
     const handleBuyItem = () => {
         const itemToBuy = dataItem;
         itemToBuy.amount = refAmount.current.value;
-        navigate(`/buy/${idUser}`, {state: {itemToBuy: itemToBuy}});
+        navigate(`/buy/item`, {state: {itemToBuy: itemToBuy}});
     };
 
     // adiciona o item ao carrinho do usuário

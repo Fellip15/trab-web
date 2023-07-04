@@ -7,7 +7,6 @@ import Header from '../../Components/Header/Header';
 import Footer from '../../Components/Footer/Footer';
 import Message from '../../Components/Message'
 
-import users from '../../data/users.json';
 import { useCookies } from 'react-cookie';
 import axios from 'axios';
 import { baseURL, cepMask, cpfMask, telMask } from '../../config';

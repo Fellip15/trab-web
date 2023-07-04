@@ -9,7 +9,7 @@ const AdmItem = ({ card, remItem }) => {
 
     // remove o ítem selecionado
     const handleRemItem = () => {
-        if (window.confirm(`Deseja apagar o ítem "${card.name}" do banco?`) === true)
+        if (window.confirm(`Deseja apagar o ítem "${card.item.name}" do banco?`) === true)
             remItem(card.item._id);
     };
 

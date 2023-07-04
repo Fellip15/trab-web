@@ -12,7 +12,7 @@ import "./FinishBuy.css";
 import Message from '../../Components/Message';
 import { toast } from 'react-toastify';
 import axios from 'axios';
-import { baseURL } from '../../config';
+import { baseURL, cepMask, cpfMask, telMask, numCartMask } from '../../config';
 
 
 const FinishBuy = () => {
@@ -48,12 +48,12 @@ const FinishBuy = () => {
     const [ cpf, setCpf ] = useState(undefined);
 
     const setUser = (user) => {
-        setCep(user.end_cep);
+        setCep(cepMask(user.end_cep));
         setQuarter(user.end_neighborhood);
         setStreet(user.end_street);
         setHouseNumber(user.end_num);
-        setPersonNumber(user.tel);
-        setCpf(user.cpf);
+        setPersonNumber(telMask(user.tel));
+        setCpf(cpfMask(user.cpf));
     }
 
     const authToken = async () => {
@@ -103,56 +103,9 @@ const FinishBuy = () => {
         }
     }, []);
 
-    const card = (
-        <div id="card">
-            <div className="inputs-payment">
-                <label htmlFor="card-number">Número do cartão:</label>
-                <input value={numberCard} onChange={(e) => handleOnChange(e.target.value, setNumberCard)} type="text" id="card-number" name="card-number" />
-            </div>
-            <div className="inputs-payment">
-                <label htmlFor="card-person">Titular:</label>
-                <input value={personCard} onChange={(e) => handleOnChange(e.target.value, setPersonCard)} type="text" id="card-person" name="card-person" />
-            </div>
-            <div className="cvv-and-expiration">
-                <div className="inputs-payment">
-                    <label htmlFor="card-expiration">Vencimento:</label>
-                    <input value={dateExp} onChange={(e) => handleOnChange(e.target.value, setDateExp)} type="date" id="card-expiration" name="card-expiration" />
-                </div>
-                <div className="inputs-payment">
-                    <label htmlFor="cvv">cvv:</label>
-                    <input value={cvv} onChange={(e) => handleOnChange(e.target.value, setCvv)} type="number" id="cvv" name="cvv" />
-                </div>
-            </div>
-        </div>
-    );
-    
-    const [ type, setType ] = useState(undefined);
-    const keyPix = "asda-s84s-asd2-aa8w-95ug";
-    const pix = (
-        <div id="pix">
-            <div className="content-qrcode">
-                <p>Escaneie o QR code ao lado e faça o pagamento. A confirmação será automática e instantânea após a verificação do pagamento.</p>
-                <BsQrCode size={80} />
-            </div>
-            <p>Você pode copiar a chave:</p>
-            <div id="payment-key-pix">
-                <input type="text" id="key-pix" name="key-pix" defaultValue={keyPix} readOnly={true}/>
-                <BiCopy id="copy-key-pix" onClick={() => {navigator.clipboard.writeText(keyPix); alert("Chave copiada")}}/>
-            </div>
-        </div>
-    );
-
     const handleSelectPayment = (event) => {
         const newType = event.target.value; 
         setType(newType);
-    };
-
-    const chooseTypePayment = () => {
-        if(type === "pix") {
-            return pix;
-        } else {
-            return card;
-        }
     };
 
     const handleCancelBuying = () => {
@@ -218,6 +171,77 @@ const FinishBuy = () => {
         setValue(value);
     };
 
+    const handleChangeTel = (event) => {
+        event.preventDefault();
+        const { value } = event.target;
+        setPersonNumber(telMask(value));
+    };
+
+    const handleChangeCPF = (event) => {
+        event.preventDefault();
+        const { value } = event.target;
+        setCpf(cpfMask(value));
+    };
+
+    const handleChangeCEP = (event) => {
+        event.preventDefault();
+        const { value } = event.target;
+        setCep(cepMask(value));
+    };
+
+    const handlenumCart = (event) => {
+        event.preventDefault();
+        const { value } = event.target;
+        setNumberCard(numCartMask(value));
+    };
+
+    const chooseTypePayment = () => {
+        if(type === "pix") {
+            return pix;
+        } else {
+            return card;
+        }
+    };
+
+    const card = (
+        <div id="card">
+            <div className="inputs-payment">
+                <label htmlFor="card-number">Número do cartão:</label>
+                <input value={numberCard} onChange={handlenumCart} type="text" id="card-number" name="card-number" />
+            </div>
+            <div className="inputs-payment">
+                <label htmlFor="card-person">Titular:</label>
+                <input value={personCard} onChange={(e) => handleOnChange(e.target.value, setPersonCard)} type="text" id="card-person" name="card-person" />
+            </div>
+            <div className="cvv-and-expiration">
+                <div className="inputs-payment">
+                    <label htmlFor="card-expiration">Vencimento:</label>
+                    <input value={dateExp} onChange={(e) => handleOnChange(e.target.value, setDateExp)} type="date" id="card-expiration" name="card-expiration" />
+                </div>
+                <div className="inputs-payment">
+                    <label htmlFor="cvv">cvv:</label>
+                    <input value={cvv} onChange={(e) => handleOnChange(e.target.value, setCvv)} type="number" id="cvv" name="cvv" />
+                </div>
+            </div>
+        </div>
+    );
+    
+    const [ type, setType ] = useState(undefined);
+    const keyPix = "asda-s84s-asd2-aa8w-95ug";
+    const pix = (
+        <div id="pix">
+            <div className="content-qrcode">
+                <p>Escaneie o QR code ao lado e faça o pagamento. A confirmação será automática e instantânea após a verificação do pagamento.</p>
+                <BsQrCode size={80} />
+            </div>
+            <p>Você pode copiar a chave:</p>
+            <div id="payment-key-pix">
+                <input type="text" id="key-pix" name="key-pix" defaultValue={keyPix} readOnly={true}/>
+                <BiCopy id="copy-key-pix" onClick={() => {navigator.clipboard.writeText(keyPix); alert("Chave copiada")}}/>
+            </div>
+        </div>
+    );
+
     return (
         <>
             <Header />
@@ -244,7 +268,7 @@ const FinishBuy = () => {
                                     <div className='cep-complement-number'>
                                         <div className='inputs-address-three'>
                                             <label htmlFor='cep'>CEP:</label>
-                                            <input value={cep} onChange={(e) => handleOnChange(e.target.value, setCep)} id='cep' name='cep'/>
+                                            <input value={cep} onChange={handleChangeCEP} id='cep' name='cep'/>
                                         </div>
                                         <div className='inputs-address-three'>
                                             <label htmlFor='complement'>Compl:</label>
@@ -252,7 +276,7 @@ const FinishBuy = () => {
                                         </div>
                                         <div className='inputs-address-three'>
                                             <label htmlFor='house-number'>N°:</label>
-                                            <input value={houseNumber} onChange={(e) => handleOnChange(e.target.value, setHouseNumber)} id='house-number' name='house-number'/>
+                                            <input type="number" value={houseNumber} onChange={(e) => handleOnChange(e.target.value, setHouseNumber)} id='house-number' name='house-number'/>
                                         </div>
                                     </div>
                                     <div className='cep-complement-number'>
@@ -267,11 +291,11 @@ const FinishBuy = () => {
                                     </div>
                                     <div className='inputs-address'>
                                         <label htmlFor='cpf'>CPF:</label>
-                                        <input value={cpf} onChange={(e) => handleOnChange(e.target.value, setCpf)} id='cpf' name='cpf'/>
+                                        <input value={cpf} onChange={handleChangeCPF} id='cpf' name='cpf'/>
                                     </div>
                                     <div className='inputs-address'>
                                         <label htmlFor='person-number'>Telef:</label>
-                                        <input value={personNumber} onChange={(e) => handleOnChange(e.target.value, setPersonNumber)} id='person-number' name='person-number'/>
+                                        <input value={personNumber} onChange={handleChangeTel} id='person-number' name='person-number'/>
                                     </div>
                                 </div>
                             </div>
