@@ -44,10 +44,26 @@ const User = ({}) => {
     };
     
     useEffect(() => {
+
+        async function redirectAdmin() {
+            if(cookies.user !== undefined) {
+                const res = await axios.get(baseURL + "/isAdmin/" + cookies.user);
+    
+                if(res.admin !== undefined && res.admin === true) {
+                    navigate("/adm");
+                    return;
+                }
+            }
+            fetchAndSetUser();
+        }
+        redirectAdmin();
+
+
         async function fetchAndSetUser() {
             let userFound = null;
             await axios.get(baseURL + "/getUserByToken/" + cookies.user)
             .then(async (res) => {
+                console.log("AAAa")
                 console.log(res.data);
                 userFound = res.data.user;
                 setUser(userFound);
@@ -75,7 +91,6 @@ const User = ({}) => {
                 toast.info(e.response.data.message);
             });
         }
-        fetchAndSetUser();
     }, []);
 
     const refOldPassword = useRef(null);

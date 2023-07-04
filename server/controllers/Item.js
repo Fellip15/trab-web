@@ -51,8 +51,12 @@ exports.remove = async (req, res) => {
         
         item.images.forEach(async (imageId) => {
             const image = await ImageSchema.findById(imageId);
-            fs.unlinkSync(image.src);
-            image.deleteOne();
+            try {
+                fs.unlinkSync(image.src);
+                image.deleteOne();
+            } catch(e) {
+                console.log(e);
+            }
         });
 
         await item.deleteOne();
@@ -227,7 +231,6 @@ exports.buyItens = async (req, res) => {
     let message = "";
 
     for(let idItem of Object.keys(itensToBuy)) {
-        console.log(idItem);
         const amount = Number(itensToBuy[idItem]);
         const item = await ItemSchema.findById(idItem);
         if(item === null || amount === null) {
@@ -242,7 +245,7 @@ exports.buyItens = async (req, res) => {
 
         const newStock = Number(item.stock) - amount;
         const newSold = Number(item.sold) + amount;
-        console.log(newStock);
+
         await item.updateOne({
             stock: newStock,
             sold: newSold

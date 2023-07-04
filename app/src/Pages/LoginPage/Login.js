@@ -66,7 +66,7 @@ const Login = () => {
         .then((res) => {
             console.log(res);
             setCookies("user", res.data.token);
-            navigate("/", { state: { successMessage: "Login efetuado com sucesso!" } });
+            navigate("/", { state: { successMessage: res.data.message } });
         })
         .catch((e) => {
             console.log(e);

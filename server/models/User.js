@@ -10,7 +10,7 @@ const UserSchema = mongoose.Schema({
     },
     name: {
         type: String,
-        required: true,
+        required: false,
         trim: true
     },
     email: {
@@ -59,6 +59,10 @@ const UserSchema = mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         required: false,
         ref: 'Image'
+    },
+    admin: {
+        type: Boolean,
+        required: true
     }
 })
 

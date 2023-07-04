@@ -1,0 +1,91 @@
+.adm-user {
+    background-color: var(--light-gray);
+    border: 1px solid black;
+    border-radius: 2px;
+    display: flex;
+    flex-direction: row;
+    padding: 8px;
+    align-items: center;
+    justify-content: space-between;
+    width: 30%;
+    max-width: 500px;
+}
+
+.content-info-adm {
+    width: fit-content;
+    padding: 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: left;
+}
+
+.info-user-adm {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.user-adm-name {
+    font-size: var(--font-size-m);
+    line-height: 18px;
+}
+
+.img-user-adm {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+}
+
+.buttons-adm-user {
+    display: flex;
+    flex-direction: column;
+    gap: 54px;
+}
+
+.button-adm {
+    width: 23px;
+    height: 23px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+.icon-adm {
+    width: 80%;
+    height: 80%;
+    cursor: pointer;
+}
+.icon-adm:hover {
+    transition: 0.10s;
+    width: 96%;
+    height: 96%;
+}
+
+.icon-red {
+    color: red;
+}
+
+.image-user-adm {
+    width: 50px;
+    height: 50px;
+}
+
+/* tela pequena */
+@media only screen and (max-width: 750px) {
+    .adm-user {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .content-info-adm, .descr-user-adm {
+        margin-right: auto;
+        width: 100%;
+    }
+
+    .buttons-adm-user {
+        flex-direction: row;
+        gap: 100px;
+    }
+}

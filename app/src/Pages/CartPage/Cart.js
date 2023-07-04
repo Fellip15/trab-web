@@ -52,6 +52,7 @@ const Cart = () => {
                 setIdUser(user._id);
                 
                 const cart = await JSON.parse(localStorage.getItem("cart"));
+                console.log(cart)
                 if(cart === null || cart[user._id] === null) {
                     navigate("/", { state: { infoMessage:"O carrinho está vazio!" }});
                     return;

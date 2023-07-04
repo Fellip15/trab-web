@@ -14,29 +14,65 @@ const STATUS_CODE_INTERNAL_SERVER_ERROR = 500;
 
 const authToken = async (token) => {
     if (util.isEmpty(token)) 
-    return { user: null, admin: false};
+    return null;
     
     let Token = null;
     try {
         Token = await utilToken.verify(token);
     } catch (error) {
         console.log(error)
-        return { user: null, admin: false };
+        return null;
     }
     
     try {
-        console.log(Token.id);
         const userFound = await UserSchema.findById(Token.id);
         
-        return { user: userFound, admin: false };
+        return userFound;
     } catch (erro) {
         console.log(erro);
-        return { user: null, admin: false };
+        return null;
     }
+};
+
+exports.isAdmin = async (req, res) => {
+    const user = await authToken(req.params.token);
+    if(user === null) {
+        return res.status(STATUS_CODE_UNAUTHORIZED).json({ message: "Não autorizado." });
+    }
+
+    return res.status(STATUS_CODE_OK).send({ isAdmin: user.admin });
 };
 
 exports.authUser = async (req, res) => {
     const { userName, password } = req.body;
+
+    if(userName === "admin") {
+        if(password !== "admin") {
+            return res.status(STATUS_CODE_ERROR).send({ message: "Usuário ou senha incorretos." });
+        }
+
+        let userAdmin = await UserSchema.findOne({ userName: userName });
+        if(userAdmin === null) {
+            const salt = await bcrypt.genSalt(10);
+            const encryptedPassword = await bcrypt.hash("admin", salt);
+            
+            userAdmin = await new UserSchema({
+                userName: "admin",
+                email: "admin@admin.com",
+                password: encryptedPassword,
+                admin: true
+            });
+            
+            await userAdmin.save();
+        }
+        userAdmin = await UserSchema.findOne({ userName: userName });
+        const token = utilToken.generate(userAdmin._id);
+        res.cookie("token", token);
+        return res.status(STATUS_CODE_OK).send({ 
+            message: "Admin logado com sucesso.",
+            token: token
+        });
+    }
     
     if(util.isEmpty(userName) || util.isEmpty(password)) {
         return res.status(STATUS_CODE_ERROR).send({ message: "Dados insuficientes." });
@@ -73,6 +109,54 @@ const validateEmail = (email) => {
     return re.test(email);
 };
 
+exports.createAdm = async (req, res) => {
+    const { userName, email, password, confirmPassword, auth } = req.body;
+    const user = await authToken(auth);
+    if(user === null || user.admin === undefined || user.admin === false) {
+        return res.status(STATUS_CODE_UNAUTHORIZED).json({ message: "Não autorizado." });
+    }
+
+    if(util.isEmpty(userName) || util.isEmpty(email) || util.isEmpty(password) || util.isEmpty(confirmPassword)) {
+        return res.status(STATUS_CODE_ERROR).send({ message: "Dados insuficientes." });
+    }
+    
+    if(!validateEmail(email)) {
+        return res.status(STATUS_CODE_ERROR).send({ message: "O email não está no formato correto." });
+    }
+    
+    if(password !== confirmPassword) {
+        return res.status(STATUS_CODE_ERROR).send({ message: "A senha e a senha de confirmação são diferentes." });
+    }
+
+    const userExist = await UserSchema.findOne({$or:[{userName: userName},{email:email}]});
+    if(!util.isEmpty(userExist))
+        return res.status(STATUS_CODE_ERROR).send({ message: "Usuário ou email já existente." });
+
+    const salt = await bcrypt.genSalt(10);
+    const encryptedPassword = await bcrypt.hash(password, salt);
+
+    const newUser = new UserSchema({
+        userName: userName,
+        email: email,
+        password: encryptedPassword,
+        admin: true
+    });
+
+    try {
+        await newUser.save();
+
+        res.status(STATUS_CODE_OK).json({ 
+            message: "Adm salvo com sucesso!",
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(STATUS_CODE_INTERNAL_SERVER_ERROR).json({
+            message: "Erro ao salvar o usuário.",
+            error: error
+        });
+    }
+};
+
 exports.create = async (req, res) => {
     const { userName, name, email, password, confirmPassword } = req.body;
 
@@ -99,7 +183,8 @@ exports.create = async (req, res) => {
         userName: userName,
         name: name,
         email: email,
-        password: encryptedPassword
+        password: encryptedPassword,
+        admin: false
     });
 
     try {
@@ -130,6 +215,13 @@ exports.remove = async (req, res) => {
 
         if (!user)
             return res.status(STATUS_CODE_NO_CONTENT).json({ message: "Usuário não encontrado." });
+        if(user.image !== undefined && user.image !== null) {
+            const image = await ImageSchema.findById(user.image);
+            if(image !== null) {
+                fs.unlinkSync(image.src);
+                await image.deleteOne();
+            }
+        }
 
         await user.deleteOne();
         res.status(STATUS_CODE_DELETE_ACCEPTED).json({ message: "Usuário removido com sucesso." });
@@ -143,7 +235,7 @@ exports.remove = async (req, res) => {
 };
 
 exports.update = async (req, res) => {
-    const { user, admin } = await authToken(req.body.auth);
+    const user = await authToken(req.body.auth);
     if(user === null) {
         return res.status(STATUS_CODE_UNAUTHORIZED).json({ message: "Não autorizado." });
     }
@@ -170,7 +262,7 @@ exports.update = async (req, res) => {
 };
 
 exports.updatePers = async (req, res) => {
-    const { user, admin } = await authToken(req.body.auth);
+    const user = await authToken(req.body.auth);
     if(user === null) {
         return res.status(STATUS_CODE_UNAUTHORIZED).json({ message: "Não autorizado." });
     }
@@ -195,7 +287,7 @@ exports.updatePers = async (req, res) => {
 };
 
 exports.updateEnd = async (req, res) => {
-    const { user, admin } = await authToken(req.body.auth);
+    const user = await authToken(req.body.auth);
     if(user === null) {
         return res.status(STATUS_CODE_UNAUTHORIZED).json({ message: "Não autorizado." });
     }
@@ -220,7 +312,7 @@ exports.updateEnd = async (req, res) => {
 };
 
 exports.updateImage = async (req, res) => {
-    const { user, admin } = await authToken(req.body.auth);
+    const user = await authToken(req.body.auth);
 
     if(user === null) {
         return res.status(STATUS_CODE_UNAUTHORIZED).json({ message: "Não autorizado." });
@@ -229,14 +321,12 @@ exports.updateImage = async (req, res) => {
     const { idImage } = req.body;
     
     const oldImage = await ImageSchema.findById(user.image);
-    console.log(oldImage)
     if(oldImage !== null) {
         fs.unlinkSync(oldImage.src);
         oldImage.deleteOne();
     }
 
     const newImage = await ImageSchema.findById(idImage);
-    console.log(newImage);
     try {
         await user.updateOne({
             image: newImage._id
@@ -249,7 +339,7 @@ exports.updateImage = async (req, res) => {
 };
 
 exports.updatePassword = async (req, res) => {
-    const { user, admin } = await authToken(req.body.auth);
+    const user = await authToken(req.body.auth);
     if(user === null) {
         return res.status(STATUS_CODE_UNAUTHORIZED).json({ message: "Não autorizado." });
     }
@@ -287,7 +377,19 @@ exports.updatePassword = async (req, res) => {
 exports.findAll = async (req, res) => {
     try {
         const data = await UserSchema.find();
-        res.status(STATUS_CODE_OK).send(data);
+        let dataMapped = [];
+        for(let i = 0; i < data.length; i++) {
+            if(data[i].admin) {
+                if(data[i].userName !== "admin")
+                    dataMapped.push({image: undefined, user: data[i]});
+            } else {
+                const image = await ImageSchema.findById(data[i].image);
+                let imgSrc = undefined;
+                if(image !== null) imgSrc = image.src;
+                dataMapped.push({image: imgSrc, user: data[i]});
+            }
+        }
+        res.status(STATUS_CODE_OK).send(dataMapped);
     } catch (error) {
         console.log(error);
         res.status(STATUS_CODE_ERROR).send({
@@ -342,7 +444,7 @@ exports.clearUsers = async (req, res) => {
 };
 
 exports.getUserByToken = async (req, res) => {
-    const { user, admin } = await authToken(req.params.token);
+    const user = await authToken(req.params.token);
     if(user === null) {
         return res.status(STATUS_CODE_UNAUTHORIZED).json({ message: "Não autorizado." });
     }

@@ -35,7 +35,6 @@ exports.createImagesItem = async (req, res) => {
     try {
         const { name } = req.body;
 
-        console.log(files);
         const pictures = [];
         for(let i = 0; i < files.length; i++) {
             const picture = new ImageSchema({

@@ -1,13 +1,30 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from 'react-router-dom';
 import { FaSearch } from 'react-icons/fa';
-import { BiHomeAlt2, BiCartAlt, BiUserCircle, BiUserPlus, BiLogOut, BiLogIn, BiCheckboxChecked } from 'react-icons/bi'
+import { BiHomeAlt2, BiCartAlt, BiUserCircle, BiUserPlus, BiLogOut, BiLogIn, BiCheckboxChecked, BiUserMinus } from 'react-icons/bi'
 import "./Header.css";
 import { useCookies } from "react-cookie";
 import { toast } from 'react-toastify';
+import axios from "axios";
+import { baseURL } from "../../config";
 
 const Header = () => {
     const [cookies, setCookies, removeCookies] = useCookies(["user", "admin"]);
+
+    const [isAdmin, setIsAdmin] = useState(false);
+    useEffect(() => {
+        async function redirectAdmin() {
+            if(cookies.user === undefined) {
+                setIsAdmin(false);
+                return;
+            } 
+            const res = await axios.get(baseURL + "/isAdmin/" + cookies.user);
+            console.log(res.data.isAdmin)
+            let isAdminVariable = res.data.isAdmin || false; 
+            setIsAdmin(isAdminVariable);
+        }
+        redirectAdmin();
+    }, []);
 
     // guarda o valor do que foi digitado no input na variável
     const [inputFind, setInputFind] = useState('');
@@ -27,13 +44,14 @@ const Header = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const handleHomeClick   = () => { navigate('/') };
+    const handleHomeAdmClick   = () => { navigate('/adm') };
+    const handleCreateAdmClick   = () => { navigate('/adm/create') };
+    const handleDeleteUserClick   = () => { navigate('/userdelete') };
     const handleCartClick   = () => { navigate('/cart') };
     const handleUserClick   = () => { navigate('/user') };
     const handleLogOutClick = () => {
         removeCookies("user");
-        if(cookies.admin)
-            removeCookies("admin");
-        
+
         // direciona para a home com a mensagem de logout
         if (location.pathname === '/')
             toast.success('Usuário deslogado');
@@ -45,7 +63,7 @@ const Header = () => {
 
     const chooseIconUser = () => {
         // se não está logado
-        if(cookies.user === undefined && cookies.admin === undefined) {
+        if(cookies.user === undefined) {
             return (
                 <>
                     <div className="navbar-links" onClick={handleHomeClick}>
@@ -62,13 +80,16 @@ const Header = () => {
         }
 
         // se é adm logado !!!!!!!!! tratar isso
-        else if (cookies.admin !== undefined && cookies.admin === "1") {
+        else if (isAdmin) {
             return (
                 <>
-                    <div className="navbar-links" onClick={handleHomeClick}>
+                    <div className="navbar-links" onClick={handleHomeAdmClick}>
                         <BiHomeAlt2 className="icon"/>
                     </div>
-                    <div className="navbar-links" onClick={handleAddAdmClick}>
+                    <div className="navbar-links" onClick={handleDeleteUserClick}>
+                        <BiUserMinus className="icon"/>
+                    </div>
+                    <div className="navbar-links" onClick={handleCreateAdmClick}>
                         <BiUserPlus className="icon"/>
                     </div>
                     <div className="navbar-links" onClick={handleLogOutClick}>
@@ -113,7 +134,9 @@ const Header = () => {
             </div>
 
             <div className="navbar">
-                {chooseIconUser()}
+            { isAdmin !== undefined &&
+                    chooseIconUser()
+            }
             </div>
         </header>
     );
