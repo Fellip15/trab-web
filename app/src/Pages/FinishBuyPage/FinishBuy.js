@@ -48,7 +48,6 @@ const FinishBuy = () => {
     const [ cpf, setCpf ] = useState(undefined);
 
     const setUser = (user) => {
-        console.log(user);
         setCep(user.end_cep);
         setQuarter(user.end_neighborhood);
         setStreet(user.end_street);
@@ -191,7 +190,6 @@ const FinishBuy = () => {
         for(let item of itemsToBuy) {
             buyItens[String(item._id)] = item.amount;
         }
-        console.log(buyItens);
         axios.post(baseURL + "/item/buy", {
             itensToBuy: buyItens
         })

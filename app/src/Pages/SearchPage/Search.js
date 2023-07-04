@@ -17,8 +17,6 @@ const Search = () => {
 
     useEffect(() => {
         if(dataItens !== undefined) return;
-        console.log("Buscando dataitens");
-        console.log(dataItens);
         axios.get(baseURL + "/cardItem")
         .then((res) => {
             console.log(res.data.cardItens);
