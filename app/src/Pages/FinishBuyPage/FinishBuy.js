@@ -35,17 +35,17 @@ const FinishBuy = () => {
 
     const [ itemsToBuy, setItemsToBuy ] = useState(undefined);
     const [ idUser, setIdUser ] = useState(undefined);
-    const [ dateExp, setDateExp ] = useState(undefined);
-    const [ personCard, setPersonCard ] = useState(undefined);
-    const [ numberCard, setNumberCard ] = useState(undefined);
-    const [ cvv, setCvv ] = useState(undefined);
-    const [ cep, setCep ] = useState(undefined);
-    const [ complement, setComplement ] = useState(undefined);
-    const [ quarter, setQuarter ] = useState(undefined);
-    const [ street, setStreet ] = useState(undefined);
-    const [ houseNumber, setHouseNumber ] = useState(undefined);
-    const [ personNumber, setPersonNumber ] = useState(undefined);
-    const [ cpf, setCpf ] = useState(undefined);
+    const [ dateExp, setDateExp ] = useState("");
+    const [ personCard, setPersonCard ] = useState("");
+    const [ numberCard, setNumberCard ] = useState("");
+    const [ cvv, setCvv ] = useState("");
+    const [ cep, setCep ] = useState("");
+    const [ complement, setComplement ] = useState("");
+    const [ quarter, setQuarter ] = useState("");
+    const [ street, setStreet ] = useState("");
+    const [ houseNumber, setHouseNumber ] = useState("");
+    const [ personNumber, setPersonNumber ] = useState("");
+    const [ cpf, setCpf ] = useState("");
 
     const setUser = (user) => {
         console.log(user);
@@ -74,10 +74,22 @@ const FinishBuy = () => {
     };
 
     useEffect(() => {
+        async function redirectAdmin() {
+            if(cookies.user === undefined) {
+                navigate("/login", { state: { 
+                    errorMessage: "Se quiser entrar na tela de compra é necessário fazer o login"
+                }});
+                return;
+            }
+            const res = await axios.get(baseURL + "/isAdmin/" + cookies.user);
+
+            if(res.admin !== undefined && res.admin === true) {
+                navigate("/adm");
+            }
+        }
+        redirectAdmin();
+
         if(!cookies.user) {
-            navigate("/login", { state: { 
-                errorMessage: "Se quiser entrar na tela de compra é necessário fazer o login"
-            }});
             return;
         }
 
@@ -127,7 +139,7 @@ const FinishBuy = () => {
         </div>
     );
     
-    const [ type, setType ] = useState(undefined);
+    const [ type, setType ] = useState("credit-card");
     const keyPix = "asda-s84s-asd2-aa8w-95ug";
     const pix = (
         <div id="pix">
@@ -144,7 +156,7 @@ const FinishBuy = () => {
     );
 
     const handleSelectPayment = (event) => {
-        const newType = event.target.value; 
+        const newType = event.target.value;
         setType(newType);
     };
 
@@ -167,7 +179,9 @@ const FinishBuy = () => {
     }
     const handleFinishBuying = () => {
         const emptyInputs = [];
-        if(type === "card") {
+        console.log(type)
+        if(type === "credit-card" || type === "debit-card") {
+            console.log("Data:" + dateExp)
             if(isEmpty(dateExp)) emptyInputs.push(dateExpStr);
             if(isEmpty(personCard)) emptyInputs.push(personCardStr);
             if(isEmpty(numberCard)) emptyInputs.push(numberCardStr);
@@ -175,7 +189,6 @@ const FinishBuy = () => {
         }
         
         if(isEmpty(cep)) emptyInputs.push(cepStr);
-        if(isEmpty(complement)) emptyInputs.push(complementStr);
         if(isEmpty(quarter)) emptyInputs.push(quarterStr);
         if(isEmpty(street)) emptyInputs.push(streetStr);
         if(isEmpty(houseNumber)) emptyInputs.push(houseNumberStr);

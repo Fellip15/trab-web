@@ -27,6 +27,16 @@ const ItemDescr = ({ addCartItem }) => {
     const [currentImg, setCurrentImg] = useState(undefined);
     const [ storageImages, setStorageImages ] = useState([]);
     useEffect(() => {
+        async function redirectAdmin() {
+            if(cookies.user === undefined) return;
+            const res = await axios.get(baseURL + "/isAdmin/" + cookies.user);
+
+            if(res.admin !== undefined && res.admin === true) {
+                navigate("/adm");
+            }
+        }
+        redirectAdmin();
+
         const itemId = params.itemId;
         // verifica se os dados dos ítens já existem
         if (!fetched) {
@@ -156,7 +166,7 @@ const ItemDescr = ({ addCartItem }) => {
                         })}
                     </div>
                     <div className="current-image-item">
-                        <img src={baseURL + '/' + currentImg} id="current-image" />
+                        {currentImg !== undefined && <img src={baseURL + '/' + currentImg} id="current-image" />}
                     </div>
                 </div>
                 <div className="info-item">

@@ -13,6 +13,8 @@ import Adm          from './Pages/AdmPage/Adm';
 import Cart         from './Pages/CartPage/Cart';
 import EditItem     from './Pages/EditItemPage/EditItem';
 import FinishBuy    from './Pages/FinishBuyPage/FinishBuy';
+import CreateAdm    from './Pages/CreateAdmPage/CreateAdm';
+import UserDelete    from './Pages/UserDeletePage/UserDelete';
 
 import orgUsersInfo from './data/users.json';
 import orgItensInfo from './data/itens.json'; 
@@ -33,8 +35,6 @@ const App = () => {
         setUsersInfo(orgUsersInfo);
         setItensInfo(orgItensInfo['array']);
     }, []);
-
-    console.log("Start: ", itensInfo)
 
     // adiciona um novo usuário no banco (!!!!!o post ta dando status 404)
     const addUser = (newUser) => {
@@ -113,6 +113,8 @@ const App = () => {
                 {/* Rotas de administradores */}
                 <Route path="/adm" exact element={<Adm dataItens={itensInfo} setItems={setItensInfo} remItem={remItem} />}/>
                 <Route path="/adm/edit/:itemId" exact element={<EditItem dataItens={itensInfo} setItems={setItensInfo}/>}/>
+                <Route path="/adm/create" exact element={<CreateAdm />}/>
+                <Route path="/userdelete" exact element={<UserDelete />}/>
             </Routes>
         </Router>
     );

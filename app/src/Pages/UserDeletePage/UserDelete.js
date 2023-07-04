@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from 'react-router-dom';
-import "./Adm.css"
+import "./UserDelete.css"
 
 import Header from '../../Components/Header/Header';
 import Footer from '../../Components/Footer/Footer';
@@ -10,13 +10,14 @@ import { toast } from "react-toastify";
 import Message from "../../Components/Message";
 import axios from "axios";
 import { baseURL } from "../../config";
+import AdmUserList from "../../Components/Adm/AdmUserList";
 
 const Adm = () => {
     const locate = useLocation();
 
     const [cookies, setCookies, removeCookies] = useCookies(['user', 'admin']);
     const [ fetched, setFetched ] = useState(false);
-    const [ dataItens, setDataItens ] = useState(false);
+    const [ dataUser, setDataUser ] = useState(false);
     useEffect(() => {
 
         async function redirectAdmin() {
@@ -48,12 +49,10 @@ const Adm = () => {
         }
 
         if(!fetched) {
-            axios.get(baseURL + "/cardItem")
+            axios.get(baseURL + "/users")
             .then((res) => {
-                console.log(res.data.cardItens);
-                setDataItens(res.data.cardItens);
-                console.log("Itens:");
-                console.log(res.data.cardItens);
+                console.log(res.data);
+                setDataUser(res.data);
                 setFetched(true);
             })
             .catch((e) => {
@@ -62,12 +61,12 @@ const Adm = () => {
         }
     }, []);
 
-    const remItem = async (id) => {
-        axios.delete(baseURL + "/item/" + id)
+    const remUser = async (id) => {
+        axios.delete(baseURL + "/users/" + id)
         .then((res) => {
             toast.success(res.data.message);
-            const newDataItens = dataItens.filter((card) => String(card.item._id) !== String(id));
-            setDataItens([...newDataItens]);
+            const newDataItens = dataUser.filter((card) => String(card.user._id) !== String(id));
+            setDataUser([...newDataItens]);
         })
         .catch((e) => {
             toast.error(e.response.data.message);
@@ -76,9 +75,6 @@ const Adm = () => {
 
     // direciona o usuário à tela de adicionar um novo item
     const navigate = useNavigate();
-    const handleClickAddItem = () => {
-        navigate('/adm/edit/newItem');
-    };
 
     return (
         <>
@@ -86,14 +82,8 @@ const Adm = () => {
         <Header/>
 
         <div className="container-adm content">
-            <h1>Opções de administrador:</h1>
-            <input
-                onClick={handleClickAddItem}
-                type="button"
-                value="Adicionar item"
-                className="button-add-item"
-            />
-            {fetched && <AdmItemList dataItens={dataItens} remItem={remItem} />}
+            <h1>Remover usuário:</h1>
+            {fetched && <AdmUserList dataUsers={dataUser} remUser={remUser} />}
         </div>
         
         <Footer />

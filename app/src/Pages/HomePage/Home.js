@@ -20,9 +20,15 @@ const Home = () => {
     const navigate = useNavigate();
     const [cookies, setCookies, removeCookies] = useCookies(["user", "admin"]);
     useEffect(() => {
-        if(cookies.admin !== null && cookies.admin !== undefined && cookies.admin === "1") {
-            navigate("/adm");
+        async function redirectAdmin() {
+            if(cookies.user === undefined) return;
+            const res = await axios.get(baseURL + "/isAdmin/" + cookies.user);
+            console.log(res);
+            if(res.data.isAdmin !== undefined && res.data.isAdmin === true) {
+                navigate("/adm");
+            }
         }
+        redirectAdmin();
 
         if(locate.state && locate.state.successMessage) {
             toast.success(locate.state.successMessage);

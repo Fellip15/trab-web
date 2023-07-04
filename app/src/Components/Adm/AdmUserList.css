@@ -1,0 +1,22 @@
+.list-users-adm {
+    display: flex;
+    flex-direction: column;
+    padding: 8px;
+    padding-right: 32px;
+    gap: 6px;
+    width: 80%;
+    justify-content: center;
+    align-items: center;
+}
+
+.notes-user-admin {
+    display: flex;
+    gap: 40px;
+}
+
+.notes-user-admin span {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
