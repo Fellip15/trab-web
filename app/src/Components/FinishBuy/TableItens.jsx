@@ -16,7 +16,6 @@ const TableItensFinishBuy = ({ itens }) => {
 
     const calcTotalPrice = (itens) => {
         let totalPrice = 0;
-        console.log(itens);
         for (let item of itens) {
             totalPrice += Number(item.price) * Number(item.amount);
         }

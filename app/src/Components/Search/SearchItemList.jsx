@@ -10,7 +10,6 @@ const SearchItens = ({ dataItens, nameSearch }) => {
             card.item.name.toLowerCase().includes(nameSearch.toLowerCase())
         );
     };
-    console.log(getItensSearch());
 
     return (
         <div className="list-itens-search">

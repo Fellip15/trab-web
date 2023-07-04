@@ -61,8 +61,6 @@ const ItemDescr = ({ addCartItem }) => {
                 toast.error(e.response.data.message);
             });
         }
-        console.log("Imagens")
-        console.log(imagesStorage);
         setStorageImages([...imagesStorage]);
         if(imagesStorage.length > 0) {
             setCurrentImg(imagesStorage[0].src);
