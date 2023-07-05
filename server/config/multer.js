@@ -1,4 +1,5 @@
 const multer = require("multer");
+const { uuid } = require('uuidv4');
 
 const path = require("path");
 
@@ -10,7 +11,8 @@ const storage = multer.diskStorage({
       cb(null, "public/userImages");
   },
   filename: function (req, file, cb) {
-    cb(null, Date.now() + path.extname(file.originalname));
+    const filename = Date.now() + "-" + uuid() + path.extname(file.originalname);
+    cb(null, filename);
   },
 });
 

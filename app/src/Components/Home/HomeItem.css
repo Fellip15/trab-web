@@ -33,4 +33,5 @@
     letter-spacing: 0;
     line-height: normal;
     position: relative;
+    overflow-y: hidden;
 }

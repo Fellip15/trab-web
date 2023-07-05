@@ -16,6 +16,19 @@ exports.createImagesItem = async (req, res) => {
     }
 
     try {
+        for(let i = 1; i < files.length; i++) {
+            const fileSharp = await sharp(files[i].path);
+            await fileSharp.resize({
+                width: 500,
+                height: 500
+            });
+            await fileSharp.toBuffer(function (err, buffer) {
+                if(buffer === undefined) return;
+                fs.writeFile(files[i].path, buffer, function (e) {
+
+                });
+            });
+        }
         files.forEach((file) => {
             sharp(file.path)
                 .resize({
@@ -23,6 +36,7 @@ exports.createImagesItem = async (req, res) => {
                     height: 500
                 })
                 .toBuffer(function (err, buffer) {
+                    if(buffer === undefined) return;
                     fs.writeFile(file.path, buffer, function (e) {
     
                     });

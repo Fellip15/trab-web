@@ -96,7 +96,7 @@ const EditItem = ({ dataItens, setItems }) => {
     };
     const handleAddImage = (e) => {
         e.preventDefault();
-        
+        console.log([...images, ...currImages]);
         setImages([...images, ...currImages]);
         const newImageUrls = [];
         images.forEach((image, index) => newImageUrls[index] = URL.createObjectURL(image));
@@ -138,6 +138,8 @@ const EditItem = ({ dataItens, setItems }) => {
             const formData = new FormData();
             formData.append("name", "image " + name);
             images.forEach((images) => formData.append("file", images));
+            console.log("Salvando as imagens");
+            console.log(images);
             
             let imagesStorage = undefined;
             await axios({
