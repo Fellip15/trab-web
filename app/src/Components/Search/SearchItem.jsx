@@ -8,7 +8,7 @@ const SearchItem = ({ dataItem }) => {
     // direciona o usuário para a página do ítem selecionado
     const navigate = useNavigate();
     const handleItemClick = () => {
-        navigate(`/item/${dataItem._id}`);
+        navigate(`/item/${dataItem.item._id}`);
     }
 
     return (
@@ -31,7 +31,7 @@ const SearchItem = ({ dataItem }) => {
                 </div>
             </div>
             <div className="descr-item-search">
-                {dataItem.description}
+                {dataItem.item.description}
             </div>
         </div>
     );

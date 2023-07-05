@@ -174,7 +174,7 @@ const ItemDescr = ({ addCartItem }) => {
                         <div className="item-info-price">
                             <p className="font-inter-black">ou</p>
                             <img src="../img/icons/credit-card.png" alt="cartão de crédito"/>    
-                            <p className="font-inter-black">{dataItem.numParc}x de R${Number(dataItem.price) / Number(dataItem.numParc)}</p>
+                            <p className="font-inter-black">{dataItem.numParc}x de R${(Number(dataItem.price) / Number(dataItem.numParc)).toFixed(2)}</p>
                         </div>
                     </div>
                     <div className="row-item-info">

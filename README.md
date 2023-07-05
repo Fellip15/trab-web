@@ -15,6 +15,7 @@ Neste trabalho da disciplina, o grupo desenvolve completamente um site de vendas
 
 ### Como rodar o projeto
 <p>Para o site funcionar em sua máquina, é necessário abrir 2 abas em seu terminal simultaneamente. Em uma delas, vá para dentro da pasta "server" do projeto e digite os comandos:</p>
+
 ```bash
 npm install
 npm run dev
@@ -22,6 +23,7 @@ npm run dev
 Isso irá inicializar a parte do servidor da aplicação.
 
 <p>Enquanto isso, na outra aba do seu terminal, vá para dentro da pasta "app" do projeto e digite os comandos:</p>
+
 ```bash
 npm install
 npm start
