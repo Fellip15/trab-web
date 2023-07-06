@@ -63,7 +63,6 @@ const User = ({}) => {
             let userFound = null;
             await axios.get(baseURL + "/getUserByToken/" + cookies.user)
             .then(async (res) => {
-                console.log("AAAa")
                 console.log(res.data);
                 userFound = res.data.user;
                 setUser(userFound);

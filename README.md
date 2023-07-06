@@ -119,7 +119,7 @@ Com o projeto finalizado, é possível realizar alguns testes sobre suas princip
     <li><b>Editar itens presentes no banco:</b> Logado como administrador e em sua tela principal, clique no ícone presente no canto inferior direito do ítem para ser direcionado à tela de editar os dados do item escolhido. Após editar os dados desejados, clique em "salvar";
     <li><b>Remover itens presentes no banco:</b> Logado como administrador e em sua tela principal, clique no ícone presente no canto superior direito do ítem para removê-lo do banco;
     <li><b>Adicionar novos itens no banco:</b> Logado como administrador e em sua tela principal, clique em "adicionar item" para ser direcionado à tela de preencher as informações do novo item. Após finalizar, clique em "salvar" que ele já estará disponível no banco;
-    <li><b>Remover usuário do bacno:</b> Logado como administrador e em sua tela principal, clique no ícone presente no canto superior para ser direcionado à tela de usuários presentes no site. Com isso, clique no ícone presente à direita do usuário desejado e confirme para removê-lo do banco.
+    <li><b>Remover usuário do banco:</b> Logado como administrador e em sua tela principal, clique no ícone presente no canto superior para ser direcionado à tela de usuários presentes no site. Com isso, clique no ícone presente à direita do usuário desejado e confirme para removê-lo do banco.
 </ul>
 Todos esses testes descritos já foram verificados e funcionam corretamente no projeto.
 

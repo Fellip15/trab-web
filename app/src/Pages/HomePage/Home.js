@@ -74,7 +74,7 @@ const Home = () => {
                 <img src="img/logo/logo-completa.png" alt="Logo" id="img-logo-propaganda"/>
             </div>
 
-            {fetched && <HomeItemList dataItens={dataItens} title={'Ilhas recomendadas para você:'}/>}
+            {fetched && <HomeItemList dataItens={dataItens} title={'Produtos recomendados para você:'}/>}
         </div>
         <Footer />
         </>
