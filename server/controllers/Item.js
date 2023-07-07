@@ -210,7 +210,11 @@ exports.deleteImage = async (req, res) => {
             return res.status(STATUS_CODE_ERROR).send({ message: `Não foi possível achar a imagem` });
         }
 
-        fs.unlinkSync(imageToDelete.src);
+        try {
+            fs.unlinkSync(imageToDelete.src);
+        } catch(e) {
+            console.log(e);
+        }
         imageToDelete.deleteOne();
 
         let newImages = await asyncFilter(item.images, (image) => String(image) !== String(imageToDelete._id));

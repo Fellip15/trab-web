@@ -218,7 +218,11 @@ exports.remove = async (req, res) => {
         if(user.image !== undefined && user.image !== null) {
             const image = await ImageSchema.findById(user.image);
             if(image !== null) {
-                fs.unlinkSync(image.src);
+                try {
+                    fs.unlinkSync(image.src);
+                } catch(e) {
+                    console.log(e);
+                }
                 await image.deleteOne();
             }
         }
