@@ -17,17 +17,17 @@ const EditItem = ({ dataItens, setItems }) => {
     const [itemId, setItemId] = useState({});
     const navigate = useNavigate();
 
-    const [name, setName] = useState(null);
-    const [price, setPrice] = useState(null);
-    const [numParc, setNumParc] = useState(null);
+    const [name, setName] = useState("");
+    const [price, setPrice] = useState("");
+    const [numParc, setNumParc] = useState("");
     const [images, setImages] = useState([]);
     const [currImages, setCurrImages] = useState([]);
     const [imagesURLs, setImagesURLs] = useState([]);
-    const [stock, setStock] = useState(null);
-    const [sold, setSold] = useState(null);
-    const [latitude, setLatitude] = useState(null);
-    const [longitude, setLongitude] = useState(null);
-    const [description, setDescription] = useState(null);
+    const [stock, setStock] = useState("");
+    const [sold, setSold] = useState("");
+    const [latitude, setLatitude] = useState("");
+    const [longitude, setLongitude] = useState("");
+    const [description, setDescription] = useState("");
     const [ storageImages, setStorageImages ] = useState([]);
 
     const [ fetched, setFetched ] = useState(false);
@@ -249,8 +249,21 @@ const EditItem = ({ dataItens, setItems }) => {
         navigate('/adm')
     }
 
-    const handleSetValue = (value, setValue) => {
-        setValue(value);
+    const handleSetValue = (value, setValue, type) => {
+        console.log(value)
+        let valueFormatted = value;
+        if(type === "price") {
+            valueFormatted = valueFormatted.replace(/[^0-9.,]/g, "").replace(/-/g, "");;
+            console.log(valueFormatted)
+        } else if(type === "natural") {
+            valueFormatted = valueFormatted.replace(/[^0-9]/g, "");
+        }
+        setValue(valueFormatted);
+    };
+
+    const preventHiffen = (e, type) => {
+        if(e.key === "-" || e.key === "+") e.preventDefault();
+        if(type === "natural" && (e.key === "." || e.key === ",")) e.preventDefault();
     };
 
     function handleEditItem(e) {
@@ -323,40 +336,40 @@ const EditItem = ({ dataItens, setItems }) => {
                         <div className="forms-col">
                             <div className="forms-row">
                                 <label>Nome:</label>
-                                <input type="text" id="name_input" defaultValue={name} onChange={(e) => handleSetValue(e.target.value, setName)} />
+                                <input type="text" id="name_input" value={name} onChange={(e) => handleSetValue(e.target.value, setName)} />
                             </div>
 
                             <div className="forms-row">
                                 <label>Preço:</label>
-                                <input type="number" id="price_input" defaultValue={price} onChange={(e) => handleSetValue(e.target.value, setPrice)} />
+                                <input type="number" id="price_input" value={price} onKeyDown={(e) => preventHiffen(e, "price")} onChange={(e) => handleSetValue(e.target.value, setPrice, "price")} />
                             </div>
 
                             <div className="forms-row">
                                 <label>Num parcelas:</label>
-                                <input type="number" id="num_parcelas_input" defaultValue={numParc} onChange={(e) => handleSetValue(e.target.value, setNumParc)} />
+                                <input type="number" id="num_parcelas_input" value={numParc} onKeyDown={(e) => preventHiffen(e, "natural")} onChange={(e) => handleSetValue(e.target.value, setNumParc, "natural")} />
                             </div>
 
                             <div className="forms-row">
                                 <label>Descrição:</label>
-                                <textarea type="text" id="description_input" defaultValue={description} onChange={(e) => handleSetValue(e.target.value, setDescription)} />
+                                <textarea type="text" id="description_input" value={description} onChange={(e) => handleSetValue(e.target.value, setDescription)} />
                             </div>
 
                             <div className="forms-row">
                                 <label>Estoque:</label>
-                                <input type="number" id="stock_input" defaultValue={stock} onChange={(e) => handleSetValue(e.target.value, setStock)} />
+                                <input type="number" id="stock_input" value={stock} onKeyDown={(e) => preventHiffen(e, "natural")} onChange={(e) => handleSetValue(e.target.value, setStock, "natural")} />
 
                                 <label>Vendidos:</label>
-                                <input type="number" id="sold_input" defaultValue={sold} onChange={(e) => handleSetValue(e.target.value, setSold)} />
+                                <input type="number" id="sold_input" value={sold} onKeyDown={(e) => preventHiffen(e, "natural")} onChange={(e) => handleSetValue(e.target.value, setSold, "natural")} />
                             </div>
 
                             <br />
                             <h3>Coordenadas</h3>
                             <div className="forms-row">
                                 <label>Latitude:</label>
-                                <input type="number" id="lat_input" defaultValue={latitude} onChange={(e) => handleSetValue(e.target.value, setLatitude)} />
+                                <input type="number" id="lat_input" value={latitude} onChange={(e) => handleSetValue(e.target.value, setLatitude)} />
 
                                 <label>Longitude:</label>
-                                <input type="number" id="long_input" defaultValue={longitude} onChange={(e) => handleSetValue(e.target.value, setLongitude)} />
+                                <input type="number" id="long_input" value={longitude} onChange={(e) => handleSetValue(e.target.value, setLongitude)} />
                             </div>
                         </div>
                     </form>
